@@ -1,5 +1,6 @@
 package com.padshift.sonic.service.impl;
 
+import com.padshift.sonic.controller.YoutubeAPIController;
 import com.padshift.sonic.entities.*;
 import com.padshift.sonic.repository.*;
 import com.padshift.sonic.service.VideoService;
@@ -31,6 +32,11 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     public UserPreferenceRepository userPreferenceRepository;
+    @Autowired
+    VideoService videoService;
+
+    @Autowired
+    YoutubeAPIController youtubeAPIController;
 
 
     @Override
@@ -141,7 +147,27 @@ public class VideoServiceImpl implements VideoService {
         return vidRatingsRepository.findByUserIdAndVideoid(s, videoid);
     }
 
+    @Override
+    public Status[] updateMV() {
+        ArrayList<Genre> genre = videoService.findAllGenre();
+        Status[] stat = new Status[genre.size()];
 
+        for(int i=0; i<stat.length; i++){
+            stat[i] = new Status();
+        }
+
+        for(int i=0; i<genre.size(); i++){
+            stat[i].setGenre(genre.get(i).getGenreName());
+            int c = youtubeAPIController.updateFetchMusicVideos(genre.get(i).getGenreName());
+            stat[i].setUpdateStatusCount(c);
+        }
+
+
+        for(Status upStat : stat){
+            System.out.println(upStat.getGenre() + " : " + upStat.getUpdateStatusCount());
+        }
+        return stat;
+    }
 
 
 }

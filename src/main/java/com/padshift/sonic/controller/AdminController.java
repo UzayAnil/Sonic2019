@@ -40,6 +40,7 @@ public class AdminController {
     GenreService genreService;
 
 
+
     @RequestMapping("/adminHomePage")
     public String showAdminHomePage(){
         return "HomePageAdmin";
@@ -53,15 +54,22 @@ public class AdminController {
         return "QueryAdmin";
     }
 
+    @RequestMapping(value = "/updateMV")
+    public String updateMV(Model model){
+        Status[] stat = videoService.updateMV();
+        model.addAttribute("upstat", stat);
+        return "UpdateStatus";
+    }
+
     @RequestMapping(value = "/config", method = RequestMethod.POST)
     public String config(HttpServletRequest request, Model model){
         String configChoice = request.getParameter("config");
         System.out.println(configChoice);
         if(configChoice.equals("1")){
-             return showQueryPage(model);
+            return updateMV(model);
         }else if(configChoice.equals("2")){
             System.out.println("GOOD MORNING");
-             return gracenoteAPIController.showmetadata();
+            return gracenoteAPIController.showmetadata();
         }else if(configChoice.equals("3")) {
             return showCriteria(model);
 
@@ -70,6 +78,9 @@ public class AdminController {
 
         }else if(configChoice.equals("5")) {
             return updateTopMusic();
+
+        }else if(configChoice.equals("6")) {
+            return updateGenreTags();
 
         }else{
             return "testing";

@@ -60,6 +60,8 @@ public interface VideoService {
 
     VidRatings findRatingByUserIdandVideoid(String s, String videoid);
 
+    Status[] updateMV();
+
 
 //    void updateVidDuration(String videoid, long seconds);
 

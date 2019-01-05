@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/updatestatus.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="tab"></div>
+    <div class="paid"><p>Receipt Paid successfully</p></div>
+    <div class="receipt">
+        <div class="paper">
+            <div class="title">Genre
+            </div>
+            <div class="date">MV Count
+            </div>
+            <table>
+                <tbody>
+                <tr th:each="upstatus : ${upstat}">
+                    <td th:text="${upstatus.genre}"></td><td class="right" th:text="${upstatus.updateStatusCount}"></td>
+                </tr>
+
+                <tr><td colspan="2" class="center"><input type="button" value="CONTINUE" onClick="goBack()"/></td></tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+        </div>
+
+
+</body>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</html>

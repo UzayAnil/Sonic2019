@@ -22,6 +22,16 @@ public class Video implements Serializable {
     @Column(name="thumbnail")
     private String thumbnail;
 
+    public Video(String videoid, String mvtitle, String thumbnail) {
+        this.videoid = videoid;
+        this.mvtitle = mvtitle;
+        this.thumbnail = thumbnail;
+    }
+
+    public Video() {
+
+    }
+
     public String getVideoid() {
         return videoid;
     }
