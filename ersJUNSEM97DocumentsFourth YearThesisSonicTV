@@ -1,0 +1,50 @@
+[1mdiff --git a/src/main/java/com/padshift/sonic/controller/UserController.java b/src/main/java/com/padshift/sonic/controller/UserController.java[m
+[1mindex c1d41d6..fc6f692 100644[m
+[1m--- a/src/main/java/com/padshift/sonic/controller/UserController.java[m
+[1m+++ b/src/main/java/com/padshift/sonic/controller/UserController.java[m
+[36m@@ -62,14 +62,15 @@[m [mpublic class UserController {[m
+     }[m
+ [m
+     @RequestMapping(value = "/signin", method = RequestMethod.POST)[m
+[31m-    public String generalSigninPost(HttpServletRequest request, ModelMap map) {[m
+[32m+[m[32m    public String generalSigninPost(HttpServletRequest request, ModelMap map, Model model, HttpSession session) {[m
+         String userName = request.getParameter("inputUserName");[m
+         String userPass = request.getParameter("inputPassword");[m
+ [m
+         User checkUser = userService.findUserByUsernameAndPassword(userName, userPass);[m
+ [m
+         if (checkUser != null) {[m
+[31m-            return "Homepage";[m
+[32m+[m[32m            session.setAttribute("username", request.getParameter("inputUserName"));[m
+[32m+[m[32m            return showHomepage(model, session);[m
+         } else {[m
+             return "signinsignup";[m
+         }[m
+[36m@@ -77,7 +78,7 @@[m [mpublic class UserController {[m
+ [m
+ [m
+     @RequestMapping(value = "/signup", method = RequestMethod.POST)[m
+[31m-    public String generalSignup(HttpServletRequest request, ModelMap map, HttpSession session) {[m
+[32m+[m[32m    public String generalSignup(HttpServletRequest request, ModelMap map, Model model, HttpSession session) {[m
+         User newUser = new User();[m
+         newUser.setUserName(request.getParameter("inputUserName"));[m
+         newUser.setUserPass(request.getParameter("inputPassword"));[m
+[1mdiff --git a/src/main/java/com/padshift/sonic/service/impl/UserServiceImpl.java b/src/main/java/com/padshift/sonic/service/impl/UserServiceImpl.java[m
+[1mindex e752321..e88b876 100644[m
+[1m--- a/src/main/java/com/padshift/sonic/service/impl/UserServiceImpl.java[m
+[1m+++ b/src/main/java/com/padshift/sonic/service/impl/UserServiceImpl.java[m
+[36m@@ -53,10 +53,10 @@[m [mpublic class UserServiceImpl implements UserService {[m
+         userHistoryRepository.save(userhist);[m
+     }[m
+ [m
+[31m-    @Override[m
+[31m-    public User findByUsername(String username) {[m
+[31m-        return userRepository.findByUserName(username);[m
+[31m-    }[m
+[32m+[m[32m        @Override[m
+[32m+[m[32m        public User findByUsername(String username) {[m
+[32m+[m[32m            return userRepository.findByUserName(username);[m
+[32m+[m[32m        }[m
+ [m
+ [m
+ }[m

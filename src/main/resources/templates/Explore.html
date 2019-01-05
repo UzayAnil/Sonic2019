@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/explore.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/js/explore.js"></script>
+</head>
+<body>
+<div>
+    <div id="cont">
+        <div id="menu-fixed">
+
+            <a href="#cont">
+                <i class="material-icons back">&#xE314;</i>
+            </a>
+            <a href="#menu-fixed">
+                <div class="logo">
+                    <img src="images/logofinal.png" style="width:70px;height:70px;">
+                </div>
+                <p class="pmenu">MENU</p>
+            </a>
+            <hr>
+            <ul class="menu">
+                <li><i class="material-icons">&#xE88A;</i><p>Home</p></li>
+                <li><i class="material-icons">&#xe02c;</i><p>Explore</p></li>
+                <li><i class="material-icons">person</i><p>Profile</p></li>
+                <li><i class="material-icons">&#xE8B8;</i><p>Settings</p></li>
+                <li><i class="material-icons">&#xE8B6;</i><p>Search</p></li>
+            </ul>
+            <i class="material-icons info">&#xE88E;</i>
+        </div>
+    </div>
+
+    <div class="page">
+        <header class="page_header">
+            <h1><img src="/images/explorecover.png" style="height: 100%;position: relative;top: -5%;width: 100%;"> </h1>
+        </header>
+
+
+
+        <div class="cards-holder">
+            <div class="card" th:each="gen : ${genre}">
+                <header class="card_header" data-background="urlhere" th:attr="data-background='url('+${gen.genrePhoto}+')'">
+                    <img th:src="${gen.explorePhoto}" style="height: 100%;width: 100%;">
+                    <h2 th:text="${gen.genreName}" ></h2>
+                </header>
+                <section class="card_content">
+                    <h2>Some motivational sentence</h2>
+                    <p>Some Lorem ipsum dolor sit amet, tempore. Minus minima provident magnam nihil commodi explicabo doloribus accusantium earum.</p>
+                </section>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

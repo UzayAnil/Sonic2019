@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:300, 400");
+.container:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+
+    background: white url("../images/reg.jpg");
+    background-size: cover;
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+.container input {
+    display: none;
+}
+.container input:checked + label {
+    border: 1px solid #30a6a6;
+}
+.container label {
+    display: block;
+    float: left;
+    margin-top: 10px;
+    margin-right: 10px;
+    max-width: calc((100% / 3) - 10px);
+    width: 100%;
+    border: 1px solid #dddddd;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    background: rgba(255, 255, 255, 0.5);
+
+    cursor: pointer;
+    transition: box-shadow .15s linear, transform .15s linear;
+}
+.container label:hover {
+    border: 1px solid #ccc;
+    -webkit-box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.15);
+    transition: box-shadow .15s linear, transform .15s linear;
+    -webkit-transform: scale(1.01);
+    -moz-transform: scale(1.01);
+    -ms-transform: scale(1.01);
+    -o-transform: scale(1.01);
+    transform: scale(1.01);
+}
+.container label span.spec {
+    display: block;
+    text-transform: uppercase;
+    margin: 0 auto 30px;
+    font-size: 10px;
+}
+.container label h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.container label p {
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.5;
+    font-weight: 300;
+}
+.container label div.author p {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-top: 40px;
+}
+.container label div.author ul {
+    display: inline-block;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+.container label div.author ul li {
+    list-style: none;
+    float: left;
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: red;
+}
+.container label div.author ul li:first-child {
+    margin-right: 10px;
+    background: url("https://res.cloudinary.com/alexiswollseifen-com/image/upload/v1494507856/31998547103_e0d2e65ddf_m_emo00r.jpg") no-repeat;
+    background-size: cover;
+}
+.container label div.author ul li:last-child {
+    background: url("https://res.cloudinary.com/alexiswollseifen-com/image/upload/v1494507978/2687331011_51a1acac77_m_xhycdb.jpg") no-repeat;
+    background-size: cover;
+    background-position: 0px -10px;
+}
+
+.bttncontainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -65px;
+    margin-top: -20px;
+    width: 130px;
+    height: 40px;
+    text-align: center;
+}
+
+.submitpref {
+    background-color : #31B0D5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border-color: #46b8da;
+}
+
+#btnpref {
+    position: fixed;
+    bottom: -7px;
+    right: 10px;
+}

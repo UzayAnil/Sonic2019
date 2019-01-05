@@ -1,0 +1,444 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
+:root {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: greyscale;
+    box-sizing: border-box;
+}
+
+html, body {
+    float: left;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: #000;
+    font-family: 'Source Sans Pro', helvetica Neue, sans-serif;
+    -webkit-font-variant-ligatures: common-ligatures;
+    font-variant-ligatures: common-ligatures;
+    font-weight: 300;
+}
+
+.page {
+    width: 92%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    left: 8%;
+}
+.page header.page_header {
+    background: linear-gradient(to bottom right, #27c25a, #3B567F);
+    color: #fff;
+    flex: 1;
+    text-align: center;
+    min-height: 50vh;
+    overflow: hidden;
+    position: relative;
+    height: 458px;
+}
+.page header.page_header:before {
+    content: '';
+    display: block;
+    float: left;
+    width: 100%;
+    height: 100%;
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/starry_night_sky.png) no-repeat center center/cover;
+    position: absolute;
+    z-index: 1;
+    box-shadow: inset 0 0 200px #000;
+    opacity: 1;
+    mix-blend-mode: darken;
+}
+.page header.page_header h1 {
+    font-weight: 400;
+    line-height: 60vh;
+    text-transform: uppercase;
+    position: relative;
+    width: 1398px;
+    z-index: 1;
+    height: 460px;
+}
+.page .cards-holder {
+    display: flex;
+    flex-direction: row;
+    background: #181818;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    float: left;
+    padding: 1em 0;
+    flex-wrap: wrap;
+    width: initial;
+}
+.page .cards-holder .card {
+    margin: 0 8px;
+    background: #181818;
+    padding: 8px;
+    overflow: hidden;
+    border-radius: 2px;
+    cursor: pointer;
+    flex-basis: calc(20% - -50px);
+    transition: box-shadow .2s ease;
+    padding-bottom: 10px;
+    height: 300px;
+}
+@media all and (max-width: 680px) {
+    .page .cards-holder .card {
+        flex-basis: calc(50% - 16px);
+        margin-top: 8px;
+    }
+}
+.page .cards-holder .card header {
+    background: lime;
+    min-height: 20vw;
+    position: relative;
+    top: -20px;
+    left: -8px;
+    width: calc(100% + 16px);
+    text-align: center;
+    height: 100%;
+}
+.page .cards-holder .card header:after, .page .cards-holder .card header:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #000;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: 0.3;
+}
+.page .cards-holder .card header:before {
+    content: 'M O R E';
+    font-size: 1rem;
+    line-height: 20vw;
+    z-index: 2;
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+    font-weight: bold;
+}
+.page .cards-holder .card header h2 {
+    font-size: 1rem;
+    line-height: 20vw;
+    position: absolute;
+    z-index: 1;
+    top: 0%;
+    left: 35%;
+}
+.page .cards-holder .card:hover {
+    box-shadow: 0 0 0 1px rgba(39, 194, 90, 0.4);
+}
+.page .cards-holder .card:hover header:before {
+    display: block !important;
+    z-index: 3 !important;
+}
+.page .cards-holder .card:hover header:after {
+    display: none !important;
+}
+.page .cards-holder .card:hover header h2 {
+    visibility: hidden;
+}
+.page .cards-holder .card_content {
+    max-height: 240px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    top: -16px;
+}
+.page .cards-holder .card_content h2 {
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    padding-bottom: .5rem;
+    margin: 0;
+}
+.page .cards-holder .card_content p {
+    color: #A0A0A0;
+    font-weight: 400;
+    font-size: 0.9rem;
+    padding: 0;
+    margin: .4rem 0;
+}
+
+
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300);
+html, body {
+    margin: 0;
+    font-family: 'Roboto';
+    background: #f1f1f1;
+    overflow: auto;
+}
+
+#cont:target > menu-fixed {
+    width: 120px;
+    background: #111;
+    transition: all 0.3s;
+}
+#cont:target > menu-fixed > a .material-icons.back {
+    display: none;
+}
+#cont:target > menu-fixed > .menu li {
+    text-align: center;
+    width: 40%;
+}
+#cont:target > menu-fixed > .menu li > p {
+    display: none;
+}
+
+#menu-fixed {
+    width: 120px;
+    z-index: 2;
+    height: 100%;
+    background: #0F0F0F;
+    position: fixed;
+    transition: all 0.3s;
+    box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.19), 8px 0px 10px rgba(0, 0, 0, 0.23);
+    text-align: center;
+    overflow: auto;
+}
+#menu-fixed .material-icons.back {
+    display: none;
+    color: white;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 36px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+#menu-fixed .material-icons.back:hover {
+    color: #009688;
+    transition: color 0.3s;
+}
+#menu-fixed:target {
+    width: 280px;
+    background: #000;
+    transition: all 0.3s ease-out;
+}
+#menu-fixed:target > .notes {
+    transition: all 0.2s;
+    z-index: 0;
+    opacity: 0;
+}
+#menu-fixed:target > a .material-icons.back {
+    display: block;
+}
+#menu-fixed:target > a > .logo {
+    width: 60%;
+    height: 47px;
+    margin: auto;
+}
+#menu-fixed:target > a > .logo > span {
+    display: none;
+}
+#menu-fixed:target > a > .logo > p {
+    display: block;
+}
+#menu-fixed:target > .menu li {
+    text-align: left;
+    width: 100%;
+}
+#menu-fixed:target > .menu li:hover::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: rgba(38, 166, 154, 0.1);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+}
+#menu-fixed:target > .menu li:hover > p {
+    color: white;
+}
+#menu-fixed:target > .menu li > p {
+    display: inline-block;
+}
+#menu-fixed .logo {
+    width: 100%;
+    height: 70px;
+    position: relative;
+    cursor: pointer;
+}
+#menu-fixed .logo p {
+    display: none;
+    color: #999;
+    font-size: 23px;
+    padding-bottom: 0;
+    font-weight: 300;
+}
+#menu-fixed .logo span {
+    width: 10px;
+    height: 10px;
+    backrground: #0A0A0A;
+    position: absolute;
+    margin: auto;
+    left: 75%;
+    right: 0;
+    top: 500%;
+    transform: rotateZ(45deg);
+    -webkit-transform: rotateZ(45deg);
+    border: 8px solid white;
+    transition: all 0.2s;
+}
+#menu-fixed .logo:hover ~ p {
+    color: white;
+    transition: all 0.3s;
+}
+#menu-fixed .logo:hover > span {
+    width: 0;
+    height: 0;
+    border-left: 15px solid white;
+    border-right: 15px solid rgba(0, 0, 0, 0);
+    border-top: 15px solid rgba(0, 0, 0, 0);
+    border-bottom: 15px solid rgba(0, 0, 0, 0);
+    transition: all 0.2s;
+    transform: rotateZ(0deg) translateX(10px);
+    -webkit-transform: rotateZ(0deg) translateX(10px);
+}
+#menu-fixed .logo:hover > span::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 8px solid #111;
+    border-right: 8px solid rgba(0, 0, 0, 0);
+    border-top: 8px solid rgba(0, 0, 0, 0);
+    border-bottom: 8px solid rgba(0, 0, 0, 0);
+    left: -15px;
+    position: absolute;
+    top: -8px;
+}
+#menu-fixed .pmenu {
+    margin: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    font-weight: 300;
+}
+#menu-fixed hr {
+    position: relative;
+    top: 10px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+#menu-fixed .menu {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    top: 10px;
+}
+#menu-fixed .menu li {
+    padding: 15px;
+    width: 50%;
+    margin: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom-style: dotted;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s;
+}
+#menu-fixed .menu li:last-child {
+    border: none;
+}
+#menu-fixed .menu li:hover {
+    background: #000;
+    transition: all 0.3s;
+}
+#menu-fixed .menu li:hover > .material-icons {
+    color: white;
+}
+#menu-fixed .menu li .material-icons {
+    color: #999;
+}
+#menu-fixed .menu li p {
+    display: none;
+    margin: auto;
+    color: #888;
+    font-size: 14px;
+    font-weight: 300;
+    position: absolute;
+    padding-left: 30px;
+    line-height: 30px;
+}
+
+.material-icons.info {
+    color: #999;
+    position: absolute;
+    margin: 0;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+}
+
+#page {
+    width: 1100px;
+    height: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    position: relative;
+}
+#page div {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    background: white;
+    z-index: 1;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+.notes {
+    position: fixed;
+    width: 100px;
+    height: 70px;
+    top: 20px;
+    left: 130px;
+    z-index: 5;
+    background: #009688;
+    border-radius: 10px;
+    transition: all 0.6s;
+}
+.notes::after {
+    content: '';
+    display: block;
+    position: fixed;
+    width: 0px;
+    height: 0px;
+    top: 50px;
+    left: 115px;
+    border-top: 8px solid rgba(0, 0, 0, 0);
+    border-bottom: 8px solid rgba(0, 0, 0, 0);
+    border-left: 8px solid rgba(0, 0, 0, 0);
+    border-right: 8px solid  #009688;
+}
+.notes p {
+    color: #222;
+    padding: 12px;
+    margin: 0;
+}
+

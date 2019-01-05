@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/criteria.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<div id="cont">
+    <div id="menu-fixed">
+
+        <a href="#cont">
+            <i class="material-icons back">&#xE314;</i>
+        </a>
+        <a href="#menu-fixed">
+            <div class="logo">
+                <img src="images/logofinal.png" style="width:70px;height:70px;">
+            </div>
+            <p class="pmenu">MENU</p>
+        </a>
+        <hr>
+        <form id="sidemenu" action="/sidemenu" method="post">
+            <ul class="menu">
+                <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                <li><i class="material-icons">&#xe02c;</i><br><span class="sideb" onclick="sidemenu.submit();">Explore</span></li><input type="hidden" name="explore" value="1">
+                <li><i class="material-icons">person</i><br><span class="sideb">Profile</span></li>
+                <li><i class="material-icons">&#xE8B8;</i><br><span class="sideb">Settings</span></li>
+                <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+            </ul>
+        </form>
+
+        <i class="material-icons info">&#xE88E;</i>
+    </div>
+</div>
+
+<div class="wrap cf">
+    <h1 class="projTitle">Change<span>-Criteria</span> Recommendation</h1>
+    <form action="/addcriteria" method="post">
+        <input type="text" name="criteriaName"  placeholder="Criteria Name" required ><br>
+        <input type="text" name="criteriaPercentage"  placeholder="Criteria Percentage" required ><br>
+        <button type="submit" >Add Criteria</button>
+    </form>
+
+
+    <div class="cart">
+
+        <ul class="cartWrap">
+            <li class="items odd" th:each="cri : ${criteria}">
+
+                    <div class="infoWrap">
+                        <div class="cartSection">
+
+                            <h3 th:text="${cri.criteriaName}"></h3>
+                            <p class="stockStatus"> In Stock</p>
+                        </div>
+                        <div class="prodTotal cartSection">
+                            <P>% </P><p th:text="${cri.criteriaPercentage}"></p>
+                        </div>
+                        <div class="cartSection removeWrap">
+                            <form method="post" action="/removecriteria">
+                                <input type="hidden" name="crite" th:value="${cri.criteriaId}">
+                                <button type="submit" class="remove" style="float: right;"> Remove Criteria </button>
+                            </form>
+                            <form method="post" action="/editcriteria">
+                                <input type="hidden" name="crite" th:value="${cri.criteriaId}">
+                                <button type="submit" class="remove" style="float: right;"> Edit Criteria </button>
+                            </form>
+
+                        </div>
+                    </div>
+
+            </li>
+        </ul>
+
+    </div>
+
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+/* put your own styles to customize and override the theme */
+.btn-primary {
+  background-color: black;
+}
+
+.card{
+  background-color: #636e72;
+}
+
+.app-aside {
+  background-color: black;
+}
+
+.metric-label{
+  color: white;
+}

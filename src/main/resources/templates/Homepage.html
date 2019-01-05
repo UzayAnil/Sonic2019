@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/homepage.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body style="
+    background-color: #0f0f0f;
+    height: -webkit-fill-available;
+">
+<header class="page-head"></header>
+
+<div>
+
+    <div id="cont">
+        <div id="menu-fixed">
+
+            <a href="#cont">
+                <i class="material-icons back">&#xE314;</i>
+            </a>
+            <a href="#menu-fixed">
+                <div class="logo">
+                    <img src="images/logofinal.png" style="width:70px;height:70px;">
+                </div>
+                <p class="pmenu">MENU</p>
+            </a>
+            <hr>
+            <form id="sidemenu" action="/sidemenu" method="post">
+                <ul class="menu">
+                    <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    <li><i class="material-icons">&#xe02c;</i><br><span class="sideb" onclick="sidemenu.submit();">Explore</span></li><input type="hidden" name="explore" value="1">
+                    <li><i class="material-icons">person</i><br><span class="sideb">Profile</span></li>
+                    <li><i class="material-icons">&#xE8B8;</i><br><span class="sideb">Settings</span></li>
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
+            </form>
+
+            <i class="material-icons info">&#xE88E;</i>
+        </div>
+    </div>
+        <table>
+            <tr>
+                <ul class="items">
+                    <div class="vidcontainer"  th:each="rv1 : ${r1}">
+                        <form th:id="${rv1.videoid}" action="/gotoPlayer" method="get">
+                            <li>
+                                <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv1.videoid}+'\').submit();'">
+                                    <img th:src="${rv1.thumbnail}"/>
+                                </a>
+                                <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
+                                <a href="#">
+                                    <div class="content">
+                                        <h2 th:text="${rv1.title}"/>
+                                    </div>
+                                </a>
+                            </li>
+                        </form>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="vidcontainer" th:each="rv2 : ${r2}">
+                        <form th:id="${rv2.videoid}" action="/gotoPlayer" method="get">
+                            <li>
+                                <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv2.videoid}+'\').submit();'">
+                                    <img th:src="${rv2.thumbnail}"/>
+                                </a>
+                                <input type="hidden" name="clicked" th:value="${rv2.videoid}"/>
+                                <a href="#">
+                                    <div class="content">
+                                        <h2 th:text="${rv2.title}"/>
+                                    </div>
+                                </a>
+                            </li>
+                        </form>
+                    </div>
+                    <br><br><br>
+                    <div class="vidcontainer" th:each="rv3 : ${r3}">
+                        <form th:id="${rv3.videoid}" action="/gotoPlayer" method="get">
+                            <li>
+                                <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv3.videoid}+'\').submit();'">
+                                    <img th:src="${rv3.thumbnail}"/>
+                                </a>
+                                <input type="hidden" name="clicked" th:value="${rv3.videoid}"/>
+                                <a href="#">
+                                    <div class="content">
+                                        <h2 th:text="${rv3.title}"/>
+                                    </div>
+                                </a>
+                            </li>
+                        </form>
+                    </div>
+                    <br><br><br>
+                    <div class="vidcontainer" th:each="rv4 : ${r4}">
+                        <form th:id="${rv4.videoid}" action="/gotoPlayer" method="get">
+                            <li>
+                                <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv4.videoid}+'\').submit();'">
+                                    <img th:src="${rv4.thumbnail}"/>
+                                </a>
+                                <input type="hidden" name="clicked" th:value="${rv4.videoid}"/>
+                                <a href="#">
+                                    <div class="content">
+                                        <h2 th:text="${rv4.title}"/>
+                                    </div>
+                                </a>
+                            </li>
+                        </form>
+                    </div>
+                </ul>
+            </tr>
+        </table>
+</div>
+</body>
+</html>

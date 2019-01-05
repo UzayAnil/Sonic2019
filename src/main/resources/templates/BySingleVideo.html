@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/byartist.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body style="
+    background-color: #0f0f0f;
+    height: 750px;
+">
+<header class="page-head"></header>
+
+<div>
+
+    <div id="cont">
+        <div id="menu-fixed">
+
+            <a href="#cont">
+                <i class="material-icons back">&#xE314;</i>
+            </a>
+            <a href="#menu-fixed">
+                <div class="logo">
+                    <img src="images/logofinal.png" style="width:70px;height:70px;">
+                </div>
+                <p class="pmenu">MENU</p>
+            </a>
+            <hr>
+            <form id="sidemenu" action="/sidemenu" method="post">
+                <ul class="menu">
+                    <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    <li><i class="material-icons">&#xe02c;</i><br><span class="sideb" onclick="sidemenu.submit();">Explore</span></li><input type="hidden" name="explore" value="1">
+                    <li><i class="material-icons">person</i><br><span class="sideb">Profile</span></li>
+                    <li><i class="material-icons">&#xE8B8;</i><br><span class="sideb">Settings</span></li>
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
+            </form>
+
+            <i class="material-icons info">&#xE88E;</i>
+        </div>
+    </div>
+
+    <form class="form-wrapper cf" action="/fetchSingleVideo" method="post">
+        <input type="text" name="videoid" placeholder="Enter Video Id..." required>
+        <button type="submit">Fetch</button>
+    </form>
+
+
+
+
+
+
+</div>
+</body>
+</html>

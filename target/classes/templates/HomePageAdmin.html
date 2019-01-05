@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/homepageadmin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body style="
+    background-color: #0f0f0f;
+    height: 750px;
+">
+<header class="page-head"></header>
+
+<div>
+
+    <div id="cont">
+        <div id="menu-fixed">
+
+            <a href="#cont">
+                <i class="material-icons back">&#xE314;</i>
+            </a>
+            <a href="#menu-fixed">
+                <div class="logo">
+                    <img src="images/logofinal.png" style="width:70px;height:70px;">
+                </div>
+                <p class="pmenu">MENU</p>
+            </a>
+            <hr>
+            <form id="sidemenu" action="/sidemenu" method="post">
+                <ul class="menu">
+                    <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    <li><i class="material-icons">&#xe02c;</i><br><span class="sideb" onclick="sidemenu.submit();">Explore</span></li><input type="hidden" name="explore" value="1">
+                    <li><i class="material-icons">person</i><br><span class="sideb">Profile</span></li>
+                    <li><i class="material-icons">&#xE8B8;</i><br><span class="sideb">Settings</span></li>
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
+            </form>
+
+            <i class="material-icons info">&#xE88E;</i>
+        </div>
+    </div>
+
+
+
+        <div class="container">
+            <form action="/config" method="post" id="config1">
+                <div class="button" href="javascript:;" onclick="document.getElementById('config1').submit();">Retrieve New Music Videos</div>
+                <input type="hidden" name="config" value="1">
+            </form>
+
+            <form action="/config" method="post" id="config2">
+                <div class="button" href="javascript:;" onclick="document.getElementById('config2').submit();">Update Music Video Metadata</div>
+                <input type="hidden" name="config" value="2">
+            </form>
+
+            <form action="/config" method="post" id="config3">
+                <div class="button"  href="javascript:;" onclick="document.getElementById('config3').submit();">Change Starting Criteria</div>
+                <input type="hidden" name="config" value="3">
+            </form>
+
+            <form action="/config" method="post" id="config4">
+                <div class="button" href="javascript:;" onclick="document.getElementById('config4').submit();">Update Genre</div>
+                <input type="hidden" name="config" value="4">
+            </form>
+
+            <form action="/config" method="post" id="config5">
+                <div class="button" href="javascript:;" onclick="document.getElementById('config5').submit();">Update Top Music List</div>
+                <input type="hidden" name="config" value="5">
+            </form>
+
+            <div class="button">Flex Grow</div>
+            <div class="button">Rounded Corners</div>
+            <div class="button">Scale</div>
+            <div class="button">Border (Inner Shadow)</div>
+            <div class="button">Border (Outer Shadow)</div>
+        </div>
+
+
+
+
+</div>
+</body>
+</html>

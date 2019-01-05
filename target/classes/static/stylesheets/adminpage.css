@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all ease-in-out 250ms;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #A1A6Ab;
+}
+
+#sidebar {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    min-width: 16rem;
+    height: calc(100vh - 4rem);
+    background-color: #3f3f46;
+}
+#sidebar .spacer {
+    height: 3rem;
+    width: 16rem;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4rem;
+    width: 100vw;
+    background-color: #3bafda;
+}
+
+#subnav {
+    position: fixed;
+    top: 4rem;
+    left: 16rem;
+    height: 3rem;
+    width: calc(100vw - 16rem);
+    background-color: #252526;
+}
+#subnav .spacer {
+    width: 2rem;
+    height: 3rem;
+    float: left;
+}
+
+#content {
+    position: absolute;
+    top: 7rem;
+    left: 16rem;
+    width: calc(100vw - 16rem);
+    min-height: calc(100vh - 7rem);
+    padding: 0.5rem;
+    background-color: #1e1e1e;
+}
+
+#panels {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.panel {
+    position: relative;
+    background: #252526;
+    margin: 1rem;
+    min-height: 20em;
+    min-width: 30em;
+    padding: 1em;
+}
+.panel canvas {
+    max-width: 100%;
+}
+.panel .divider {
+    height: 1px;
+    background-color: rgba(200, 200, 200, 0.1);
+    margin: 0.8em 0;
+    width: 100%;
+}
+
+#brand-area {
+    width: 16rem;
+    padding: 1.2rem;
+    color: white;
+    text-transform: uppercase;
+    font-size: 1.5em;
+    font-weight: 300;
+}
+
+#title-area {
+    padding: 0.8em;
+}
+#title-area .title {
+    font-size: 1.2em;
+}
+#title-area .fa {
+    color: white;
+    margin: 0 0.2em;
+}
+
+.links {
+    color: white;
+}
+.links li {
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
+    width: 100%;
+}
+.links li.selected {
+    background-color: #1e1e1e;
+    border-right: 2px solid #3bafda;
+}
+.links li .fa {
+    padding: 0.5em;
+}
+.links li a {
+    color: #A1A6Ab;
+    text-decoration: none;
+}
+
+.circle {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    margin: 0 0.2em;
+    width: 0.8em;
+    height: 0.8em;
+    background-color: #3bafda;
+    border-radius: 50%;
+}

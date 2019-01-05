@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/homepageadmin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body style="
+    background-color: #0f0f0f;
+    height: 750px;
+">
+<header class="page-head"></header>
+
+<div>
+
+    <div id="cont">
+        <div id="menu-fixed">
+
+            <a href="#cont">
+                <i class="material-icons back">&#xE314;</i>
+            </a>
+            <a href="#menu-fixed">
+                <div class="logo">
+                    <img src="images/logofinal.png" style="width:70px;height:70px;">
+                </div>
+                <p class="pmenu">MENU</p>
+            </a>
+            <hr>
+            <form id="sidemenu" action="/sidemenu" method="post">
+                <ul class="menu">
+                    <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    <li><i class="material-icons">&#xe02c;</i><br><span class="sideb" onclick="sidemenu.submit();">Explore</span></li><input type="hidden" name="explore" value="1">
+                    <li><i class="material-icons">person</i><br><span class="sideb">Profile</span></li>
+                    <li><i class="material-icons">&#xE8B8;</i><br><span class="sideb">Settings</span></li>
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
+            </form>
+
+            <i class="material-icons info">&#xE88E;</i>
+        </div>
+    </div>
+
+
+        <div class="container">
+
+            <div class="button" th:each="genre : ${genre}">
+                <form action="/fetchMusicVideos" method="post" th:id="${genre.genreName}">
+                    <p th:text="${genre.genreName}"  href="javascript:;" th:onclick="'document.getElementById(\''+${genre.genreName}+'\').submit();'">Music Videos
+
+                    </p>
+                    <input type="hidden" name="query" th:value="${genre.genreName}">
+                </form>
+            </div>
+            <div class="button">
+                <form action="/byartist" method="post" id="byartist">
+                    <p onclick="document.getElementById('byartist').submit();">BY ARTIST</p>
+                </form>
+
+            </div>
+
+            <div class="button">
+                <form action="/bysinglevideo" method="post" id="bysinglevideo">
+                    <p onclick="document.getElementById('bysinglevideo').submit();">BY VIDEO ID</p>
+                </form>
+
+            </div>
+
+            <div class="button">
+                <form action="/adminHomePage "method="post" id="back">
+                    <p onclick="document.getElementById('back').submit();"> BACK TO MENU </p>
+                </form>
+            </div>
+
+        </div>
+
+
+
+</div>
+</body>
+</html>
