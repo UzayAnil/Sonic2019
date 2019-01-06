@@ -853,7 +853,9 @@ public class UserController {
             userhist.setViewingDate(getLocalDate().toString());
             userhist.setViewingTime(getTime());
             userhist.setTimeSpent(request.getParameter("timeSpent").toString());
-            if(Float.parseFloat(request.getParameter("timeSpent").toString())>120) {
+
+            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+            if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
                 userhist.setViewingStatus("1");
             }else{
                 userhist.setViewingStatus("0");
@@ -925,7 +927,8 @@ public class UserController {
         VideoDetails video = videoService.findByVideoid(vididtoplay);
         String videoWatched = request.getParameter("videoWatched");
 
-        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
+        VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+        if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
             UserHistory userhist = new UserHistory();
             userhist.setUserId(session.getAttribute("userid").toString());
             userhist.setVideoid(videoWatched);
@@ -933,7 +936,8 @@ public class UserController {
             userhist.setViewingDate(getLocalDate().toString());
             userhist.setViewingTime(getTime());
             userhist.setTimeSpent(request.getParameter("timeSpent").toString());
-            if(Float.parseFloat(request.getParameter("timeSpent").toString())>120) {
+
+            if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
                 userhist.setViewingStatus("1");
             }else{
                 userhist.setViewingStatus("0");

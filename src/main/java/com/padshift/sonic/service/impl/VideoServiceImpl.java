@@ -169,5 +169,10 @@ public class VideoServiceImpl implements VideoService {
         return stat;
     }
 
+    @Override
+    public VideoDetails findVideoDetailsByVideoid(String videoWatched) {
+        return videoDetailsRepository.findByVideoid(videoWatched);
+    }
+
 
 }

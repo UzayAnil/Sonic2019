@@ -62,6 +62,8 @@ public interface VideoService {
 
     Status[] updateMV();
 
+    VideoDetails findVideoDetailsByVideoid(String videoWatched);
+
 
 //    void updateVidDuration(String videoid, long seconds);
 
