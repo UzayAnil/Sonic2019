@@ -18,8 +18,7 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Created by ruzieljonm on 26/09/2018.
@@ -391,22 +390,100 @@ public String saveGenretoDB(){
             Collections.sort(seqRules[i], UserHistory.TimeComparator);
         }
 
+
+        ArrayList<String> elements = new ArrayList<>();
+
         System.out.println("[SequenceID]      [Video IDs]");
 
-
+        ArrayList<String>[] sequencedIDs = (ArrayList<String>[])new ArrayList[seqIDs.size()];
 
         for(int i=0; i<seqIDs.size();i++){
             System.out.print("[" + seqIDs.get(i).toString() + "]     ");
 
             for(int j=0; j<seqRules[i].size(); j++){
-                if(seqRules[i].get(j).getViewingStatus().equals("1")) {
-                    System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+                if(seqRules[i].get(j).getViewingStatus().equals("0")){
+                    seqRules[i].remove(j);
                 }
+            }
+
+            for(int j=0; j<seqRules[i].size(); j++){
+                    System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+                    elements.add(seqRules[i].get(j).getVideoid());
             }
             System.out.println();
         }
 
+
+        Set<String> uniqueElements = new HashSet<String>(elements);
+
+        ArrayList<singleElement> singE = new ArrayList<>();
+        for(String eOut: uniqueElements){
+            singleElement temp = new singleElement(eOut,0);
+            singE.add(temp);
+        }
+
+        System.out.println(singE.size());
+
+
+//
+        for(int i=0; i<sequencedIDs.length; i++){
+            sequencedIDs[i] = new ArrayList<>();
+        }
+
+        for(int i=0; i<seqIDs.size();i++){
+            for(int j=0; j<seqRules[i].size(); j++) {
+               sequencedIDs[i].add(seqRules[i].get(j).getVideoid().toString());
+            }
+            System.out.println();
+        }
+
+
+
+            for(int j=0; j<singE.size(); j++){
+                for(int i=0; i<seqIDs.size();i++){
+                    if(sequencedIDs[i].contains(singE.get(j).getVideoId())){
+
+                        singE.get(j).setSupport(singE.get(j).getSupport()+1);
+                    }
+                }
+            }
+
+        for(int i=0; i<singE.size(); i++) {
+            if(singE.get(i).getSupport()>1) {
+                System.out.println(" " + singE.get(i).getVideoId() + " - " + singE.get(i).getSupport());
+            }
+        }
+
+
+
+
         return "testing";
+    }
+
+    public class singleElement{
+        String videoId;
+        float support;
+
+        public singleElement(String videoId, float support) {
+            this.videoId = videoId;
+            this.support = support;
+        }
+
+        public String getVideoId() {
+            return videoId;
+        }
+
+        public void setVideoId(String videoId) {
+            this.videoId = videoId;
+        }
+
+        public float getSupport() {
+            return support;
+        }
+
+        public void setSupport(float support) {
+            this.support = support;
+        }
     }
 
 
