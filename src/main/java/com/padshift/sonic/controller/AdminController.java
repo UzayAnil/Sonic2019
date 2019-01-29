@@ -437,22 +437,65 @@ public String saveGenretoDB(){
             System.out.println();
         }
 
+        float totalSequences = seqIDs.size();
+        System.out.println("TOTAL SEQUENCES : " + totalSequences);
 
 
             for(int j=0; j<singE.size(); j++){
                 for(int i=0; i<seqIDs.size();i++){
                     if(sequencedIDs[i].contains(singE.get(j).getVideoId())){
 
-                        singE.get(j).setSupport(singE.get(j).getSupport()+1);
+                        singE.get(j).setSupport((singE.get(j).getSupport()+1));
                     }
                 }
             }
-
+        System.out.println("COUNT");
         for(int i=0; i<singE.size(); i++) {
-            if(singE.get(i).getSupport()>1) {
-                System.out.println(" " + singE.get(i).getVideoId() + " - " + singE.get(i).getSupport());
+            System.out.println( singE.get(i).getVideoId() + ","+singE.get(i).getSupport());
+        }
+        float totalSupport =0;
+        for(int i=0; i<singE.size(); i++) {
+            singE.get(i).setSupport( singE.get(i).getSupport()/totalSequences);
+            totalSupport+=singE.get(i).getSupport();
+        }
+        System.out.println("SUPPORT");
+        ArrayList<sequenceRule> seqrul = new ArrayList<>();
+        for(int i=0; i<singE.size(); i++) {
+           if(singE.get(i).getSupport()>(totalSupport/singE.size())) {
+               System.out.println(" " + singE.get(i).getVideoId() + "," + singE.get(i).getSupport());
+               sequenceRule temp = new sequenceRule(singE.get(i).getVideoId(),singE.get(i).getSupport());
+               seqrul.add(temp);
+           }
+        }
+
+//        //set rule from baseform + next element
+//        for(int i=0; i<seqrul.size(); i++){
+//            for (int j=0; j<1; j++) {
+//
+//                sequenceRule temp = new sequenceRule(seqrul.get(i).getVideoIds()+ ","+singE.get(j).getVideoId(),0);
+//                System.out.println(temp.getVideoIds() + temp.getSupport());
+//                seqrul.add(temp);
+//
+//            }
+//
+//        }
+
+        System.out.println("SINGLE ITEM COUNT : " + singE.size());
+        System.out.println("SEQUENTIAL RULES : ");
+        for(int i=0; i<seqrul.size(); i++){
+            System.out.println(seqrul.get(i).getVideoIds());
+        }
+
+        for(int i=0; i<seqrul.size(); i++){
+            for (int j=0; j<singE.size(); j++) {
+                System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
             }
         }
+
+
+
+
+
 
 
 
@@ -486,6 +529,37 @@ public String saveGenretoDB(){
         }
     }
 
+    public class sequenceRule {
+        String videoIds;
+        float support;
+
+        public sequenceRule(String videoIds, float support) {
+            this.videoIds = videoIds;
+            this.support = support;
+        }
+
+        public float getSupport() {
+            return support;
+        }
+
+        public void setSupport(float support) {
+            this.support = support;
+        }
+
+        public String getVideoIds() {
+            return videoIds;
+        }
+
+        public void setVideoIds(String videoIds) {
+            this.videoIds = videoIds;
+        }
+    }
+
+
+    @RequestMapping("/vplayerpl")
+    public String vplayerPL(){
+        return "VideoPlayerWithPlaylist";
+    }
 
 
 
