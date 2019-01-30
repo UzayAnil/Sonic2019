@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.Duration;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by ruzieljonm on 26/09/2018.
@@ -486,11 +488,28 @@ public String saveGenretoDB(){
             System.out.println(seqrul.get(i).getVideoIds());
         }
 
-        for(int i=0; i<seqrul.size(); i++){
-            for (int j=0; j<singE.size(); j++) {
-                System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
-            }
+
+        Pattern p = Pattern.compile(".*(xpVfcZ0ZcFM).*(LIgA_cl6yOU).*");//. represents single character
+        Matcher m = p.matcher("xpVfcZ0ZcFM, JZbJ6q5Cscc, ZFAjl94wUfY, LIgA_cl6yOU, k85mRPqvMbE, YJVmu6yttiw, ");
+        boolean b = m.matches();
+
+        if(b==true){
+            System.out.println("YAZZ");
+        }else{
+            System.out.println("nawp");
         }
+
+
+//        for(int i=0; i<seqrul.size(); i++){
+//            for (int j=0; j<singE.size(); j++) {
+//                System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
+//            }
+//        }
+
+
+
+
+
 
 
 
