@@ -175,148 +175,148 @@ public class AdminController {
 
 
 
-@RequestMapping("/savegenre")
-public String saveGenretoDB(){
-    ArrayList<String> genres = videoService.findDistinctGenre();
-    for (int i=0; i<genres.size(); i++){
+    @RequestMapping("/savegenre")
+    public String saveGenretoDB(){
+        ArrayList<String> genres = videoService.findDistinctGenre();
+        for (int i=0; i<genres.size(); i++){
 
-        CharSequence pop = "Pop";
-        boolean boolpop = genres.get(i).toString().contains(pop);
+            CharSequence pop = "Pop";
+            boolean boolpop = genres.get(i).toString().contains(pop);
 
-        CharSequence rock = "Rock";
-        boolean boolrock= genres.get(i).toString().contains(rock);
+            CharSequence rock = "Rock";
+            boolean boolrock= genres.get(i).toString().contains(rock);
 
-        CharSequence alt = "Alternative";
-        boolean boolalt = genres.get(i).toString().contains(alt);
+            CharSequence alt = "Alternative";
+            boolean boolalt = genres.get(i).toString().contains(alt);
 
-        CharSequence rnb = "R&B";
-        boolean boolrnb = genres.get(i).toString().contains(rnb);
+            CharSequence rnb = "R&B";
+            boolean boolrnb = genres.get(i).toString().contains(rnb);
 
-        CharSequence country = "Country";
-        boolean boolcountry = genres.get(i).toString().contains(country);
+            CharSequence country = "Country";
+            boolean boolcountry = genres.get(i).toString().contains(country);
 
-        CharSequence house = "House";
-        boolean boolhouse = genres.get(i).toString().contains(house);
+            CharSequence house = "House";
+            boolean boolhouse = genres.get(i).toString().contains(house);
 
-        CharSequence metal = "Metal";
-        boolean boolmetal = genres.get(i).toString().contains(metal);
+            CharSequence metal = "Metal";
+            boolean boolmetal = genres.get(i).toString().contains(metal);
 
-        CharSequence reggae = "Reggae";
-        boolean boolreggae = genres.get(i).toString().contains(reggae);
+            CharSequence reggae = "Reggae";
+            boolean boolreggae = genres.get(i).toString().contains(reggae);
 
-        CharSequence relig = "Religious";
-        boolean boolrelig= genres.get(i).toString().contains(relig);
+            CharSequence relig = "Religious";
+            boolean boolrelig= genres.get(i).toString().contains(relig);
 
-        CharSequence hiphop = "Hip-Hop";
-        boolean boolhiphop= genres.get(i).toString().contains(hiphop);
+            CharSequence hiphop = "Hip-Hop";
+            boolean boolhiphop= genres.get(i).toString().contains(hiphop);
 
 
-        if(boolpop==true){
-            Genre genre = new Genre();
-            genre.setGenreId(1);
-            genre.setGenreName("Pop Music");
-            genre.setGenrePhoto("/images/pop.png");
-            genre.setExplorePhoto("/images/popcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
+            if(boolpop==true){
+                Genre genre = new Genre();
+                genre.setGenreId(1);
+                genre.setGenreName("Pop Music");
+                genre.setGenrePhoto("/images/pop.png");
+                genre.setExplorePhoto("/images/popcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolrock==true || boolmetal==true){
+                Genre genre = new Genre();
+                genre.setGenreId(2);
+                genre.setGenreName("Rock Music");
+                genre.setGenrePhoto("/images/rock.png");
+                genre.setExplorePhoto("/images/rockcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolalt==true){
+                Genre genre = new Genre();
+                genre.setGenreId(3);
+                genre.setGenreName("Alternative Music");
+                genre.setGenrePhoto("/images/alternative.png");
+                genre.setExplorePhoto("/images/alternativecube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolrnb==true){
+                Genre genre = new Genre();
+                genre.setGenreId(4);
+                genre.setGenreName("R&B/Soul Music");
+                genre.setGenrePhoto("/images/rnb.png");
+                genre.setExplorePhoto("/images/rnbcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolcountry==true){
+                Genre genre = new Genre();
+                genre.setGenreId(5);
+                genre.setGenreName("Country Music");
+                genre.setGenrePhoto("/images/country.png");
+                genre.setExplorePhoto("/images/countrycube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolhouse==true){
+                Genre genre = new Genre();
+                genre.setGenreId(6);
+                genre.setGenreName("House Music");
+                genre.setGenrePhoto("/images/house.png");
+                genre.setExplorePhoto("/images/housecube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+
+
+            if(boolreggae==true){
+                Genre genre = new Genre();
+                genre.setGenreId(7);
+                genre.setGenreName("Reggae Music");
+                genre.setGenrePhoto("/images/reggae.png");
+                genre.setExplorePhoto("/images/reggaecube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolrelig==true){
+                Genre genre = new Genre();
+                genre.setGenreId(8);
+                genre.setGenreName("Religious Music");
+                genre.setGenrePhoto("/images/religious.png");
+                genre.setExplorePhoto("/images/religiouscube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolhiphop==true){
+                Genre genre = new Genre();
+                genre.setGenreId(9);
+                genre.setGenreName("Hip-Hop/Rap Music");
+                genre.setGenrePhoto("/images/hiprap.png");
+                genre.setExplorePhoto("/images/hiprapcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
         }
 
-        if(boolrock==true || boolmetal==true){
-            Genre genre = new Genre();
-            genre.setGenreId(2);
-            genre.setGenreName("Rock Music");
-            genre.setGenrePhoto("/images/rock.png");
-            genre.setExplorePhoto("/images/rockcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
 
-        if(boolalt==true){
-            Genre genre = new Genre();
-            genre.setGenreId(3);
-            genre.setGenreName("Alternative Music");
-            genre.setGenrePhoto("/images/alternative.png");
-            genre.setExplorePhoto("/images/alternativecube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolrnb==true){
-            Genre genre = new Genre();
-            genre.setGenreId(4);
-            genre.setGenreName("R&B/Soul Music");
-            genre.setGenrePhoto("/images/rnb.png");
-            genre.setExplorePhoto("/images/rnbcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolcountry==true){
-            Genre genre = new Genre();
-            genre.setGenreId(5);
-            genre.setGenreName("Country Music");
-            genre.setGenrePhoto("/images/country.png");
-            genre.setExplorePhoto("/images/countrycube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolhouse==true){
-            Genre genre = new Genre();
-            genre.setGenreId(6);
-            genre.setGenreName("House Music");
-            genre.setGenrePhoto("/images/house.png");
-            genre.setExplorePhoto("/images/housecube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-
-
-        if(boolreggae==true){
-            Genre genre = new Genre();
-            genre.setGenreId(7);
-            genre.setGenreName("Reggae Music");
-            genre.setGenrePhoto("/images/reggae.png");
-            genre.setExplorePhoto("/images/reggaecube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolrelig==true){
-            Genre genre = new Genre();
-            genre.setGenreId(8);
-            genre.setGenreName("Religious Music");
-            genre.setGenrePhoto("/images/religious.png");
-            genre.setExplorePhoto("/images/religiouscube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolhiphop==true){
-            Genre genre = new Genre();
-            genre.setGenreId(9);
-            genre.setGenreName("Hip-Hop/Rap Music");
-            genre.setGenrePhoto("/images/hiprap.png");
-            genre.setExplorePhoto("/images/hiprapcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
+        return "testing";
     }
-
-
-    return "testing";
-}
 
 
     @RequestMapping("/changeGenre")
@@ -376,9 +376,6 @@ public String saveGenretoDB(){
     @RequestMapping("/generatePlaylist")
     public String generatePlaylist(){
 
-        //eyyyyy i was here
-
-
         ArrayList<String> seqIDs = userService.findDistinctSequenceId();
         System.out.println("unique sequence ids : ");
         for( String seq: seqIDs){
@@ -392,14 +389,11 @@ public String saveGenretoDB(){
             Collections.sort(seqRules[i], UserHistory.TimeComparator);
         }
 
-
         ArrayList<String> elements = new ArrayList<>();
 
         System.out.println("[SequenceID]      [Video IDs]");
-
         ArrayList<String>[] sequencedIDs = (ArrayList<String>[])new ArrayList[seqIDs.size()];
 
-//        ArrayList<String> seuentialRulesStringed = new ArrayList<>();
 
         for(int i=0; i<seqIDs.size();i++){
             System.out.print("[" + seqIDs.get(i).toString() + "]     ");
@@ -411,158 +405,154 @@ public String saveGenretoDB(){
             }
 
             for(int j=0; j<seqRules[i].size(); j++){
-                    System.out.print(seqRules[i].get(j).getVideoid() + ", ");
-                    elements.add(seqRules[i].get(j).getVideoid());
+                System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+                elements.add(seqRules[i].get(j).getVideoid());
             }
             System.out.println();
         }
 
-
         Set<String> uniqueElements = new HashSet<String>(elements);
 
-        ArrayList<singleElement> singE = new ArrayList<>();
+        ArrayList<String> singE = new ArrayList<>();
+        ArrayList<sequenceRule> firstPass = new ArrayList<>();
         for(String eOut: uniqueElements){
-            singleElement temp = new singleElement(eOut,0);
-            singE.add(temp);
+            sequenceRule temp = new sequenceRule(eOut,0);
+            firstPass.add(temp);
+            singE.add(eOut);
         }
+        System.out.println("Elements in the rules : " + singE.size());
 
-        System.out.println(singE.size());
-
-
-//
         for(int i=0; i<sequencedIDs.length; i++){
             sequencedIDs[i] = new ArrayList<>();
         }
 
         for(int i=0; i<seqIDs.size();i++){
             for(int j=0; j<seqRules[i].size(); j++) {
-               sequencedIDs[i].add(seqRules[i].get(j).getVideoid().toString());
+                sequencedIDs[i].add(seqRules[i].get(j).getVideoid().toString() + ", ");
             }
-            System.out.println();
+//            System.out.println();
         }
 
-        float totalSequences = seqIDs.size();
+        for(int i=0; i<sequencedIDs.length; i++){
+            System.out.println(sequencedIDs[i].toString());
+        }
+
+
+        float totalSequences = sequencedIDs.length;
         System.out.println("TOTAL SEQUENCES : " + totalSequences);
 
 
-            for(int j=0; j<singE.size(); j++){
-                for(int i=0; i<seqIDs.size();i++){
-                    if(sequencedIDs[i].contains(singE.get(j).getVideoId())){
-
-                        singE.get(j).setSupport((singE.get(j).getSupport()+1));
-                    }
-                }
-            }
-        System.out.println("COUNT");
-        for(int i=0; i<singE.size(); i++) {
-            System.out.println( singE.get(i).getVideoId() + ","+singE.get(i).getSupport());
-        }
-        float totalSupport =0;
-        for(int i=0; i<singE.size(); i++) {
-            singE.get(i).setSupport( singE.get(i).getSupport()/totalSequences);
-            totalSupport+=singE.get(i).getSupport();
-        }
-        System.out.println("SUPPORT");
-        ArrayList<sequenceRule> seqrul = new ArrayList<>();
-        for(int i=0; i<singE.size(); i++) {
-           if(singE.get(i).getSupport()>(totalSupport/singE.size())) {
-               System.out.println(" " + singE.get(i).getVideoId() + "," + singE.get(i).getSupport());
-               sequenceRule temp = new sequenceRule(singE.get(i).getVideoId(),singE.get(i).getSupport());
-               seqrul.add(temp);
-           }
-        }
-
-//        //set rule from baseform + next element
-//        for(int i=0; i<seqrul.size(); i++){
-//            for (int j=0; j<1; j++) {
-//
-//                sequenceRule temp = new sequenceRule(seqrul.get(i).getVideoIds()+ ","+singE.get(j).getVideoId(),0);
-//                System.out.println(temp.getVideoIds() + temp.getSupport());
-//                seqrul.add(temp);
-//
-//            }
-//
-//        }
-
-        System.out.println("SINGLE ITEM COUNT : " + singE.size());
-        System.out.println("SEQUENTIAL RULES : ");
-        for(int i=0; i<seqrul.size(); i++){
-            System.out.println(seqrul.get(i).getVideoIds());
-        }
-
-
-
-//        Pattern p = Pattern.compile(".*(xpVfcZ0ZcFM).*(LIgA_cl6yOU).*");//. represents single character
-//        Matcher m = p.matcher("xpVfcZ0ZcFM, JZbJ6q5Cscc, ZFAjl94wUfY, LIgA_cl6yOU, k85mRPqvMbE, YJVmu6yttiw, ");
-//        boolean b = m.matches();
-//
-//        if(b==true){
-//            System.out.println("YAZZ");
-//        }else{
-//            System.out.println("nawp");
-//        }
-//
-//        for(int i=0; i< sequencedIDs.length; i++){
-//            String tempPat = ".*"+
-////            System.out.println( sequencedIDs[i].toString());
-//
-//        }
-
-        ArrayList<sequenceRule> seqrul2 = new ArrayList<>();
-        for(int i=0; i<seqrul.size(); i++){
-            for (int j=0; j<singE.size(); j++) {
-                String tempPat = ".*" + seqrul.get(i).getVideoIds()+ ".*" + singE.get(j).getVideoId() +".*";
+        for(int i=0; i<sequencedIDs.length;i++) {
+            System.out.println("ey = " + sequencedIDs[i].toString());
+            for(int j=0; j<firstPass.size(); j++){
+                String tempPat = ".*" + firstPass.get(j).getVideoIds() + ".*";
                 Pattern p = Pattern.compile(tempPat);
-                int cnt=0;
-                for(int k=0; k< sequencedIDs.length; k++) {
-                    boolean b = false;
-                    Matcher m = p.matcher(sequencedIDs[k].toString());
-                    b = m.matches();
+                boolean b = false;
 
-                    if(b==true){
-                        cnt++;
-                        sequenceRule temp = new sequenceRule(seqrul.get(i).getVideoIds() +", "+singE.get(j).getVideoId(),cnt);
-                        seqrul.add(temp);
-//                        System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
-                    }
+                Matcher m = p.matcher(sequencedIDs[i].toString());
+                b = m.matches();
+                if(b==true){
+                    firstPass.get(j).setSupport(firstPass.get(j).getSupport()+1);
                 }
             }
         }
 
-
-        System.out.println("DAPAT NANAY DUHA KA SEQ but 0 support");
-
-        int seqruleThresh=0;
-        for(int i=0; i<seqrul.size(); i++){
-            seqruleThresh+=seqrul.get(i).getSupport();
+        float supportSum1 =0;
+        for(int i=0; i<firstPass.size(); i++){
+            firstPass.get(i).setSupport(firstPass.get(i).getSupport()/totalSequences);
+            supportSum1+=firstPass.get(i).getSupport();
         }
-        seqruleThresh=seqruleThresh/seqrul.size();
-        System.out.println("SEQTHRESSHHH:" + seqruleThresh );
-        System.out.println("SEQRUL SIZE:" + seqrul.size());
+        float firstPassThreshold = supportSum1/firstPass.size();
+        System.out.println("firstPassThreshold : " + firstPassThreshold);
 
-        // I BY LEVEL PASS NALANG YAWAAAAAAAAAAA
+        ArrayList<sequenceRule> secondPass = new ArrayList<>();
+        System.out.println("Qualified the Threshold : ");
+        for(int i=0; i<firstPass.size(); i++){
+            if(firstPass.get(i).getSupport()>firstPassThreshold) {
+                System.out.println(firstPass.get(i).getVideoIds() + " -- " + firstPass.get(i).getSupport());
+                sequenceRule temp = new sequenceRule(firstPass.get(i).getVideoIds(), 0);
+                secondPass.add(temp);
 
-        for (int i=0; i<seqrul.size(); i++){
-            seqrul.get(i).setSupport(seqrul.get(i).getSupport()/seqrul.size());
-        }
-
-        for (int i=0; i<seqrul.size(); i++){
-//            if(seqrul.get(i).getSupport()>seqruleThresh)
-            System.out.println(seqrul.get(i).getVideoIds() + "," + seqrul.get(i).getSupport());
+            }
         }
 
+        System.out.println("Second Pass Size" + secondPass.size());
+        System.out.println();
 
 
 
+        ArrayList<sequenceRule> sectemp = new ArrayList<>();
+        for(int j=0; j<singE.size(); j++){
+            for(int k=0; k<secondPass.size(); k++) {
+                sequenceRule temp = new sequenceRule(singE.get(j).toString() + ", " + secondPass.get(k).getVideoIds(),0);
+                sectemp.add(temp);
+            }
+        }
 
+        for(int i=0; i<sectemp.size(); i++) {
+            for (int j = 0; j < sequencedIDs.length; j++) {
+                String newStr = sectemp.get(i).getVideoIds().replaceAll(",", ".*");
+                String tempPat = ".*" + newStr + ".*";
+                Pattern p = Pattern.compile(tempPat);
+                boolean b = false;
 
+                Matcher m = p.matcher(sequencedIDs[j].toString());
+                b = m.matches();
+                if (b == true) {
+                    sectemp.get(i).setSupport(sectemp.get(i).getSupport()+1);
+                }
 
+            }
+        }
+//        int sectmp=0;
+//        for(sequenceRule se : sectemp){
+//            if(se.getSupport()>0) {
+//                sectmp++;
+//            }
+//        }
 
+        for(int i=0; i<sectemp.size(); i++){
+            sectemp.get(i).setSupport(sectemp.get(i).getSupport()/totalSequences);
+            if(sectemp.get(i).getSupport()>0) {
+                secondPass.add(sectemp.get(i));
+            }
+        }
+//
+//        for(int i=0; i<secondPass.size(); i++){
+//            if(secondPass.get(i).getSupport()==0){
+//                secondPass.remove(i);
+//            }
+//        }
+        int seclevelcnt=0;
+        float supportSum2=0;
+        for(sequenceRule seq: secondPass) {
+            if (seq.getSupport() > 0) {
+                seclevelcnt++;
+                System.out.println(seq.getVideoIds() + "," + seq.getSupport());
+                supportSum2+=seq.getSupport();
+            }
+        }
+        System.out.println("seclevelcnt" + seclevelcnt);
+        float secPassThreshold = supportSum2/seclevelcnt;
 
+        System.out.println("secPassThreshold : " + secPassThreshold );
+        System.out.println("Qualified the 2nd Threshold : ");
 
-
-
-
+        ArrayList<sequenceRule> thirdPass = new ArrayList<>();
+        ArrayList<sequenceRule> thirdPassTemp = new ArrayList<>();
+        for(sequenceRule seq: secondPass) {
+            if(seq.getSupport()>secPassThreshold){
+                System.out.println(seq.getVideoIds() +"," + seq.getSupport());
+                for(int i=0; i<singE.size(); i++) {
+                    sequenceRule tmp = new sequenceRule(seq.getVideoIds() +", "+ singE.get(i).toString(),0);
+                    thirdPassTemp.add(tmp);
+                }
+            }
+        }
+        System.out.println("THIRD PASSSSS:");
+        for(sequenceRule s: thirdPassTemp){
+            System.out.println(s.getVideoIds() + " - " + s.getSupport());
+        }
 
 
 
