@@ -175,148 +175,148 @@ public class AdminController {
 
 
 
-@RequestMapping("/savegenre")
-public String saveGenretoDB(){
-    ArrayList<String> genres = videoService.findDistinctGenre();
-    for (int i=0; i<genres.size(); i++){
+    @RequestMapping("/savegenre")
+    public String saveGenretoDB(){
+        ArrayList<String> genres = videoService.findDistinctGenre();
+        for (int i=0; i<genres.size(); i++){
 
-        CharSequence pop = "Pop";
-        boolean boolpop = genres.get(i).toString().contains(pop);
+            CharSequence pop = "Pop";
+            boolean boolpop = genres.get(i).toString().contains(pop);
 
-        CharSequence rock = "Rock";
-        boolean boolrock= genres.get(i).toString().contains(rock);
+            CharSequence rock = "Rock";
+            boolean boolrock= genres.get(i).toString().contains(rock);
 
-        CharSequence alt = "Alternative";
-        boolean boolalt = genres.get(i).toString().contains(alt);
+            CharSequence alt = "Alternative";
+            boolean boolalt = genres.get(i).toString().contains(alt);
 
-        CharSequence rnb = "R&B";
-        boolean boolrnb = genres.get(i).toString().contains(rnb);
+            CharSequence rnb = "R&B";
+            boolean boolrnb = genres.get(i).toString().contains(rnb);
 
-        CharSequence country = "Country";
-        boolean boolcountry = genres.get(i).toString().contains(country);
+            CharSequence country = "Country";
+            boolean boolcountry = genres.get(i).toString().contains(country);
 
-        CharSequence house = "House";
-        boolean boolhouse = genres.get(i).toString().contains(house);
+            CharSequence house = "House";
+            boolean boolhouse = genres.get(i).toString().contains(house);
 
-        CharSequence metal = "Metal";
-        boolean boolmetal = genres.get(i).toString().contains(metal);
+            CharSequence metal = "Metal";
+            boolean boolmetal = genres.get(i).toString().contains(metal);
 
-        CharSequence reggae = "Reggae";
-        boolean boolreggae = genres.get(i).toString().contains(reggae);
+            CharSequence reggae = "Reggae";
+            boolean boolreggae = genres.get(i).toString().contains(reggae);
 
-        CharSequence relig = "Religious";
-        boolean boolrelig= genres.get(i).toString().contains(relig);
+            CharSequence relig = "Religious";
+            boolean boolrelig= genres.get(i).toString().contains(relig);
 
-        CharSequence hiphop = "Hip-Hop";
-        boolean boolhiphop= genres.get(i).toString().contains(hiphop);
+            CharSequence hiphop = "Hip-Hop";
+            boolean boolhiphop= genres.get(i).toString().contains(hiphop);
 
 
-        if(boolpop==true){
-            Genre genre = new Genre();
-            genre.setGenreId(1);
-            genre.setGenreName("Pop Music");
-            genre.setGenrePhoto("/images/pop.png");
-            genre.setExplorePhoto("/images/popcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
+            if(boolpop==true){
+                Genre genre = new Genre();
+                genre.setGenreId(1);
+                genre.setGenreName("Pop Music");
+                genre.setGenrePhoto("/images/pop.png");
+                genre.setExplorePhoto("/images/popcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolrock==true || boolmetal==true){
+                Genre genre = new Genre();
+                genre.setGenreId(2);
+                genre.setGenreName("Rock Music");
+                genre.setGenrePhoto("/images/rock.png");
+                genre.setExplorePhoto("/images/rockcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolalt==true){
+                Genre genre = new Genre();
+                genre.setGenreId(3);
+                genre.setGenreName("Alternative Music");
+                genre.setGenrePhoto("/images/alternative.png");
+                genre.setExplorePhoto("/images/alternativecube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolrnb==true){
+                Genre genre = new Genre();
+                genre.setGenreId(4);
+                genre.setGenreName("R&B/Soul Music");
+                genre.setGenrePhoto("/images/rnb.png");
+                genre.setExplorePhoto("/images/rnbcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolcountry==true){
+                Genre genre = new Genre();
+                genre.setGenreId(5);
+                genre.setGenreName("Country Music");
+                genre.setGenrePhoto("/images/country.png");
+                genre.setExplorePhoto("/images/countrycube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolhouse==true){
+                Genre genre = new Genre();
+                genre.setGenreId(6);
+                genre.setGenreName("House Music");
+                genre.setGenrePhoto("/images/house.png");
+                genre.setExplorePhoto("/images/housecube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+
+
+            if(boolreggae==true){
+                Genre genre = new Genre();
+                genre.setGenreId(7);
+                genre.setGenreName("Reggae Music");
+                genre.setGenrePhoto("/images/reggae.png");
+                genre.setExplorePhoto("/images/reggaecube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolrelig==true){
+                Genre genre = new Genre();
+                genre.setGenreId(8);
+                genre.setGenreName("Religious Music");
+                genre.setGenrePhoto("/images/religious.png");
+                genre.setExplorePhoto("/images/religiouscube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
+            if(boolhiphop==true){
+                Genre genre = new Genre();
+                genre.setGenreId(9);
+                genre.setGenreName("Hip-Hop/Rap Music");
+                genre.setGenrePhoto("/images/hiprap.png");
+                genre.setExplorePhoto("/images/hiprapcube.png");
+                genre.setTopMusicList("");
+                videoService.saveGenre(genre);
+                genre=null;
+            }
+
         }
 
-        if(boolrock==true || boolmetal==true){
-            Genre genre = new Genre();
-            genre.setGenreId(2);
-            genre.setGenreName("Rock Music");
-            genre.setGenrePhoto("/images/rock.png");
-            genre.setExplorePhoto("/images/rockcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
 
-        if(boolalt==true){
-            Genre genre = new Genre();
-            genre.setGenreId(3);
-            genre.setGenreName("Alternative Music");
-            genre.setGenrePhoto("/images/alternative.png");
-            genre.setExplorePhoto("/images/alternativecube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolrnb==true){
-            Genre genre = new Genre();
-            genre.setGenreId(4);
-            genre.setGenreName("R&B/Soul Music");
-            genre.setGenrePhoto("/images/rnb.png");
-            genre.setExplorePhoto("/images/rnbcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolcountry==true){
-            Genre genre = new Genre();
-            genre.setGenreId(5);
-            genre.setGenreName("Country Music");
-            genre.setGenrePhoto("/images/country.png");
-            genre.setExplorePhoto("/images/countrycube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolhouse==true){
-            Genre genre = new Genre();
-            genre.setGenreId(6);
-            genre.setGenreName("House Music");
-            genre.setGenrePhoto("/images/house.png");
-            genre.setExplorePhoto("/images/housecube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-
-
-        if(boolreggae==true){
-            Genre genre = new Genre();
-            genre.setGenreId(7);
-            genre.setGenreName("Reggae Music");
-            genre.setGenrePhoto("/images/reggae.png");
-            genre.setExplorePhoto("/images/reggaecube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolrelig==true){
-            Genre genre = new Genre();
-            genre.setGenreId(8);
-            genre.setGenreName("Religious Music");
-            genre.setGenrePhoto("/images/religious.png");
-            genre.setExplorePhoto("/images/religiouscube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
-        if(boolhiphop==true){
-            Genre genre = new Genre();
-            genre.setGenreId(9);
-            genre.setGenreName("Hip-Hop/Rap Music");
-            genre.setGenrePhoto("/images/hiprap.png");
-            genre.setExplorePhoto("/images/hiprapcube.png");
-            genre.setTopMusicList("");
-            videoService.saveGenre(genre);
-            genre=null;
-        }
-
+        return "testing";
     }
-
-
-    return "testing";
-}
 
 
     @RequestMapping("/changeGenre")
@@ -411,8 +411,8 @@ public String saveGenretoDB(){
             }
 
             for(int j=0; j<seqRules[i].size(); j++){
-                    System.out.print(seqRules[i].get(j).getVideoid() + ", ");
-                    elements.add(seqRules[i].get(j).getVideoid());
+                System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+                elements.add(seqRules[i].get(j).getVideoid());
             }
             System.out.println();
         }
@@ -436,7 +436,7 @@ public String saveGenretoDB(){
 
         for(int i=0; i<seqIDs.size();i++){
             for(int j=0; j<seqRules[i].size(); j++) {
-               sequencedIDs[i].add(seqRules[i].get(j).getVideoid().toString());
+                sequencedIDs[i].add(seqRules[i].get(j).getVideoid().toString());
             }
             System.out.println();
         }
@@ -445,14 +445,14 @@ public String saveGenretoDB(){
         System.out.println("TOTAL SEQUENCES : " + totalSequences);
 
 
-            for(int j=0; j<singE.size(); j++){
-                for(int i=0; i<seqIDs.size();i++){
-                    if(sequencedIDs[i].contains(singE.get(j).getVideoId())){
+        for(int j=0; j<singE.size(); j++){
+            for(int i=0; i<seqIDs.size();i++){
+                if(sequencedIDs[i].contains(singE.get(j).getVideoId())){
 
-                        singE.get(j).setSupport((singE.get(j).getSupport()+1));
-                    }
+                    singE.get(j).setSupport((singE.get(j).getSupport()+1));
                 }
             }
+        }
         System.out.println("COUNT");
         for(int i=0; i<singE.size(); i++) {
             System.out.println( singE.get(i).getVideoId() + ","+singE.get(i).getSupport());
@@ -465,11 +465,11 @@ public String saveGenretoDB(){
         System.out.println("SUPPORT");
         ArrayList<sequenceRule> seqrul = new ArrayList<>();
         for(int i=0; i<singE.size(); i++) {
-           if(singE.get(i).getSupport()>(totalSupport/singE.size())) {
-               System.out.println(" " + singE.get(i).getVideoId() + "," + singE.get(i).getSupport());
-               sequenceRule temp = new sequenceRule(singE.get(i).getVideoId(),singE.get(i).getSupport());
-               seqrul.add(temp);
-           }
+            if(singE.get(i).getSupport()>(totalSupport/singE.size())) {
+                System.out.println(" " + singE.get(i).getVideoId() + "," + singE.get(i).getSupport());
+                sequenceRule temp = new sequenceRule(singE.get(i).getVideoId(),singE.get(i).getSupport());
+                seqrul.add(temp);
+            }
         }
 
 //        //set rule from baseform + next element
@@ -508,11 +508,9 @@ public String saveGenretoDB(){
 //
 //        }
 
-
+        ArrayList<sequenceRule> seqrul2 = new ArrayList<>();
         for(int i=0; i<seqrul.size(); i++){
             for (int j=0; j<singE.size(); j++) {
-
-
                 String tempPat = ".*" + seqrul.get(i).getVideoIds()+ ".*" + singE.get(j).getVideoId() +".*";
                 Pattern p = Pattern.compile(tempPat);
                 int cnt=0;
@@ -527,11 +525,8 @@ public String saveGenretoDB(){
                         seqrul.add(temp);
 //                        System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
                     }
-
                 }
-
             }
-
         }
 
 
