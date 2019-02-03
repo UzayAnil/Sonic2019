@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 /**
  * Created by ruzieljonm on 26/09/2018.
  */
+@SuppressWarnings("Duplicates")
 @Controller
 public class AdminController {
 
@@ -457,6 +458,8 @@ public class AdminController {
             }
         }
 
+
+
         float supportSum1 =0;
         for(int i=0; i<firstPass.size(); i++){
             firstPass.get(i).setSupport(firstPass.get(i).getSupport()/totalSequences);
@@ -489,27 +492,22 @@ public class AdminController {
             }
         }
 
-        for(int i=0; i<sectemp.size(); i++) {
-            for (int j = 0; j < sequencedIDs.length; j++) {
-                String newStr = sectemp.get(i).getVideoIds().replaceAll(",", ".*");
-                String tempPat = ".*" + newStr + ".*";
-                Pattern p = Pattern.compile(tempPat);
-                boolean b = false;
-
-                Matcher m = p.matcher(sequencedIDs[j].toString());
-                b = m.matches();
-                if (b == true) {
-                    sectemp.get(i).setSupport(sectemp.get(i).getSupport()+1);
-                }
-
-            }
-        }
-//        int sectmp=0;
-//        for(sequenceRule se : sectemp){
-//            if(se.getSupport()>0) {
-//                sectmp++;
+//        for(int i=0; i<sectemp.size(); i++) {
+//            for (int j = 0; j < sequencedIDs.length; j++) {
+//                String newStr = sectemp.get(i).getVideoIds().replaceAll(",", ".*");
+//                String tempPat = ".*" + newStr + ".*";
+//                Pattern p = Pattern.compile(tempPat);
+//                boolean b = false;
+//
+//                Matcher m = p.matcher(sequencedIDs[j].toString());
+//                b = m.matches();
+//                if (b == true) {
+//                    sectemp.get(i).setSupport(sectemp.get(i).getSupport()+1);
+//                }
+//
 //            }
 //        }
+        sectemp = checkIfExist(sectemp,sequencedIDs);
 
         for(int i=0; i<sectemp.size(); i++){
             sectemp.get(i).setSupport(sectemp.get(i).getSupport()/totalSequences);
@@ -517,12 +515,7 @@ public class AdminController {
                 secondPass.add(sectemp.get(i));
             }
         }
-//
-//        for(int i=0; i<secondPass.size(); i++){
-//            if(secondPass.get(i).getSupport()==0){
-//                secondPass.remove(i);
-//            }
-//        }
+
         int seclevelcnt=0;
         float supportSum2=0;
         for(sequenceRule seq: secondPass) {
@@ -550,21 +543,21 @@ public class AdminController {
             }
         }
         System.out.println("THIRD PASSSSS:");
-        for(sequenceRule s: thirdPassTemp){
-            for (int i = 0; i < sequencedIDs.length; i++) {
-                String newStr = s.getVideoIds().replaceAll(",", ".*");
-                String tempPat = ".*" + newStr + ".*";
-                Pattern p = Pattern.compile(tempPat);
-                boolean b = false;
-
-                Matcher m = p.matcher(sequencedIDs[i].toString());
-                b = m.matches();
-                if (b == true) {
-                    s.setSupport(s.getSupport()+1);
-                }
-            }
-//            System.out.println(s.getVideoIds() + " - " + s.getSupport());
-        }
+//        for(sequenceRule s: thirdPassTemp){
+//            for (int i = 0; i < sequencedIDs.length; i++) {
+//                String newStr = s.getVideoIds().replaceAll(",", ".*");
+//                String tempPat = ".*" + newStr + ".*";
+//                Pattern p = Pattern.compile(tempPat);
+//                boolean b = false;
+//
+//                Matcher m = p.matcher(sequencedIDs[i].toString());
+//                b = m.matches();
+//                if (b == true) {
+//                    s.setSupport(s.getSupport()+1);
+//                }
+//            }
+//        }
+        thirdPassTemp = checkIfExist(thirdPassTemp,sequencedIDs);
         float thirdcnt=0;
         float thirdSupportSum=0;
         for(sequenceRule s: thirdPassTemp) {
@@ -580,13 +573,85 @@ public class AdminController {
         System.out.println(thirdSupportSum + "[]" + thirdcnt);
         System.out.println("thirdThreshold : " + thirdThreshold);
         System.out.println("thirdpass temp eval");
+
+        ArrayList<sequenceRule> fourthPassTemp = new ArrayList<>();
+        ArrayList<sequenceRule> fourthPass = new ArrayList<>();
+
         for(sequenceRule s: thirdPassTemp) {
             if (s.getSupport() > thirdThreshold) {
                 System.out.println(s.getVideoIds() + "," + s.getSupport());
+                for(int i=0; i<singE.size(); i++) {
+                    sequenceRule tempo = new sequenceRule(s.getVideoIds() +", "+ singE.get(i).toString(),0);
+                    fourthPassTemp.add(tempo);
+                }
+            }
+        }
+        System.out.println("Fourth Pass Level");
+        fourthPassTemp = checkIfExist(fourthPassTemp,sequencedIDs);
+
+
+        int fourthcnt =0;
+        float fourthSupportSum=0;
+        for(sequenceRule s: fourthPassTemp) {
+            if(s.getSupport()>0) {
+//                System.out.println(s.getVideoIds() + "," + s.getSupport());
+                fourthcnt++;
+                s.setSupport(s.getSupport() / totalSequences);
+                fourthSupportSum += s.getSupport();
+
+            }
+
+        }
+
+        float fourthThreshold = fourthSupportSum/fourthcnt;
+        System.out.println(fourthSupportSum + "[]" + fourthcnt);
+        System.out.println("fourthThreshold : " + fourthThreshold);
+        System.out.println("fou temp eval");
+
+
+        for(sequenceRule s: fourthPassTemp) {
+            if(s.getSupport()>fourthThreshold){
+                System.out.println(s.getVideoIds() + "," + s.getSupport());
+                fourthPass.add(s);
             }
         }
 
+
         return "testing";
+    }
+
+    public ArrayList<sequenceRule> checkIfExist(ArrayList<sequenceRule> nthSeq,  ArrayList<String>[] sequencedIDs ) {
+        for (sequenceRule s : nthSeq) {
+            for (int i = 0; i < sequencedIDs.length; i++) {
+                String newStr = s.getVideoIds().replaceAll(",", ".*");
+                String tempPat = ".*" + newStr + ".*";
+                Pattern p = Pattern.compile(tempPat);
+                boolean b = false;
+
+                Matcher m = p.matcher(sequencedIDs[i].toString());
+                b = m.matches();
+                if (b == true) {
+                    s.setSupport(s.getSupport() + 1);
+                }
+            }
+        }
+
+        int fourthcnt =0;
+        float fourthSupportSum=0;
+        for(sequenceRule s: nthSeq) {
+            if(s.getSupport()>0) {
+//                System.out.println(s.getVideoIds() + "," + s.getSupport());
+                fourthcnt++;
+                s.setSupport(s.getSupport() / sequencedIDs.length);
+                fourthSupportSum += s.getSupport();
+
+            }
+
+//            s.setSupport(s.getSupport()/fourthPassTemp.size());
+//            System.out.println(s.getVideoIds() + "," + s.getSupport());
+        }
+
+        return nthSeq;
     }
 
     public class singleElement{
