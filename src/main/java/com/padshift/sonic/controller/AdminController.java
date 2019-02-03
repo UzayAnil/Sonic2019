@@ -551,10 +551,40 @@ public class AdminController {
         }
         System.out.println("THIRD PASSSSS:");
         for(sequenceRule s: thirdPassTemp){
-            System.out.println(s.getVideoIds() + " - " + s.getSupport());
+            for (int i = 0; i < sequencedIDs.length; i++) {
+                String newStr = s.getVideoIds().replaceAll(",", ".*");
+                String tempPat = ".*" + newStr + ".*";
+                Pattern p = Pattern.compile(tempPat);
+                boolean b = false;
+
+                Matcher m = p.matcher(sequencedIDs[i].toString());
+                b = m.matches();
+                if (b == true) {
+                    s.setSupport(s.getSupport()+1);
+                }
+            }
+//            System.out.println(s.getVideoIds() + " - " + s.getSupport());
+        }
+        float thirdcnt=0;
+        float thirdSupportSum=0;
+        for(sequenceRule s: thirdPassTemp) {
+            if(s.getSupport()>0){
+                thirdcnt++;
+                s.setSupport(s.getSupport()/totalSequences);
+                thirdSupportSum+=s.getSupport();
+
+            }
         }
 
-
+        float thirdThreshold = thirdSupportSum/thirdcnt;
+        System.out.println(thirdSupportSum + "[]" + thirdcnt);
+        System.out.println("thirdThreshold : " + thirdThreshold);
+        System.out.println("thirdpass temp eval");
+        for(sequenceRule s: thirdPassTemp) {
+            if (s.getSupport() > thirdThreshold) {
+                System.out.println(s.getVideoIds() + "," + s.getSupport());
+            }
+        }
 
         return "testing";
     }
