@@ -399,6 +399,8 @@ public String saveGenretoDB(){
 
         ArrayList<String>[] sequencedIDs = (ArrayList<String>[])new ArrayList[seqIDs.size()];
 
+//        ArrayList<String> seuentialRulesStringed = new ArrayList<>();
+
         for(int i=0; i<seqIDs.size();i++){
             System.out.print("[" + seqIDs.get(i).toString() + "]     ");
 
@@ -489,22 +491,72 @@ public String saveGenretoDB(){
         }
 
 
-        Pattern p = Pattern.compile(".*(xpVfcZ0ZcFM).*(LIgA_cl6yOU).*");//. represents single character
-        Matcher m = p.matcher("xpVfcZ0ZcFM, JZbJ6q5Cscc, ZFAjl94wUfY, LIgA_cl6yOU, k85mRPqvMbE, YJVmu6yttiw, ");
-        boolean b = m.matches();
 
-        if(b==true){
-            System.out.println("YAZZ");
-        }else{
-            System.out.println("nawp");
+//        Pattern p = Pattern.compile(".*(xpVfcZ0ZcFM).*(LIgA_cl6yOU).*");//. represents single character
+//        Matcher m = p.matcher("xpVfcZ0ZcFM, JZbJ6q5Cscc, ZFAjl94wUfY, LIgA_cl6yOU, k85mRPqvMbE, YJVmu6yttiw, ");
+//        boolean b = m.matches();
+//
+//        if(b==true){
+//            System.out.println("YAZZ");
+//        }else{
+//            System.out.println("nawp");
+//        }
+//
+//        for(int i=0; i< sequencedIDs.length; i++){
+//            String tempPat = ".*"+
+////            System.out.println( sequencedIDs[i].toString());
+//
+//        }
+
+
+        for(int i=0; i<seqrul.size(); i++){
+            for (int j=0; j<singE.size(); j++) {
+
+
+                String tempPat = ".*" + seqrul.get(i).getVideoIds()+ ".*" + singE.get(j).getVideoId() +".*";
+                Pattern p = Pattern.compile(tempPat);
+                int cnt=0;
+                for(int k=0; k< sequencedIDs.length; k++) {
+                    boolean b = false;
+                    Matcher m = p.matcher(sequencedIDs[k].toString());
+                    b = m.matches();
+
+                    if(b==true){
+                        cnt++;
+                        sequenceRule temp = new sequenceRule(seqrul.get(i).getVideoIds() +", "+singE.get(j).getVideoId(),cnt);
+                        seqrul.add(temp);
+//                        System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
+                    }
+
+                }
+
+            }
+
         }
 
 
-//        for(int i=0; i<seqrul.size(); i++){
-//            for (int j=0; j<singE.size(); j++) {
-//                System.out.println(seqrul.get(i).getVideoIds() + singE.get(j).getVideoId());
-//            }
-//        }
+        System.out.println("DAPAT NANAY DUHA KA SEQ but 0 support");
+
+        int seqruleThresh=0;
+        for(int i=0; i<seqrul.size(); i++){
+            seqruleThresh+=seqrul.get(i).getSupport();
+        }
+        seqruleThresh=seqruleThresh/seqrul.size();
+        System.out.println("SEQTHRESSHHH:" + seqruleThresh );
+        System.out.println("SEQRUL SIZE:" + seqrul.size());
+
+        // I BY LEVEL PASS NALANG YAWAAAAAAAAAAA
+
+        for (int i=0; i<seqrul.size(); i++){
+            seqrul.get(i).setSupport(seqrul.get(i).getSupport()/seqrul.size());
+        }
+
+        for (int i=0; i<seqrul.size(); i++){
+//            if(seqrul.get(i).getSupport()>seqruleThresh)
+            System.out.println(seqrul.get(i).getVideoIds() + "," + seqrul.get(i).getSupport());
+        }
+
+
 
 
 
