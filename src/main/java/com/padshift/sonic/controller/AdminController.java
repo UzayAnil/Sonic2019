@@ -459,7 +459,6 @@ public class AdminController {
         }
 
 
-
         float supportSum1 =0;
         for(int i=0; i<firstPass.size(); i++){
             firstPass.get(i).setSupport(firstPass.get(i).getSupport()/totalSequences);
@@ -475,13 +474,11 @@ public class AdminController {
                 System.out.println(firstPass.get(i).getVideoIds() + " -- " + firstPass.get(i).getSupport());
                 sequenceRule temp = new sequenceRule(firstPass.get(i).getVideoIds(), 0);
                 secondPass.add(temp);
-
             }
         }
 
         System.out.println("Second Pass Size" + secondPass.size());
         System.out.println();
-
 
 
         ArrayList<sequenceRule> sectemp = new ArrayList<>();
@@ -492,21 +489,6 @@ public class AdminController {
             }
         }
 
-//        for(int i=0; i<sectemp.size(); i++) {
-//            for (int j = 0; j < sequencedIDs.length; j++) {
-//                String newStr = sectemp.get(i).getVideoIds().replaceAll(",", ".*");
-//                String tempPat = ".*" + newStr + ".*";
-//                Pattern p = Pattern.compile(tempPat);
-//                boolean b = false;
-//
-//                Matcher m = p.matcher(sequencedIDs[j].toString());
-//                b = m.matches();
-//                if (b == true) {
-//                    sectemp.get(i).setSupport(sectemp.get(i).getSupport()+1);
-//                }
-//
-//            }
-//        }
         sectemp = checkIfExist(sectemp,sequencedIDs);
 
         for(int i=0; i<sectemp.size(); i++){
@@ -516,17 +498,8 @@ public class AdminController {
             }
         }
 
-        int seclevelcnt=0;
-        float supportSum2=0;
-        for(sequenceRule seq: secondPass) {
-            if (seq.getSupport() > 0) {
-                seclevelcnt++;
-                System.out.println(seq.getVideoIds() + "," + seq.getSupport());
-                supportSum2+=seq.getSupport();
-            }
-        }
-        System.out.println("seclevelcnt" + seclevelcnt);
-        float secPassThreshold = supportSum2/seclevelcnt;
+
+        float secPassThreshold = computeThreshold(secondPass);
 
         System.out.println("secPassThreshold : " + secPassThreshold );
         System.out.println("Qualified the 2nd Threshold : ");
@@ -543,34 +516,11 @@ public class AdminController {
             }
         }
         System.out.println("THIRD PASSSSS:");
-//        for(sequenceRule s: thirdPassTemp){
-//            for (int i = 0; i < sequencedIDs.length; i++) {
-//                String newStr = s.getVideoIds().replaceAll(",", ".*");
-//                String tempPat = ".*" + newStr + ".*";
-//                Pattern p = Pattern.compile(tempPat);
-//                boolean b = false;
-//
-//                Matcher m = p.matcher(sequencedIDs[i].toString());
-//                b = m.matches();
-//                if (b == true) {
-//                    s.setSupport(s.getSupport()+1);
-//                }
-//            }
-//        }
+
         thirdPassTemp = checkIfExist(thirdPassTemp,sequencedIDs);
-        float thirdcnt=0;
-        float thirdSupportSum=0;
-        for(sequenceRule s: thirdPassTemp) {
-            if(s.getSupport()>0){
-                thirdcnt++;
-                s.setSupport(s.getSupport()/totalSequences);
-                thirdSupportSum+=s.getSupport();
 
-            }
-        }
+        float thirdThreshold = computeThreshold(thirdPassTemp);
 
-        float thirdThreshold = thirdSupportSum/thirdcnt;
-        System.out.println(thirdSupportSum + "[]" + thirdcnt);
         System.out.println("thirdThreshold : " + thirdThreshold);
         System.out.println("thirdpass temp eval");
 
@@ -586,25 +536,15 @@ public class AdminController {
                 }
             }
         }
+
+
         System.out.println("Fourth Pass Level");
         fourthPassTemp = checkIfExist(fourthPassTemp,sequencedIDs);
 
 
-        int fourthcnt =0;
-        float fourthSupportSum=0;
-        for(sequenceRule s: fourthPassTemp) {
-            if(s.getSupport()>0) {
-//                System.out.println(s.getVideoIds() + "," + s.getSupport());
-                fourthcnt++;
-                s.setSupport(s.getSupport() / totalSequences);
-                fourthSupportSum += s.getSupport();
 
-            }
 
-        }
-
-        float fourthThreshold = fourthSupportSum/fourthcnt;
-        System.out.println(fourthSupportSum + "[]" + fourthcnt);
+        float fourthThreshold = computeThreshold(fourthPassTemp);
         System.out.println("fourthThreshold : " + fourthThreshold);
         System.out.println("fou temp eval");
 
@@ -615,9 +555,89 @@ public class AdminController {
                 fourthPass.add(s);
             }
         }
+        ArrayList<sequenceRule> fifthPassTemp = new ArrayList<>();
+        for(sequenceRule s: fourthPass){
+//            System.out.println(s.getVideoIds() + "," + s.getSupport());
+            for(int i=0; i<singE.size(); i++) {
+                sequenceRule tempo = new sequenceRule(s.getVideoIds() +", "+ singE.get(i).toString(),0);
+                fifthPassTemp.add(tempo);
+            }
+
+        }
+
+//        displaySequenceRules(fifthPassTemp);
+        fifthPassTemp=checkIfExist(fifthPassTemp,sequencedIDs);
+        System.out.println("-------------------------------------");
+//        displaySequenceRules(fifthPassTemp);
+        float fifthThresh =computeThreshold(fifthPassTemp);
+
+        ArrayList<sequenceRule> fifthPass = new ArrayList<>();
+        System.out.println("fifthThresh " + fifthThresh);
+        System.out.println("qualified the 5th Threshold: ");
+        for(sequenceRule s: fifthPassTemp){
+            if(s.getSupport()>=fifthThresh){
+                fifthPass.add(s);
+            }
+        }
+
+
+        displaySequenceRules(fifthPass);
+        ArrayList<sequenceRule> sixthPassTemp = new ArrayList<>();
+        for(sequenceRule s: fifthPass){
+            for(int i=0; i<singE.size(); i++) {
+                sequenceRule tempo = new sequenceRule(s.getVideoIds() +", "+ singE.get(i).toString(),0);
+                sixthPassTemp.add(tempo);
+            }
+
+        }
+
+        sixthPassTemp=checkIfExist(sixthPassTemp,sequencedIDs);
+        float sixthThresh =computeThreshold(sixthPassTemp);
+
+        ArrayList<sequenceRule> sixthPass = new ArrayList<>();
+        System.out.println("sixthThresh " + sixthThresh);
+        System.out.println("qualified the 6th Threshold: ");
+        for(sequenceRule s: sixthPassTemp){
+            if(s.getSupport()>=sixthThresh){
+                sixthPass.add(s);
+            }
+        }
+        displaySequenceRules(sixthPass);
+
 
 
         return "testing";
+    }
+
+    public float computeThreshold(ArrayList<sequenceRule> seq){
+        float threshold=0;
+        int cnt=0;
+        for(sequenceRule s: seq){
+            if(s.getSupport()>0){
+                cnt++;
+                threshold+=s.getSupport();
+            }
+        }
+        return threshold/cnt;
+    }
+
+    public ArrayList<sequenceRule> combine(ArrayList<sequenceRule> s, ArrayList<String> singE){
+        for(int j=0; j<s.size(); j++){
+//            System.out.println(s.get(j).getVideoIds() + "," + s.get(i).getSupport());
+            for(int i=0; i<singE.size(); i++) {
+                sequenceRule tempo = new sequenceRule(s.get(j).getVideoIds() +", "+ singE.get(i).toString(),0);
+                s.add(tempo);
+            }
+
+        }
+
+        return s;
+    }
+
+    public void displaySequenceRules(ArrayList<sequenceRule> seq){
+        for(sequenceRule s : seq){
+            System.out.println("comb  "+ s.getVideoIds() + " -- " +s.getSupport());
+        }
     }
 
     public ArrayList<sequenceRule> checkIfExist(ArrayList<sequenceRule> nthSeq,  ArrayList<String>[] sequencedIDs ) {
@@ -636,14 +656,14 @@ public class AdminController {
             }
         }
 
-        int fourthcnt =0;
-        float fourthSupportSum=0;
+//        int fourthcnt =0;
+//        float fourthSupportSum=0;
         for(sequenceRule s: nthSeq) {
             if(s.getSupport()>0) {
 //                System.out.println(s.getVideoIds() + "," + s.getSupport());
-                fourthcnt++;
+//                fourthcnt++;
                 s.setSupport(s.getSupport() / sequencedIDs.length);
-                fourthSupportSum += s.getSupport();
+//                fourthSupportSum += s.getSupport();
 
             }
 
@@ -652,6 +672,19 @@ public class AdminController {
         }
 
         return nthSeq;
+    }
+
+    public ArrayList<sequenceRule> possibleCombination(ArrayList<sequenceRule> seqtemp, ArrayList<String> singE){
+        for(int j=0; j<seqtemp.size(); j++) {
+//                System.out.println(s.getVideoIds() + "," + s.getSupport());
+            for(int i=0; i<singE.size(); i++) {
+                sequenceRule tempo = new sequenceRule(seqtemp.get(j).getVideoIds() +", "+ singE.get(i).toString(),0);
+                System.out.println("----" + seqtemp.get(j).getVideoIds() +", "+ singE.get(i).toString());
+                seqtemp.add(tempo);
+            }
+
+        }
+        return seqtemp;
     }
 
     public class singleElement{
