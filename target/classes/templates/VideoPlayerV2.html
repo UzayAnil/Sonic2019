@@ -86,63 +86,99 @@
                     </div>
                 </div>
 
-                <div id="video-playlist" class="video-playlist">
-                    <header class="playlist-title">Up next...</header>
+                <!--<div id="video-playlist" class="video-playlist">-->
+                    <!--<header class="playlist-title">Up next...</header>-->
 
-                    <!-- HTML 5 allows us to wrap block-level elements in <a> tags. -->
-                    <div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>
-                    <div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>
-                    <div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>
+                    <!--&lt;!&ndash; HTML 5 allows us to wrap block-level elements in <a> tags. &ndash;&gt;-->
+                    <!--<div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>-->
+                    <!--<div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>-->
+                    <!--<div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>-->
 
-                    <form action="/gotoPlayer" method="post" id="upnv1">
-                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                        <input type="hidden" id="timeSpent"  name="timeSpent">
-                        <input type="hidden" id="clicked" name="clicked"/>
-
-
-
-
-                        <a href="javascript:;" onclick="submitFunc1();"  class="next-video">
-                            <img th:src="${tn1}" alt="">
-
-                            <!--<input type="hidden" name="clicked" th:value="${upnext1.videoid}"/>-->
-                            <h3 class="next-video-title" th:text="${upnext1.title}" ></h3>
-
-
-                            <p class="next-video-info" th:text="${upnext1.artist}">
-                            </p>
-                        </a>
-
-
-
+                    <!--<form action="/gotoPlayer" method="post" id="upnv1">-->
                         <!--<input type="hidden" th:value="${vididtoplay}" name="videoWatched">-->
                         <!--<input type="hidden" id="timeSpent"  name="timeSpent">-->
-
-                        <a href="javascript:;" onclick="submitFunc2();"  class="next-video">
-                            <img th:src="${tn2}" alt="">
-                            <!--<input type="hidden" name="clicked" th:value="${upnext2.videoid}"/>-->
-                            <h3 class="next-video-title" th:text="${upnext2.title}"></h3>
-
-                            <p class="next-video-info" th:text="${upnext2.artist}">
-                            </p>
-                        </a>
+                        <!--<input type="hidden" id="clicked" name="clicked"/>-->
 
 
-                        <!--<input type="hidden" th:value="${vididtoplay}" name="videoWatched">-->
-                        <!--<input type="hidden" id="timeSpent"  name="timeSpent">-->
-                        <a  href="javascript:;" onclick="submitFunc3();"  class="next-video">
-                            <img th:src="${tn3}" alt="">
-                            <!--<input type="hidden" name="clicked" th:value="${upnext3.videoid}"/>-->
-                            <h3 class="next-video-title" th:text="${upnext3.title}"></h3>
 
-                            <p class="next-video-info" th:text="${upnext3.artist}">
-                            </p>
-                        </a>
-                    </form>
 
+                        <!--<a href="javascript:;" onclick="submitFunc1();"  class="next-video">-->
+                            <!--<img th:src="${tn1}" alt="">-->
+
+                            <!--&lt;!&ndash;<input type="hidden" name="clicked" th:value="${upnext1.videoid}"/>&ndash;&gt;-->
+                            <!--<h3 class="next-video-title" th:text="${upnext1.title}" ></h3>-->
+
+
+                            <!--<p class="next-video-info" th:text="${upnext1.artist}">-->
+                            <!--</p>-->
+                        <!--</a>-->
+
+
+
+                        <!--&lt;!&ndash;<input type="hidden" th:value="${vididtoplay}" name="videoWatched">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input type="hidden" id="timeSpent"  name="timeSpent">&ndash;&gt;-->
+
+                        <!--<a href="javascript:;" onclick="submitFunc2();"  class="next-video">-->
+                            <!--<img th:src="${tn2}" alt="">-->
+                            <!--&lt;!&ndash;<input type="hidden" name="clicked" th:value="${upnext2.videoid}"/>&ndash;&gt;-->
+                            <!--<h3 class="next-video-title" th:text="${upnext2.title}"></h3>-->
+
+                            <!--<p class="next-video-info" th:text="${upnext2.artist}">-->
+                            <!--</p>-->
+                        <!--</a>-->
+
+
+                        <!--&lt;!&ndash;<input type="hidden" th:value="${vididtoplay}" name="videoWatched">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input type="hidden" id="timeSpent"  name="timeSpent">&ndash;&gt;-->
+                        <!--<a  href="javascript:;" onclick="submitFunc3();"  class="next-video">-->
+                            <!--<img th:src="${tn3}" alt="">-->
+                            <!--&lt;!&ndash;<input type="hidden" name="clicked" th:value="${upnext3.videoid}"/>&ndash;&gt;-->
+                            <!--<h3 class="next-video-title" th:text="${upnext3.title}"></h3>-->
+
+                            <!--<p class="next-video-info" th:text="${upnext3.artist}">-->
+                            <!--</p>-->
+                        <!--</a>-->
+                    <!--</form>-->
+
+                <!--</div>-->
+
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <div class="main">
+                    <div class="card-container">
+                        <div class="card" id="card">
+                            <div id="back">
+                                <img src="https://res.cloudinary.com/trugamr/image/upload/v1534187015/Minimal%20Blur%20Cards/art_1.png">
+                            </div>
+                            <img src="https://res.cloudinary.com/trugamr/image/upload/v1534187015/Minimal%20Blur%20Cards/art_1.png" id="art">
+                            <div id="title">Divinity</div>
+                            <div id="artist">Porter Robinson</div>
+                        </div>
+                        <div class="card">
+                            <div id="back">
+                                <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186997/Minimal%20Blur%20Cards/art_2.png">
+                            </div>
+                            <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186997/Minimal%20Blur%20Cards/art_2.png" id="art">
+                            <div id="title">Glorious</div>
+                            <div id="artist">Arty</div>
+                        </div>
+                        <div class="card">
+                            <div id="back">
+                                <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186999/Minimal%20Blur%20Cards/art_3.png">
+                            </div>
+                            <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186999/Minimal%20Blur%20Cards/art_3.png" id="art">
+                            <div id="title">Thunder</div>
+                            <div id="artist">Imagine Dragons</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
+
+
 
 
 </main>
@@ -171,7 +207,7 @@
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             height: '480',
-            width: '854',
+            width: '100%',
             videoId: x,
             events: {
                 'onReady': onPlayerReady,

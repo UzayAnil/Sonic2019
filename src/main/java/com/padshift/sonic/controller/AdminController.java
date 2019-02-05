@@ -597,16 +597,58 @@ public class AdminController {
         ArrayList<sequenceRule> sixthPass = new ArrayList<>();
         System.out.println("sixthThresh " + sixthThresh);
         System.out.println("qualified the 6th Threshold: ");
-        for(sequenceRule s: sixthPassTemp){
-            if(s.getSupport()>=sixthThresh){
-                sixthPass.add(s);
-            }
-        }
+//        for(sequenceRule s: sixthPassTemp){
+//            if(s.getSupport()>=sixthThresh){
+//                sixthPass.add(s);
+//            }
+//        }
+
+        sixthPass=evaluateSeqRules(sixthPassTemp,sixthThresh);
         displaySequenceRules(sixthPass);
 
 
+        ArrayList<sequenceRule> sevPasstTemp = new ArrayList<>();
+        for(sequenceRule s: sixthPass){
+            for(int i=0; i<singE.size(); i++) {
+                sequenceRule tempo = new sequenceRule(s.getVideoIds() +", "+ singE.get(i).toString(),0);
+                sevPasstTemp.add(tempo);
+            }
+
+        }
+
+        System.out.println("TANG INA MO : " + sevPasstTemp.size());
+        displaySequenceRules(sevPasstTemp);
+        sevPasstTemp = checkIfExist(sevPasstTemp,sequencedIDs);
+        float sevThresh =computeThreshold(sevPasstTemp);
+
+        ArrayList<sequenceRule> sevPass = new ArrayList<>();
+        for(sequenceRule s: sevPasstTemp){
+            if(s.getSupport()>=sevThresh){
+                sevPass.add(s);
+            }
+        }
+        System.out.println("sevThresh : " + sevThresh);
+        System.out.println("TANG INA MO1 : " + sevPass.size());
+
+
+//        ArrayList<sequenceRule> sevPass = evaluateSeqRules(sevPasstTemp,sevThresh);
+        for(sequenceRule s: sevPass){
+            System.out.println("aaahhh" + s.getVideoIds());
+        }
+
 
         return "testing";
+    }
+
+    public ArrayList<sequenceRule> evaluateSeqRules(ArrayList<sequenceRule> seq, float thresh){
+        ArrayList<sequenceRule> res = new ArrayList<>();
+        for(sequenceRule s: seq){
+            if(s.getSupport()>=thresh){
+                res.add(s);
+                System.out.println("eyyyy");
+            }
+        }
+        return res;
     }
 
     public float computeThreshold(ArrayList<sequenceRule> seq){
