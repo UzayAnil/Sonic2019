@@ -66,6 +66,12 @@ public interface VideoService {
 
     void savePlaylist(Playlist pl);
 
+    ArrayList<String> findDistinctPlaylistID();
+
+    ArrayList<Playlist> findAllPlaylistByPlaylistID(String plIDs);
+
+    Video findVideoByVideoid(String s);
+
 
 //    void updateVidDuration(String videoid, long seconds);
 

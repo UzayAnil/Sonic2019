@@ -1448,8 +1448,38 @@ public class UserController {
     //seqrule
 
     @RequestMapping("/gotoPlaylistPlayer")
-    public String gotoPlaylistPlayer(){
+    public String gotoPlaylistPlayer(Model model){
+
+        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
+        for(String plid : plIDs){
+            System.out.println("Playlist ID : " + plid.toString());
+        }
+
+        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
+        for(Playlist p : vidids){
+            System.out.println("[PL] : " +p.getVideoID());
+        }
+
+        ArrayList<Video> plvids = new ArrayList<>();
+        for(Playlist p : vidids){
+            Video v = new Video();
+            v= videoService.findVideoByVideoid(p.getVideoID().toString());
+            plvids.add(v);
+        }
+
+        for(Video v: plvids){
+            System.out.println("[V] : " + v.getMvtitle() );
+        }
+
+        model.addAttribute("plvids", plvids);
+
+
         return "VideoPlayerWithPlaylist";
     }
+
+//    @RequestMapping("/vplayerpl")
+//    public String vplayerPL(){
+//        return "VideoPlayerWithPlaylist";
+//    }
 
 }

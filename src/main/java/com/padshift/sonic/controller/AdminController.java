@@ -853,10 +853,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping("/vplayerpl")
-    public String vplayerPL(){
-        return "VideoPlayerWithPlaylist";
-    }
+
 
 
 

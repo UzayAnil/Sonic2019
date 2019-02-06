@@ -183,5 +183,20 @@ public class VideoServiceImpl implements VideoService {
         System.out.println("S A V E D : " + pl);
     }
 
+    @Override
+    public ArrayList<String> findDistinctPlaylistID() {
+        return playlistRepository.findDistinctPlaylistID();
+    }
+
+    @Override
+    public ArrayList<Playlist> findAllPlaylistByPlaylistID(String plIDs) {
+        return playlistRepository.findAllByPlaylistID(plIDs);
+    }
+
+    @Override
+    public Video findVideoByVideoid(String s) {
+        return videoRepository.findByVideoid(s);
+    }
+
 
 }
