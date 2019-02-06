@@ -2,6 +2,7 @@ package com.padshift.sonic.controller;
 
 import com.padshift.sonic.entities.*;
 
+import com.padshift.sonic.repository.PlaylistRepository;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
@@ -40,6 +41,12 @@ public class AdminController {
 
     @Autowired
     GenreService genreService;
+
+    @Autowired
+    UserController userController;
+
+    @Autowired
+    PlaylistRepository playlistRepository;
 
 
 
@@ -664,6 +671,16 @@ public class AdminController {
         for(String id : generatedPlaylist){
             System.out.println(id.toString());
         }
+
+        //20 SONGS RA SIZZYYY
+
+        String plid = "pl" + userController.getSaltString();
+        for(int i=0; i<20; i++){
+            Playlist pl = new Playlist(plid, generatedPlaylist.get(i).toString());
+            videoService.savePlaylist(pl);
+        }
+
+
 
 
 

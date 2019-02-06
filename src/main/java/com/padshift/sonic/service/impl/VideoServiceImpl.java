@@ -38,6 +38,9 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     YoutubeAPIController youtubeAPIController;
 
+    @Autowired
+    PlaylistRepository playlistRepository;
+
 
     @Override
     public void saveVideo(Video video) {
@@ -172,6 +175,12 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoDetails findVideoDetailsByVideoid(String videoWatched) {
         return videoDetailsRepository.findByVideoid(videoWatched);
+    }
+
+    @Override
+    public void savePlaylist(Playlist pl) {
+        playlistRepository.save(pl);
+        System.out.println("S A V E D : " + pl);
     }
 
 
