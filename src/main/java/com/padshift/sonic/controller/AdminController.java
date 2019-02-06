@@ -636,8 +636,60 @@ public class AdminController {
             System.out.println("aaahhh" + s.getVideoIds());
         }
 
+        System.out.println("Sev Temporary : ");
+        displaySequenceRules(sevPasstTemp);
+        System.out.println("Seven Pass : ");
+        displaySequenceRules(sevPass);
+
+        ArrayList<String> generatedPlaylist = new ArrayList<>();
+        if(sevPass.size()==0){
+            generatedPlaylist = createPlaylist(sevPasstTemp);
+        }
+
+
+
+        System.out.println("G E N E R A T E D   P L A Y L I S T : ");
+        for(String id : generatedPlaylist){
+            System.out.println(id.toString());
+        }
+
+        System.out.println("Added:");
+
+        for(String si : singE){
+            if(!generatedPlaylist.contains(singE)){
+                generatedPlaylist.add(si);
+            }
+        }
+
+        for(String id : generatedPlaylist){
+            System.out.println(id.toString());
+        }
+
+
+
+
+
+
 
         return "testing";
+    }
+
+    public ArrayList<String> createPlaylist(ArrayList<sequenceRule> seq){
+        ArrayList<String> playlist = new ArrayList<>();
+        ArrayList<sequenceRule> seqtemp = new ArrayList<>();
+       for(int i=0; i<seq.size(); i++){
+           if(seq.get(i).getSupport()<=0){
+               seq.remove(i);
+           }
+       }
+        String[] parts = seq.get(0).getVideoIds().toString().split(", ");
+        for(int j=0; j<parts.length; j++){
+            playlist.add(parts[j].toString());
+        }
+
+//        Arrays.asList(str.split("\\s*,\\s*"));
+
+        return playlist;
     }
 
     public ArrayList<sequenceRule> evaluateSeqRules(ArrayList<sequenceRule> seq, float thresh){
@@ -650,6 +702,8 @@ public class AdminController {
         }
         return res;
     }
+
+
 
     public float computeThreshold(ArrayList<sequenceRule> seq){
         float threshold=0;

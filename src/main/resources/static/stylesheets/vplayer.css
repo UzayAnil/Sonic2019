@@ -878,7 +878,7 @@ body {
     filter: blur(30px) ;
     height: 222px;
     margin: -5px -10px -10px -5px;
-    opacity: 0.9;
+    opacity: 0;
 }
 
 #art {

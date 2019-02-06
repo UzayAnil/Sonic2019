@@ -1443,4 +1443,13 @@ public class UserController {
         String out = val.format(Long.valueOf(x));
         return out;
     }
+
+
+    //seqrule
+
+    @RequestMapping("/gotoPlaylistPlayer")
+    public String gotoPlaylistPlayer(){
+        return "VideoPlayerWithPlaylist";
+    }
+
 }

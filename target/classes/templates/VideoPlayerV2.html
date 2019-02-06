@@ -149,28 +149,34 @@
 
                 <div class="main">
                     <div class="card-container">
-                        <div class="card" id="card">
-                            <div id="back">
-                                <img src="https://res.cloudinary.com/trugamr/image/upload/v1534187015/Minimal%20Blur%20Cards/art_1.png">
-                            </div>
-                            <img src="https://res.cloudinary.com/trugamr/image/upload/v1534187015/Minimal%20Blur%20Cards/art_1.png" id="art">
-                            <div id="title">Divinity</div>
-                            <div id="artist">Porter Robinson</div>
-                        </div>
+                        <form action="/gotoPlaylistPlayer" method="post" id="pl">
+                            <a href="javascript:;" onclick="clickPl();">
+                                <div class="card" id="card">
+                                    <div id="back">
+                                        <img src="images/playlist1.png">
+                                    </div>
+                                    <img src="images/playlist1.png" >
+                                    <div id="title">Playlist A</div>
+                                    <!--<div id="artist">Porter Robinson</div>-->
+                                </div>
+                            </a>
+
+                        </form>
+
                         <div class="card">
                             <div id="back">
-                                <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186997/Minimal%20Blur%20Cards/art_2.png">
+                                <img src="images/playlist2.png">
                             </div>
-                            <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186997/Minimal%20Blur%20Cards/art_2.png" id="art">
-                            <div id="title">Glorious</div>
+                            <img src="images/playlist2.png">
+                            <div id="title">Playlist B</div>
                             <div id="artist">Arty</div>
                         </div>
                         <div class="card">
                             <div id="back">
-                                <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186999/Minimal%20Blur%20Cards/art_3.png">
+                                <img src="images/playlist3.png">
                             </div>
-                            <img src="https://res.cloudinary.com/trugamr/image/upload/v1534186999/Minimal%20Blur%20Cards/art_3.png" id="art">
-                            <div id="title">Thunder</div>
+                            <img src="images/playlist3.png">
+                            <div id="title">Playlist Br</div>
                             <div id="artist">Imagine Dragons</div>
                         </div>
                     </div>
@@ -277,6 +283,10 @@
         var v = document.getElementById("clicked3").textContent;
         document.getElementById("clicked").setAttribute("value",v);
         document.getElementById('upnv1').submit();
+    }
+
+    function clickPl(){
+        document.getElementById('pl').submit();
     }
 </script>
 </body>
