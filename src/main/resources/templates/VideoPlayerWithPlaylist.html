@@ -7,37 +7,111 @@
 </head>
 <body>
 <div>
+    <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
     <table class="canvas">
         <tr>
-            <td class="video" rowspan="2"><iframe width="600" height="310" src="https://www.youtube.com/embed/FkWSaaI3x5Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></td>
-            <td class="name">Bangers - Royalty free
-                <p><h5 class="category">Bass Boosted</h5><h5 class="range">  09/10</h5></p>
+            <td class="video" rowspan="2">
+                <!--<iframe width="600" height="310" src="https://www.youtube.com/embed/FkWSaaI3x5Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+                <div id="player"></div><script src="http://www.youtube.com/player_api"></script>
             </td>
+            <!--<td class="name">Bangers - Royalty free-->
+                <!--<p><h5 class="category">Bass Boosted</h5><h5 class="range">  09/10</h5></p>-->
+            <!--</td>-->
+
+
         </tr>
         <tr>
             <td class="list" valign="middle">
                 <section class="list">
-                    <div th:each="v : ${plvids}">
-                        <p>&nbsp 01. <a href=""><img th:src="${v.thumbnail}" width="100"> &nbsp aaaa</a></p><hr color="grey">
-                    </div>
-                    <!--<p>&nbsp 02. <a href=""><img src="https://i.ytimg.com/vi/ISvrXvinK6g/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLCFDpmwg4R2jLZJEEm61kfgChCnWg" width="100"> &nbsp-->
-                        <!--MUFASSA - Blaq Panther [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 03. <a href=""><img src="https://i.ytimg.com/vi/kQnfImfsiWA/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLDychBl9CZXb9ZoMnynaRHHzr0ExA" width="100"> &nbsp-->
-                        <!--Sweepz - Apollo [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 04. <a href=""><img src="https://i.ytimg.com/vi/wgW0keyqm1A/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLBu7H9MEhjIIZtZbB9VVgysWaqPzA" width="100"> &nbsp SYNC - District.7 [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 05. <a href=""><img src="https://i.ytimg.com/vi/gWcgzpRHXrw/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLDdwiquFZq3zvY7aUDs64bZC8MlQw" width="100"> &nbsp-->
-                        <!--HOPEX - Chaos [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 06. <a href=""><img src="https://i.ytimg.com/vi/FFm7isp-C1U/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLAj6zfdu-Ybh3v6oUY8E2ZNYeE32w" width="100"> &nbsp SYNC - Inception [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 07. <a href=""><img src="https://i.ytimg.com/vi/EJVcpSDBgno/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLAAKxAt7iajeA1WId6J-w09IBY2Lw" width="100"> &nbsp Calli Boom - Elysium [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 08. <a href=""><img src="https://i.ytimg.com/vi/XtofDp-Zjyw/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLBQSALEvIr9x0svrPzpNJnt8J6Qqw" width="100"> &nbsp Heuse - Stones [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 09. <a href=""><img src="https://i.ytimg.com/vi/FkWSaaI3x5Q/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLD6D1aaAmNvCAB3sVQ_wtcnIPtlKw" width="100"> &nbsp-->
-                        <!--NOIXES - Violence [Bass Boosted] </a></p><hr color="grey">-->
-                    <!--<p>&nbsp 10. <a href=""><img src="https://i.ytimg.com/vi/dtAozMkGElo/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLC2F68-5fzy2Kubj1lR1btuezqFbw" width="100"> &nbsp EBEN - Assassin [Bass Boosted] </a></p><hr color="grey">-->
+                    <a th:each="v : ${plvids}">
+                        <p>&nbsp<a href=""><img th:src="${v.thumbnail}" width="100"> &nbsp <a th:text="${v.mvtitle}"></a></s></a></p><hr color="grey">
+                    </a>
+
                 </section>
             </td>
         </tr>
     </table>
-    &nbsp<a href="">NOIXES - Violence [Bass Boosted] </a>
+    <!--&nbsp<a href="">NOIXES - Violence [Bass Boosted] </a>-->
+    Current Time: <a id="time"></a>
 </div>
+
+<script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var x = document.getElementById("vidid").textContent;
+    //    document.getElementById("demo").innerHTML = x;
+    var player;
+    var videotime = 0;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '310',
+            width: '600',
+            videoId: x,
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    //    $('iframe').load( function() {
+    //        $('iframe').contents().find("head")
+    //                .append($("<style type='text/css'>  .my-class{height:854px; ,width:430px;}  </style>"));
+    //    });
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+        function updateTime() {
+            var oldTime = videotime;
+            if(player && player.getCurrentTime) {
+                videotime = player.getCurrentTime();
+
+                console.log(videotime);
+                document.getElementById("time").innerHTML = videotime;
+                document.getElementById("timeSpent").setAttribute("value",videotime);
+            }
+            if(videotime !== oldTime) {
+                onProgress(videotime);
+            }
+        }
+        timeupdater = setInterval(updateTime, 100);
+    }
+
+    // when the time changes, this will be called.
+    function onProgress(currentTime) {
+        if(currentTime > 20) {
+            console.log("the video reached 20 seconds!");
+        }
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+//        if (event.data == YT.PlayerState.PLAYING && !done) {
+//            setTimeout(stopVideo, 6000);
+//            done = true;
+//        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+</script>
+
+
 </body>
+
+
+
 </html>
+
+

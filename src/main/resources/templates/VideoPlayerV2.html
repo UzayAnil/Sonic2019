@@ -55,9 +55,9 @@
                         </form>
 
                         <div class="description">
-                            <p>Caminandes: Episode 2 is an Open Movie produced by Blender Institute in Amsterdam, the
-                                Netherlands. You can support the makers and open source projects by purchasing the 8 GB USB
-                                card with all the movie data and tutorials.</p>
+                            <!--<p>Caminandes: Episode 2 is an Open Movie produced by Blender Institute in Amsterdam, the-->
+                                <!--Netherlands. You can support the makers and open source projects by purchasing the 8 GB USB-->
+                                <!--card with all the movie data and tutorials.</p>-->
                         </div>
                     </div>
                     <h2 style="position:  relative;top: 0px;">RECOMMENDED VIDEOS</h2>
@@ -197,75 +197,75 @@
         document.getElementById('upnv1').submit();
     }
 
-    // 2. This code loads the IFrame Player API code asynchronously.
-    var tag = document.createElement('script');
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
 
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // 3. This function creates an <iframe> (and YouTube player)
-    //    after the API code downloads.
-    var x = document.getElementById("vidid").textContent;
-    //    document.getElementById("demo").innerHTML = x;
-    var player;
-    var videotime = 0;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '480',
-            width: '100%',
-            videoId: x,
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var x = document.getElementById("vidid").textContent;
+        //    document.getElementById("demo").innerHTML = x;
+        var player;
+        var videotime = 0;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '480',
+                width: '100%',
+                videoId: x,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        //    $('iframe').load( function() {
+        //        $('iframe').contents().find("head")
+        //                .append($("<style type='text/css'>  .my-class{height:854px; ,width:430px;}  </style>"));
+        //    });
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+            function updateTime() {
+                var oldTime = videotime;
+                if(player && player.getCurrentTime) {
+                    videotime = player.getCurrentTime();
+
+                    console.log(videotime);
+                    document.getElementById("time").innerHTML = videotime;
+                    document.getElementById("timeSpent").setAttribute("value",videotime);
+                }
+                if(videotime !== oldTime) {
+                    onProgress(videotime);
+                }
             }
-        });
-    }
+            timeupdater = setInterval(updateTime, 100);
+        }
 
-    //    $('iframe').load( function() {
-    //        $('iframe').contents().find("head")
-    //                .append($("<style type='text/css'>  .my-class{height:854px; ,width:430px;}  </style>"));
-    //    });
-
-    // 4. The API will call this function when the video player is ready.
-    function onPlayerReady(event) {
-        event.target.playVideo();
-        function updateTime() {
-            var oldTime = videotime;
-            if(player && player.getCurrentTime) {
-                videotime = player.getCurrentTime();
-
-                console.log(videotime);
-                document.getElementById("time").innerHTML = videotime;
-                document.getElementById("timeSpent").setAttribute("value",videotime);
-            }
-            if(videotime !== oldTime) {
-                onProgress(videotime);
+        // when the time changes, this will be called.
+        function onProgress(currentTime) {
+            if(currentTime > 20) {
+                console.log("the video reached 20 seconds!");
             }
         }
-        timeupdater = setInterval(updateTime, 100);
-    }
 
-    // when the time changes, this will be called.
-    function onProgress(currentTime) {
-        if(currentTime > 20) {
-            console.log("the video reached 20 seconds!");
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+    //        if (event.data == YT.PlayerState.PLAYING && !done) {
+    //            setTimeout(stopVideo, 6000);
+    //            done = true;
+    //        }
         }
-    }
-
-    // 5. The API calls this function when the player's state changes.
-    //    The function indicates that when playing a video (state=1),
-    //    the player should play for six seconds and then stop.
-    var done = false;
-    function onPlayerStateChange(event) {
-//        if (event.data == YT.PlayerState.PLAYING && !done) {
-//            setTimeout(stopVideo, 6000);
-//            done = true;
-//        }
-    }
-    function stopVideo() {
-        player.stopVideo();
-    }
+        function stopVideo() {
+            player.stopVideo();
+        }
 
 
     function submitFunc1() {

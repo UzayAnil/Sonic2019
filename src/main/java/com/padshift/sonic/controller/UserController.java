@@ -1470,8 +1470,9 @@ public class UserController {
         for(Video v: plvids){
             System.out.println("[V] : " + v.getMvtitle() );
         }
-
+        model.addAttribute("vididtoplay", plvids.get(0).getVideoid());
         model.addAttribute("plvids", plvids);
+//        model.addAttribute("pl1", plvids.get(0).getVideoid())
 
 
         return "VideoPlayerWithPlaylist";
