@@ -12,10 +12,11 @@
         <tr>
             <td class="video" rowspan="2">
                 <!--<iframe width="600" height="310" src="https://www.youtube.com/embed/FkWSaaI3x5Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+
                 <div id="player"></div><script src="http://www.youtube.com/player_api"></script>
             </td>
             <!--<td class="name">Bangers - Royalty free-->
-                <!--<p><h5 class="category">Bass Boosted</h5><h5 class="range">  09/10</h5></p>-->
+            <!--<p><h5 class="category">Bass Boosted</h5><h5 class="range">  09/10</h5></p>-->
             <!--</td>-->
 
 
@@ -23,10 +24,20 @@
         <tr>
             <td class="list" valign="middle">
                 <section class="list">
-                    <a th:each="v : ${plvids}">
-                        <p>&nbsp<a href=""><img th:src="${v.thumbnail}" width="100"> &nbsp <a th:text="${v.mvtitle}"></a></s></a></p><hr color="grey">
-                    </a>
+                    <form action="/playPLItem" method="post" id="plform">
+                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                        <input type="hidden" id="timeSpent"  name="timeSpent">
+                        <a th:each="v, i : ${plvids}" >
+                            <a type="hidden" name="index" th:text="${i.index}"></a>
+                            <p>&nbsp<a href="javascript:;" th:onclick="'submitFunc' + ${i.index} + '();'"><img th:src="${v.thumbnail}" width="100"> &nbsp <a th:text="${v.mvtitle}"></a></s></a>
+                            </p>
+                            <div style="display:none;" id="clicked1" th:text="${v.videoid}" th:attrappend="id=${i.index}"></div>
+                            <input type="hidden" id="clicked" name="clicked" th:attrappend="id=${i.index},name=${i.index}" />
 
+
+                            <hr color="grey">
+                        </a>
+                    </form>
                 </section>
             </td>
         </tr>
@@ -36,6 +47,15 @@
 </div>
 
 <script>
+
+    //    function myFunction() {
+    //        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+    ////        var y = document.querySelector("input[type=radio]:checked").value;
+    ////        document.getElementById("rate").setAttribute("value",y);
+    //        document.getElementById("currentvid").setAttribute("value",x);
+    //        document.getElementById('upnv1').submit();
+    //    }
+
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
 
@@ -105,6 +125,141 @@
     function stopVideo() {
         player.stopVideo();
     }
+
+    function submitFunc0() {
+        console.log(v)
+        var v = document.getElementById("clicked10").textContent;
+        document.getElementById("clicked0").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+
+    function submitFunc1() {
+        console.log(v)
+        var v = document.getElementById("clicked11").textContent;
+        document.getElementById("clicked1").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+
+    function submitFunc2() {
+        console.log(v)
+        var v = document.getElementById("clicked12").textContent;
+        document.getElementById("clicked2").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc3() {
+        console.log(v)
+        var v = document.getElementById("clicked13").textContent;
+        document.getElementById("clicked3").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc4() {
+        console.log(v)
+        var v = document.getElementById("clicked14").textContent;
+        document.getElementById("clicked4").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc5() {
+        console.log(v)
+        var v = document.getElementById("clicked15").textContent;
+        document.getElementById("clicked5").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc6() {
+        console.log(v)
+        var v = document.getElementById("clicked16").textContent;
+        document.getElementById("clicked6").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc7() {
+        console.log(v)
+        var v = document.getElementById("clicked17").textContent;
+        document.getElementById("clicked7").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc8() {
+        console.log(v)
+        var v = document.getElementById("clicked18").textContent;
+        document.getElementById("clicked8").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc9() {
+        console.log(v)
+        var v = document.getElementById("clicked19").textContent;
+        document.getElementById("clicked9").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc10() {
+        console.log(v)
+        var v = document.getElementById("clicked110").textContent;
+        document.getElementById("clicked10").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc11() {
+        console.log(v)
+        var v = document.getElementById("clicked111").textContent;
+        document.getElementById("clicked11").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc12() {
+        console.log(v)
+        var v = document.getElementById("clicked112").textContent;
+        document.getElementById("clicked12").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc13() {
+        console.log(v)
+        var v = document.getElementById("clicked113").textContent;
+        document.getElementById("clicked13").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc14() {
+        console.log(v)
+        var v = document.getElementById("clicked114").textContent;
+        document.getElementById("clicked14").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc15() {
+        console.log(v)
+        var v = document.getElementById("clicked115").textContent;
+        document.getElementById("clicked15").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc16() {
+        console.log(v)
+        var v = document.getElementById("clicked116").textContent;
+        document.getElementById("clicked16").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc17() {
+        console.log(v)
+        var v = document.getElementById("clicked117").textContent;
+        document.getElementById("clicked17").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc18() {
+        console.log(v)
+        var v = document.getElementById("clicked118").textContent;
+        document.getElementById("clicked18").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+    function submitFunc19() {
+        console.log(v)
+        var v = document.getElementById("clicked119").textContent;
+        document.getElementById("clicked19").setAttribute("value",v);
+        document.getElementById('plform').submit();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 

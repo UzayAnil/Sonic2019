@@ -7,10 +7,12 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.An
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.CategoriesOptions;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Features;
+import com.ibm.watson.developer_cloud.visual_recognition.v3.model.Class;
 import com.padshift.sonic.entities.*;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.Session;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.mapping.Array;
@@ -1450,6 +1452,8 @@ public class UserController {
     @RequestMapping("/gotoPlaylistPlayer")
     public String gotoPlaylistPlayer(Model model){
 
+
+
         ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
         for(String plid : plIDs){
             System.out.println("Playlist ID : " + plid.toString());
@@ -1470,13 +1474,156 @@ public class UserController {
         for(Video v: plvids){
             System.out.println("[V] : " + v.getMvtitle() );
         }
+
+
+
+
         model.addAttribute("vididtoplay", plvids.get(0).getVideoid());
+
+
         model.addAttribute("plvids", plvids);
 //        model.addAttribute("pl1", plvids.get(0).getVideoid())
 
 
         return "VideoPlayerWithPlaylist";
     }
+
+    @RequestMapping("/playPLItem")
+    public String playPLItem(HttpServletRequest request, HttpSession session, Model model){
+
+//       String playthisvid0 = request.getParameter("clicked0"); String playthisvid10 = request.getParameter("clicked10");
+//        String playthisvid1 = request.getParameter("clicked1"); String playthisvid11 = request.getParameter("clicked11");
+//        String playthisvid2 = request.getParameter("clicked2"); String playthisvid12 = request.getParameter("clicked12");
+//        String playthisvid3 = request.getParameter("clicked3"); String playthisvid13 = request.getParameter("clicked13");
+//        String playthisvid4 = request.getParameter("clicked4"); String playthisvid14 = request.getParameter("clicked14");
+//        String playthisvid5 = request.getParameter("clicked5"); String playthisvid15 = request.getParameter("clicked15");
+//        String playthisvid6 = request.getParameter("clicked6"); String playthisvid16 = request.getParameter("clicked16");
+//        String playthisvid7 = request.getParameter("clicked7"); String playthisvid17 = request.getParameter("clicked17");
+//        String playthisvid8 = request.getParameter("clicked8"); String playthisvid18 = request.getParameter("clicked18");
+//        String playthisvid9 = request.getParameter("clicked9"); String playthisvid19 = request.getParameter("clicked19");
+//
+//        if(playthisvid0)
+
+//        ArrayList<String> arr = new ArrayList<>();
+
+        String playthisvid = null;
+        for(int i=0; i<20; i++) {
+//            String temp = request.getParameter("clicked"+i);
+//            System.out.println("clicked"+i);
+//            System.out.println(temp);
+            if(request.getParameter("clicked"+i)!=null && !request.getParameter("clicked"+i).isEmpty()) {
+                playthisvid = request.getParameter("clicked"+i);
+            }
+
+
+        }
+
+//        System.out.println("pl"+i +" : " + playthisvid);
+
+//
+//        ArrayList<upnextItem> up = new ArrayList<>();
+//        for(int i=0; i<20; i++){
+//            upnextItem temp = new upnextItem("clicked" + i,"no");
+//        }
+//
+//        for(upnextItem u : up){
+//            String play =  request.getParameter(u.getOrder());
+//            if(play!=null){
+//                u.setTag("yes");
+//                playthisvid = request.getParameter(u.getOrder());
+//
+//            }
+//        }
+
+
+
+
+
+
+
+        String timeSpent = request.getParameter("timeSpent");
+        String videoWatched = request.getParameter("videoWatched");
+
+        System.out.println("EYYOOOOOOOOOOOO" + playthisvid);
+        System.out.println("TIME SPENTTTT" + timeSpent);
+        System.out.println("WATCHEEDDD" + videoWatched);
+
+
+        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
+//        for(String plid : plIDs){
+//            System.out.println("Playlist ID : " + plid.toString());
+//        }
+
+        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
+//        for(Playlist p : vidids){
+//            System.out.println("[PL] : " +p.getVideoID());
+//        }
+
+        ArrayList<Video> plvids = new ArrayList<>();
+        for(Playlist p : vidids){
+            Video v = new Video();
+            v= videoService.findVideoByVideoid(p.getVideoID().toString());
+            plvids.add(v);
+        }
+
+        if(videoWatched!=null){
+            UserHistory userhist = new UserHistory();
+//            userhist.setUserId(session.getAttribute("userid").toString());
+            userhist.setVideoid(videoWatched);
+//            userhist.setSeqid(session.getAttribute("sessionid").toString());
+            userhist.setViewingDate(getLocalDate().toString());
+            userhist.setViewingTime(getTime());
+            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+
+            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+            System.out.println("CURRENT TITLE : " + curviddur.getTitle());
+            if(Float.parseFloat(timeSpent.toString())>curviddur.getVidDuration()/2) {
+                userhist.setViewingStatus("1");
+            }else{
+                userhist.setViewingStatus("0");
+            }
+            userService.saveUserHistory(userhist);
+        }
+
+
+
+        model.addAttribute("vididtoplay", playthisvid);
+
+
+        model.addAttribute("plvids", plvids);
+
+        return "VideoPlayerWithPlaylist";
+    }
+
+    public class upnextItem{
+        String order;
+        String tag;
+
+        public upnextItem(String order, String tag) {
+            this.order = order;
+            this.tag = tag;
+        }
+
+        public String getOrder() {
+            return order;
+        }
+
+        public void setOrder(String order) {
+            this.order = order;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+    }
+
+
+
+
 
 //    @RequestMapping("/vplayerpl")
 //    public String vplayerPL(){
