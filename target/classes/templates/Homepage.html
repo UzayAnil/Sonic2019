@@ -29,7 +29,10 @@
             <hr>
 
                 <ul class="menu">
-                    <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    <form method="post" action="/homepagev2" id="home">
+                        <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    </form>
+
                     <form method="post" action="/gotoExplore" id="explore">
                         <li>
                             <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
@@ -148,7 +151,10 @@
         document.getElementById("logout").submit();
     }
     function gotoPlaylistExplorer(){
-        document.getElementById("gotoPlaylistExp").submit();
+        document.getElementById("playlistExp").submit();
+    }
+    function gotoHome() {
+        document.getElementById("home").submit();
     }
 </script>
 </body>

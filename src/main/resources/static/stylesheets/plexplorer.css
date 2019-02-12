@@ -277,78 +277,90 @@ a:link, a:visited {
     bottom: 60px;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
+html {
+    min-height: 100%;
+    min-width: 100%;
+    background: linear-gradient(to top right,rgba(100, 213, 251, 0.3),rgba(228, 166, 249, 0.5)) fixed;
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cbccc8');
+    background-attachment: fixed;
+}
 
 body {
-    background: #080b13;
-}
-div {
-    top: 35%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    width: 1110px;
-    height: 375px;
-    box-shadow: 0 10px 20px black;
-    color:white;
-    font-family: fantasy;
-    transition: all .5s ease;
-}
-.canvas {
-    background: transparent;
-    margin: 0;
-    padding: 0;
-    color:white;
-    transition: all .5s ease;
-}
-.name {
-    background:grey;
-    width: 400px;
-    height: 50px;
-    padding: 10px;
-    font-weight: bolder;
-    font-family: fantasy;
-}
-.category {
-    line-height: .01;
-    color: #3a3a3a;
-    font-weight: bold;
-}
-.range {
-    line-height: .01;
-    color: white;
-    font-weight: bold;
-}
-p {
-    display: inline;
-    padding: none;
-}
-.list {
-    background: #3a3a3a;
-    overflow: auto;
-    margin: 0;
-    padding: 0;
-    width: 500px;
-    height: 210px;
-    align-items: middle;
+    margin: 0px;
 }
 
-a {
-    color: white;
-    font-family: fantasy;
-    text-decoration: none;
+.card-container{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 860px;
+    justify-content: space-evenly;
+    align-content: center;
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
 }
-img {
-    vertical-align: middle;
-    transition: .5s ease;
-    filter: brightness(80%);
+
+.card {
+    width: 222px;
+    height: 315px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 13px 15px 0px rgba(0, 0, 0, 0.05);
+    transition: ease all 0.2s;
 }
-img:hover {
-    width:110px;
-    box-shadow: 0 0 20px black;
-    filter: brightness(120%);
+
+.card:hover {
+    transform: scale(1.2) translateY(-20px);
 }
-span {
-    background: url(title.ico);
-    width: 100px;
-    height: 100px;
+
+#back {
+    width: 222px;
+    height: 315px;
+    overflow: hidden;
+    position: absolute;
+    border-radius: 10px;
+}
+
+#back img {
+    width: 222px;
+    filter: blur(30px) ;
+    height: 222px;
+    margin: -5px -10px -10px -5px;
+    opacity: 0.9;
+}
+
+#art {
+    position: relative;
+    border-radius: 100%;
+    width: 176px;
+    height: 176px;
+    margin: 23px;
+    box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.05);
+    transition: ease all 0.2s;
+}
+
+#title, #artist {
+    margin: 0px 17px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#title {
+    margin-top: 31px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 20px;
+    color: #393939;
+}
+
+#artist {
+    font-family: 'Segoe UI';
+    font-size: 14px;
+    color: #707070;
 }

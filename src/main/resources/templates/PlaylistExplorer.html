@@ -1,10 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/stylesheets/plexplorer.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Minimal Blur Cards</title>
 </head>
-<body>
 
+<body>
+<div id="cont">
+    <div id="menu-fixed">
+
+        <a href="#cont">
+            <i class="material-icons back">&#xE314;</i>
+        </a>
+        <a href="#menu-fixed">
+            <div class="logo">
+                <img src="images/logofinal.png" style="width:70px;height:70px;">
+            </div>
+            <p class="pmenu">MENU</p>
+        </a>
+        <hr>
+
+        <ul class="menu">
+            <form method="post" action="/homepagev2" id="home">
+                <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
+            </form>
+
+            <form method="post" action="/gotoExplore" id="explore">
+                <li>
+                    <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
+                    <span class="sideb">Explore</span>
+                </li>
+            </form>
+            <form method="post" action="/gotoPlaylistExp" id="playlistExp">
+                <li>
+                    <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
+                    <span class="sideb">Playlist</span>
+                </li>
+            </form>
+
+            <form method="post" action="/gotoProfile" id="profile">
+                <li>
+                    <i class="material-icons" onclick="gotoProfile()">person</i><br>
+                    <span class="sideb">Profile</span>
+                </li>
+            </form>
+            <form method="post" action="/logoutUser" id="logout">
+                <li>
+                    <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
+                    <span class="sideb">Log-out</span>
+                </li>
+            </form>
+
+            <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+        </ul>
+
+
+        <i class="material-icons info">&#xE88E;</i>
+    </div>
+</div>
+<div class="main">
+    <div class="card-container">
+        <form action="/gotoPlaylistPlayer" method="post" id="pl">
+            <a href="javascript:;" onclick="clickPl();">
+                <div class="card" id="card">
+                    <div id="back">
+                        <img src="images/playlist1.png">
+                    </div>
+                    <img src="images/playlist1.png" id="art">
+                    <div id="title">Divinity</div>
+                    <div id="artist">Porter Robinson</div>
+                </div>
+            </a>
+        </form>
+
+
+        <div class="card">
+            <div id="back">
+                <img src="images/playlist2.png">
+            </div>
+            <img src="images/playlist2.png" id="art">
+            <div id="title">Glorious</div>
+            <div id="artist">Arty</div>
+        </div>
+        <div class="card">
+            <div id="back">
+                <img src="images/playlist3.png">
+            </div>
+            <img src="images/playlist3.png" id="art">
+            <div id="title">Thunder</div>
+            <div id="artist">Imagine Dragons</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function clickPl(){
+        document.getElementById('pl').submit();
+    }
+
+    function gotoExplore() {
+        document.getElementById("explore").submit();
+    }
+
+    function gotoProfile() {
+        document.getElementById("profile").submit();
+    }
+
+    function logoutUser() {
+        document.getElementById("logout").submit();
+    }
+    function gotoPlaylistExplorer(){
+        document.getElementById("playlistExp").submit();
+    }
+    function gotoHome() {
+        document.getElementById("home").submit();
+    }
+</script>
 </body>
+
 </html>
