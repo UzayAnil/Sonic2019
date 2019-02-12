@@ -27,15 +27,38 @@
                 <p class="pmenu">MENU</p>
             </a>
             <hr>
-            <form id="sidemenu" action="/sidemenu" method="post">
+
                 <ul class="menu">
                     <li><i class="material-icons">&#xE88A;</i><br><span class="sideb">Home</span></li>
-                    <li><i class="material-icons">&#xe02c;</i><br><span class="sideb" onclick="sidemenu.submit();">Explore</span></li><input type="hidden" name="explore" value="1">
-                    <li><i class="material-icons">person</i><br><span class="sideb">Profile</span></li>
-                    <li><i class="material-icons">&#xE8B8;</i><br><span class="sideb">Settings</span></li>
+                    <form method="post" action="/gotoExplore" id="explore">
+                        <li>
+                            <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
+                            <span class="sideb">Explore</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/gotoPlaylistExp" id="playlistExp">
+                        <li>
+                            <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
+                            <span class="sideb">Playlist</span>
+                        </li>
+                    </form>
+
+                    <form method="post" action="/gotoProfile" id="profile">
+                        <li>
+                            <i class="material-icons" onclick="gotoProfile()">person</i><br>
+                            <span class="sideb">Profile</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/logoutUser" id="logout">
+                        <li>
+                            <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
+                            <span class="sideb">Log-out</span>
+                        </li>
+                    </form>
+
                     <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
                 </ul>
-            </form>
+
 
             <i class="material-icons info">&#xE88E;</i>
         </div>
@@ -112,5 +135,21 @@
             </tr>
         </table>
 </div>
+<script>
+    function gotoExplore() {
+        document.getElementById("explore").submit();
+    }
+
+    function gotoProfile() {
+        document.getElementById("profile").submit();
+    }
+
+    function logoutUser() {
+        document.getElementById("logout").submit();
+    }
+    function gotoPlaylistExplorer(){
+        document.getElementById("gotoPlaylistExp").submit();
+    }
+</script>
 </body>
 </html>

@@ -94,6 +94,8 @@ public class UserController {
                 session.setAttribute("userpersonalitygroup", checkUser.getPersonalitycriteriaId());
                 System.out.println(checkUser.getUserId() + " " + checkUser.getUserName());
 
+                System.out.println("S E S S I O N " + session.getAttribute("sessionid"));
+
                 return showHomepage(model, session);
             } else {
                 return "signinsignup";
@@ -237,6 +239,32 @@ public class UserController {
 
         return showHomepage(model,session);
 
+    }
+
+
+    @RequestMapping("/gotoExplore")
+    public String gotoExplore(Model model){
+        ArrayList<Genre> genres = videoService.findAllGenre();
+
+        model.addAttribute("genre", genres);
+        return showExplore(model);
+    }
+
+    @RequestMapping("/gotoProfile")
+    public String gotoProfile(){
+        return "testing";
+    }
+
+    @RequestMapping("/gotoPlaylistExp")
+    public String gotoPlaylistExplorer(){
+        return "PlaylistExplorer";
+    }
+
+    @RequestMapping("/logoutUser")
+    public String logoutUser(HttpSession session){
+
+        session.invalidate();
+        return "signinsignup";
     }
 
     public void updategenreWeight(int genreid, int userid, float temp){
@@ -443,6 +471,8 @@ public class UserController {
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i]+"======");
         }
+
+        System.out.println(" S E S S I O N : " + session.getAttribute("sessionid"));
         model.addAttribute("r1", vr1);
         model.addAttribute("r2", vr2);
         model.addAttribute("r3", vr3);
@@ -1422,18 +1452,18 @@ public class UserController {
         return "Explore";
     }
 
-    @RequestMapping("/sidemenu")
-    public String sideMenu(HttpServletRequest request, Model model){
-
-        String explore = request.getParameter("explore");
-        System.out.println(explore);
-        System.out.println("bobo");
-        ArrayList<Genre> genres = videoService.findAllGenre();
-
-        model.addAttribute("genre", genres);
-        return showExplore(model);
-
-    }
+//    @RequestMapping("/sidemenu")
+//    public String sideMenu(HttpServletRequest request, Model model){
+//
+//        String explore = request.getParameter("explore");
+//        System.out.println(explore);
+//        System.out.println("bobo");
+//        ArrayList<Genre> genres = videoService.findAllGenre();
+//
+//        model.addAttribute("genre", genres);
+//        return showExplore(model);
+//
+//    }
 
     @RequestMapping("/admin")
     public String Admin(HttpServletRequest request, Model model){
