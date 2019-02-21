@@ -64,8 +64,5 @@ public interface VideoService {
 
     VideoDetails findVideoDetailsByVideoid(String videoWatched);
 
-
 //    void updateVidDuration(String videoid, long seconds);
-
-
 }

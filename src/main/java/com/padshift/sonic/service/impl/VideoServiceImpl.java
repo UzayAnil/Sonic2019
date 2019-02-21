@@ -173,6 +173,4 @@ public class VideoServiceImpl implements VideoService {
     public VideoDetails findVideoDetailsByVideoid(String videoWatched) {
         return videoDetailsRepository.findByVideoid(videoWatched);
     }
-
-
 }

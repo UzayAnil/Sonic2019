@@ -2,6 +2,7 @@ package com.padshift.sonic.controller;
 
 import com.padshift.sonic.entities.*;
 
+import com.padshift.sonic.repository.VideoDetailsRepository;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
@@ -9,6 +10,8 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -369,6 +372,15 @@ public class AdminController {
                 videoService.saveVideoDetails(videt);
             }
 
+        }
+        return "testing";
+    }
+
+    @RequestMapping("/cleangenres")
+    public String cleanGenres(){
+        ArrayList<VideoDetails> videos = videoService.findAllVideoDetails();
+        for (int i = 0; i < videos.size(); i++) {
+            System.out.print("'"+ videos.get(i).getVideoid()+"', ");
         }
         return "testing";
     }

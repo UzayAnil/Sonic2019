@@ -927,8 +927,7 @@ public class UserController {
         VideoDetails video = videoService.findByVideoid(vididtoplay);
         String videoWatched = request.getParameter("videoWatched");
 
-        VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
-        if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
+        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
             UserHistory userhist = new UserHistory();
             userhist.setUserId(session.getAttribute("userid").toString());
             userhist.setVideoid(videoWatched);
@@ -937,6 +936,7 @@ public class UserController {
             userhist.setViewingTime(getTime());
             userhist.setTimeSpent(request.getParameter("timeSpent").toString());
 
+            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
             if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
                 userhist.setViewingStatus("1");
             }else{
@@ -1107,7 +1107,8 @@ public class UserController {
         ArrayList<String> videohist = new ArrayList<>();
         ArrayList<String> videorating = new ArrayList<>();
         String uhist;
-        String currentU = userService.findCurrentByUserId(currentuserId);
+        int current = userService.findUserIdByUserId(Integer.parseInt(currentuserId));
+        String currentU = String.valueOf(current);
         System.out.println(currentU);
         allusers.add(currentU);
 

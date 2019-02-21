@@ -31,6 +31,7 @@ public interface VideoDetailsRepository extends JpaRepository<VideoDetails,Long>
 
 
 
+
 //    @Query("UPDATE VideoDetails v SET v.vidDuration = :duration WHERE v.videoid = :videoid")
 //    static void updateVidDur(@Param("videoid") String videoid, @Param("duration") String duration){
 //
