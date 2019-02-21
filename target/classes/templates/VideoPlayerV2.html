@@ -131,6 +131,8 @@
                                                         </div>
                                                     </a>
                                                 </li>
+                                                <input type="hidden" id="timeSpentrec"  name="timeSpentrec">
+                                                <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
                                             </form>
                                         </div>
                                 </ul>
@@ -247,6 +249,8 @@
         var y = document.querySelector("input[type=radio]:checked").value;
         document.getElementById("rate").setAttribute("value",y);
         document.getElementById("currentvid").setAttribute("value",x);
+
+        document.getElementById("timeSpentrec").setAttribute("value",document.getElementById("time"));
         document.getElementById('upnv1').submit();
     }
 
@@ -290,7 +294,10 @@
 
                     console.log(videotime);
                     document.getElementById("time").innerHTML = videotime;
+                    document.getElementById("timeSpentrec").innerHTML = videotime;
                     document.getElementById("timeSpent").setAttribute("value",videotime);
+//                    document.getElementById("timeSpentrec").setAttribute("value",videotime);
+
                 }
                 if(videotime !== oldTime) {
                     onProgress(videotime);

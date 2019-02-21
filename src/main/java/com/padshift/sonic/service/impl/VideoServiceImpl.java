@@ -41,6 +41,9 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     PlaylistRepository playlistRepository;
 
+    @Autowired
+    RecVidTableRepository recVidTableRepository;
+
 
     @Override
     public void saveVideo(Video video) {
@@ -196,6 +199,16 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public Video findVideoByVideoid(String s) {
         return videoRepository.findByVideoid(s);
+    }
+
+    @Override
+    public ArrayList<RecVidTable> findRecVidTableByUserId(String userid) {
+        return recVidTableRepository.findByUserId(userid);
+    }
+
+    @Override
+    public ArrayList<Video> findAllVideo() {
+        return (ArrayList<Video>) videoRepository.findAll();
     }
 
 
