@@ -748,8 +748,8 @@ public class AdminController {
     }
 
 
-    @RequestMapping("/generatePlaylistEvening")
-//    @RequestMapping("/generatePlaylistMorAft")
+//    @RequestMapping("/generatePlaylistEvening")
+    @RequestMapping("/generatePlaylistMorAft")
     public String generatePlaylistTimeBased(){
         ArrayList<String> generatedPlaylist = new ArrayList<>();
 
@@ -958,6 +958,10 @@ public class AdminController {
 
         if(fifthPass.size()==0){
             generatedPlaylist = createPlaylist(fifthPassTemp);
+//            endPass(generatedPlaylist,singE,"plevening");
+            endPass(generatedPlaylist,singE,"plmornaft");
+            return "testing";
+            //returrrrrrrrrrrrrrrrrrrrrrrrrrn
         }else {
             displaySequenceRules(fifthPass);
         }
@@ -983,10 +987,10 @@ public class AdminController {
 //        }
         sixthPass=evaluateSeqRules(sixthPassTemp,sixthThresh);
         if(sixthPass.size()==0){
-            System.out.println("Im here ate 6th pass");
+            System.out.println("Im here at 6th pass");
             generatedPlaylist = createPlaylist(sixthPassTemp);
-            endPass(generatedPlaylist,singE,"plevening");
-//            endPass(generatedPlaylist,singE,"plmornaft");
+//            endPass(generatedPlaylist,singE,"plevening");
+            endPass(generatedPlaylist,singE,"plmornaft");
 
             return "testing";
 
@@ -1058,8 +1062,8 @@ public class AdminController {
 
         //20 SONGS RA SIZZYYY
 
-//        String plid = "plmornaft";
-        String plid = "plevening";
+        String plid = "plmornaft";
+//        String plid = "plevening";
         for(int i=0; i<20; i++){
             Playlist pl = new Playlist(plid, generatedPlaylist.get(i).toString());
             videoService.savePlaylist(pl);
