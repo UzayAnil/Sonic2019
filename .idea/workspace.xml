@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb35237d-3a34-4352-961d-cb2709f3389c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController$upnextItem.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController$upnextItem.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/AdminController.java" afterPath="$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/AdminController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/UserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/templates/PlaylistExplorer.html" afterPath="$PROJECT_DIR$/src/main/resources/templates/PlaylistExplorer.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/templates/PlaylistExplorer.html" afterPath="$PROJECT_DIR$/target/classes/templates/PlaylistExplorer.html" />
     </list>
     <ignored path="demo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,9 +32,29 @@
       <file leaf-file-name="AdminController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/AdminController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.53047407">
-              <caret line="966" column="9" selection-start-line="966" selection-start-column="9" selection-end-line="966" selection-end-column="9" />
-              <folding />
+            <state vertical-scroll-proportion="0.4938575">
+              <caret line="476" column="13" selection-start-line="476" selection-start-column="13" selection-end-line="476" selection-end-column="13" />
+              <folding>
+                <element signature="method#isBetween#0;class#AdminController#0" expanded="false" />
+                <element signature="method#GetStringArray#0;class#AdminController#0" expanded="false" />
+                <element signature="method#endPass#0;class#AdminController#0" expanded="false" />
+                <element signature="method#removeDuplicates#0;class#AdminController#0" expanded="false" />
+                <element signature="method#createPlaylist#0;class#AdminController#0" expanded="false" />
+                <element signature="method#evaluateSeqRules#0;class#AdminController#0" expanded="false" />
+                <element signature="method#computeThreshold#0;class#AdminController#0" expanded="false" />
+                <element signature="e#51438#51439#0" expanded="true" />
+                <element signature="e#51479#51480#0" expanded="true" />
+                <element signature="e#51534#51535#0" expanded="true" />
+                <element signature="e#51586#51587#0" expanded="true" />
+                <element signature="e#51620#51621#0" expanded="true" />
+                <element signature="e#51655#51656#0" expanded="true" />
+                <element signature="e#51698#51699#0" expanded="true" />
+                <element signature="e#51738#51739#0" expanded="true" />
+                <element signature="e#51778#51779#0" expanded="true" />
+                <element signature="e#51819#51820#0" expanded="true" />
+                <element signature="e#51874#51875#0" expanded="true" />
+                <element signature="e#51926#51927#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -44,8 +63,10 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="1752" column="0" selection-start-line="1752" selection-start-column="0" selection-end-line="1752" selection-end-column="0" />
-              <folding />
+              <caret line="1123" column="88" selection-start-line="1123" selection-start-column="88" selection-end-line="1123" selection-end-column="88" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,7 +74,7 @@
       <file leaf-file-name="PlaylistExplorer.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/templates/PlaylistExplorer.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.387096">
+            <state vertical-scroll-proportion="0.0">
               <caret line="87" column="71" selection-start-line="87" selection-start-column="71" selection-end-line="87" selection-end-column="71" />
               <folding />
             </state>
@@ -89,7 +110,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -97,7 +120,7 @@
       <file leaf-file-name="VideoPlayerV2.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/templates/VideoPlayerV2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.7096774">
+            <state vertical-scroll-proportion="0.0">
               <caret line="121" column="54" selection-start-line="121" selection-start-column="54" selection-end-line="121" selection-end-column="54" />
               <folding />
             </state>
@@ -161,6 +184,8 @@
                 <element signature="e#5324#5325#0" expanded="false" />
                 <element signature="e#5545#5546#0" expanded="false" />
                 <element signature="e#5600#5601#0" expanded="false" />
+                <element signature="e#5815#5816#0" expanded="false" />
+                <element signature="e#5882#5883#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -287,8 +312,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -629,7 +654,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1111,16 +1136,17 @@
       <workItem from="1550588786249" duration="8422000" />
       <workItem from="1550675025807" duration="370000" />
       <workItem from="1550744910490" duration="18929000" />
-      <workItem from="1550807283610" duration="4711000" />
+      <workItem from="1550807283610" duration="6912000" />
+      <workItem from="1550918627412" duration="16641000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="190562000" />
+    <option name="totallyTimeSpent" value="209404000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1129,7 +1155,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.44768068" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48651564" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18645833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1161,7 +1187,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1486,7 +1512,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="53" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1495,7 +1521,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1545,6 +1573,8 @@
             <element signature="e#5324#5325#0" expanded="false" />
             <element signature="e#5545#5546#0" expanded="false" />
             <element signature="e#5600#5601#0" expanded="false" />
+            <element signature="e#5815#5816#0" expanded="false" />
+            <element signature="e#5882#5883#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1589,7 +1619,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/PlaylistExplorer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.387096">
+        <state vertical-scroll-proportion="0.0">
           <caret line="87" column="71" selection-start-line="87" selection-start-column="71" selection-end-line="87" selection-end-column="71" />
           <folding />
         </state>
@@ -1597,7 +1627,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/VideoPlayerV2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7096774">
+        <state vertical-scroll-proportion="0.0">
           <caret line="121" column="54" selection-start-line="121" selection-start-column="54" selection-end-line="121" selection-end-column="54" />
           <folding />
         </state>
@@ -1606,16 +1636,38 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/UserController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="1752" column="0" selection-start-line="1752" selection-start-column="0" selection-end-line="1752" selection-end-column="0" />
-          <folding />
+          <caret line="1123" column="88" selection-start-line="1123" selection-start-column="88" selection-end-line="1123" selection-end-column="88" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/AdminController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53047407">
-          <caret line="966" column="9" selection-start-line="966" selection-start-column="9" selection-end-line="966" selection-end-column="9" />
-          <folding />
+        <state vertical-scroll-proportion="0.4938575">
+          <caret line="476" column="13" selection-start-line="476" selection-start-column="13" selection-end-line="476" selection-end-column="13" />
+          <folding>
+            <element signature="method#isBetween#0;class#AdminController#0" expanded="false" />
+            <element signature="method#GetStringArray#0;class#AdminController#0" expanded="false" />
+            <element signature="method#endPass#0;class#AdminController#0" expanded="false" />
+            <element signature="method#removeDuplicates#0;class#AdminController#0" expanded="false" />
+            <element signature="method#createPlaylist#0;class#AdminController#0" expanded="false" />
+            <element signature="method#evaluateSeqRules#0;class#AdminController#0" expanded="false" />
+            <element signature="method#computeThreshold#0;class#AdminController#0" expanded="false" />
+            <element signature="e#51438#51439#0" expanded="true" />
+            <element signature="e#51479#51480#0" expanded="true" />
+            <element signature="e#51534#51535#0" expanded="true" />
+            <element signature="e#51586#51587#0" expanded="true" />
+            <element signature="e#51620#51621#0" expanded="true" />
+            <element signature="e#51655#51656#0" expanded="true" />
+            <element signature="e#51698#51699#0" expanded="true" />
+            <element signature="e#51738#51739#0" expanded="true" />
+            <element signature="e#51778#51779#0" expanded="true" />
+            <element signature="e#51819#51820#0" expanded="true" />
+            <element signature="e#51874#51875#0" expanded="true" />
+            <element signature="e#51926#51927#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

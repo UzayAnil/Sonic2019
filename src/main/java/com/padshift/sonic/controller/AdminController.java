@@ -382,6 +382,210 @@ public class AdminController {
         return "testing";
     }
 
+
+    @RequestMapping("/runseq")
+    public String runSeq(){
+        ArrayList<String> generatedPlaylist = new ArrayList<>();
+        ArrayList<String> sequenceids = userService.findDistinctSequenceId();
+
+        System.out.println("SEQ IDS SIZE : " + sequenceids.size());
+
+
+        ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[sequenceids.size()];
+
+        for(int i=0; i<sequenceids.size();i++){
+            seqRules[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
+            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+        }
+
+
+        seqRules = isViewingTimeValid(seqRules,sequenceids);  //check time if viewing status is 0
+//        displaySeqFromDatabase(seqRules,sequenceids);
+
+        ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,sequenceids);
+
+        ArrayList<String> databaseRules = buildDBRules(seqRules,sequenceids);
+
+
+        ArrayList<ClassSequentialRules>[] seqrules = (ArrayList<ClassSequentialRules>[])new ArrayList[10];
+        seqrules[0] = new ArrayList<>();
+        for(String id: uniqueVideoIDs){
+            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id),0,0,0);
+            seqrules[0].add(seq);
+        }
+//        displaySeqrulesMeasures(seqrules[0]);
+        seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
+        displaySeqrulesMeasures(seqrules[0]);
+
+        System.out.println("seq1 size : " + seqrules[0].size());
+
+//        for(int i=1; i<10; i++){
+//            seqrules[i] = new ArrayList<>();
+//            System.out.println("--------------------------------");
+//            seqrules[i] = buildRuleCombination(seqrules[i-1],uniqueVideoIDs, databaseRules);
+//            seqrules[i] = removeUnqualifiedForThreshold(seqrules[1]);
+//            displaySeqrulesMeasures(seqrules[i]);
+//        }
+
+        seqrules[1] = new ArrayList<>();
+        System.out.println("------------1--------------------");
+        seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs, databaseRules);
+        seqrules[1] = removeUnqualifiedForThreshold(seqrules[1]);
+        displaySeqrulesMeasures(seqrules[1]);
+
+
+
+        seqrules[2] = new ArrayList<>();
+        System.out.println("-----------2---------------------");
+        seqrules[2] = buildRuleCombination(seqrules[1],uniqueVideoIDs, databaseRules);
+        seqrules[2] = removeUnqualifiedForThreshold(seqrules[2]);
+        displaySeqrulesMeasures(seqrules[2]);
+
+
+
+
+        return "testing";
+
+    }
+
+    public ArrayList<ClassSequentialRules> calculateMeasures(ArrayList<ClassSequentialRules> s, ArrayList<String> databaseRules){
+
+        for(int i=0; i<s.size(); i++){
+            s.get(i).setSupport(calculateSupport(databaseRules,s.get(i).getVideoIds()));
+        }
+        return s;
+    }
+
+    public ArrayList<ClassSequentialRules> buildRuleCombination(ArrayList<ClassSequentialRules> seqrules, ArrayList<String> uniqueVideoIDs, ArrayList<String> databaseRules){
+        ArrayList<ClassSequentialRules> seqres = new ArrayList<>();
+        for(ClassSequentialRules s: seqrules){
+            for(int i=0; i<uniqueVideoIDs.size(); i++) {
+                ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +", " +uniqueVideoIDs.get(i), calculateSupport(databaseRules, s.getVideoIds()), 0, 0, 0);
+                seqres.add(seq);
+//                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
+            }
+        }
+        return seqres;
+    }
+
+    public void displaySeqrulesMeasures(ArrayList<ClassSequentialRules> seqrules){
+        for(int i=0; i<seqrules.size(); i++){
+            if(seqrules.get(i).getSupport()!=0) {
+                System.out.println("{" + seqrules.get(i).getVideoIds() + "} : " + " support : " + seqrules.get(i).getSupport() +
+                        "      confidence : " + seqrules.get(i).getConfidence() +
+                        "      conviction : " + seqrules.get(i).getConviction());
+            }
+        }
+
+    }
+
+    public ArrayList<ClassSequentialRules> removeUnqualifiedForThreshold(ArrayList<ClassSequentialRules> seqrules){
+        ArrayList<ClassSequentialRules> res = new ArrayList<>();
+        float threshold=0;
+        for(int i=0; i<seqrules.size(); i++){
+            threshold += seqrules.get(i).getSupport();
+        }
+        threshold = threshold/seqrules.size();
+
+
+
+        for(int i=0; i<seqrules.size(); i++){
+            if(seqrules.get(i).getSupport()>=(threshold)){
+                res.add(seqrules.get(i));
+            }
+        }
+        System.out.println("T H R E S H O L D : " + threshold);
+
+        return res;
+    }
+
+
+    public float calculateSupport(ArrayList<String> databaseRules, String seqToCheck ){
+        float support=0;
+        for(int i=0; i<databaseRules.size(); i++){
+            String newStr = seqToCheck.replaceAll(",", ".*");
+            String tempPat = ".*" + newStr + ".*";
+            Pattern p = Pattern.compile(tempPat);
+            boolean b = false;
+
+            Matcher m = p.matcher(databaseRules.get(i).toString());
+            b = m.matches();
+            if (b == true) {
+                support++;
+            }
+        }
+
+        support = support/databaseRules.size();
+//        System.out.println("dbrules size" + databaseRules.size());
+//        System.out.println("SUPPORT : " + support);
+        return support;
+
+
+    }
+
+    public ArrayList<String> buildDBRules(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        ArrayList<String> databaseRules = new ArrayList<>();
+        for(int i=0; i<sequenceids.size();i++){
+            String asOne ="";
+            for(int j=0; j<seqRules[i].size(); j++) {
+                asOne = asOne + seqRules[i].get(j).getVideoid() + ",";
+            }
+            databaseRules.add(asOne);
+
+        }
+
+        return  databaseRules;
+    }
+
+
+
+    public ArrayList<UserHistory>[] isViewingTimeValid(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        for(int i=0; i<sequenceids.size();i++){
+            for(int j=0; j<seqRules[i].size(); j++){
+                if(seqRules[i].get(j).getViewingStatus().equals("0")){
+                    seqRules[i].remove(j);
+                }
+            }
+        }
+
+        return seqRules;
+    }
+
+    public ArrayList<String> getUniqueVideoIDs(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        ArrayList<String> uniqueVidIDS = new ArrayList<>();
+
+        for(int i=0; i<sequenceids.size();i++){
+            for(int j=0; j<seqRules[i].size(); j++){
+                if(uniqueVidIDS.contains(seqRules[i].get(j).getVideoid())){
+//                    System.out.println("Already Existed!");
+                }else{
+                    uniqueVidIDS.add(seqRules[i].get(j).getVideoid());
+                }
+
+            }
+        }
+
+        return uniqueVidIDS;
+    }
+
+
+
+    public void displaySeqFromDatabase(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        System.out.println("S E Q U E N C E S  F R O M  T H E  D A T A B A S E");
+        for(int i=0; i<sequenceids.size();i++){
+            System.out.print("[" + sequenceids.get(i).toString() +"] : ");
+            for(int j=0; j<seqRules[i].size(); j++){
+                System.out.print(" " + seqRules[i].get(j).getVideoid() +", ");
+            }
+            System.out.println("");
+        }
+    }
+
+
+
+
+
+
     @RequestMapping("/generatePlaylist")
     public String generatePlaylist(){
         ArrayList<String> generatedPlaylist = new ArrayList<>();
@@ -1244,6 +1448,63 @@ public class AdminController {
             this.videoIds = videoIds;
         }
     }
+
+    public class ClassSequentialRules {
+        String videoIds;
+        float support;
+        float confidence;
+        float lift;
+        float conviction;
+
+        public ClassSequentialRules(String videoIds, float support, float confidence, float lift, float conviction) {
+            this.videoIds = videoIds;
+            this.support = support;
+            this.confidence = confidence;
+            this.lift = lift;
+            this.conviction = conviction;
+        }
+
+        public float getConfidence() {
+            return confidence;
+        }
+
+        public void setConfidence(float confidence) {
+            this.confidence = confidence;
+        }
+
+        public float getLift() {
+            return lift;
+        }
+
+        public void setLift(float lift) {
+            this.lift = lift;
+        }
+
+        public float getConviction() {
+            return conviction;
+        }
+
+        public void setConviction(float conviction) {
+            this.conviction = conviction;
+        }
+
+        public float getSupport() {
+            return support;
+        }
+
+        public void setSupport(float support) {
+            this.support = support;
+        }
+
+        public String getVideoIds() {
+            return videoIds;
+        }
+
+        public void setVideoIds(String videoIds) {
+            this.videoIds = videoIds;
+        }
+    }
+
 
 
 

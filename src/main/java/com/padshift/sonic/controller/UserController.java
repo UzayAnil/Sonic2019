@@ -1075,10 +1075,7 @@ public class UserController {
         VideoDetails video = videoService.findByVideoid(vididtoplay);
         String videoWatched = request.getParameter("videoWatched");
 
-        VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
-        System.out.println("Time Spent : " + request.getParameter("timeSpentrec").toString());
-        System.out.println("Video Duration : " + curviddur.getVidDuration()/2);
-        if(Float.parseFloat(request.getParameter("timeSpentrec").toString())>curviddur.getVidDuration()/2) {
+        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
             UserHistory userhist = new UserHistory();
             userhist.setUserId(session.getAttribute("userid").toString());
             userhist.setVideoid(videoWatched);
@@ -1087,6 +1084,7 @@ public class UserController {
             userhist.setViewingTime(getTime());
             userhist.setTimeSpent(request.getParameter("timeSpent").toString());
 
+            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
             if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
                 userhist.setViewingStatus("1");
             }else{
@@ -1183,6 +1181,7 @@ public class UserController {
         model.addAttribute("tn3", thumbnail3);
 
         return "VideoPlayerV2";
+
     }
 
     private void incrementpersonalitygroup(int personalitygroup, String genre) {
