@@ -410,37 +410,82 @@ public class AdminController {
         ArrayList<ClassSequentialRules>[] seqrules = (ArrayList<ClassSequentialRules>[])new ArrayList[10];
         seqrules[0] = new ArrayList<>();
         for(String id: uniqueVideoIDs){
-            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id),0,0,0);
+            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id.toString()),0,0,0);
             seqrules[0].add(seq);
         }
-//        displaySeqrulesMeasures(seqrules[0]);
+
         seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
         displaySeqrulesMeasures(seqrules[0]);
 
-        System.out.println("seq1 size : " + seqrules[0].size());
-
-//        for(int i=1; i<10; i++){
-//            seqrules[i] = new ArrayList<>();
-//            System.out.println("--------------------------------");
-//            seqrules[i] = buildRuleCombination(seqrules[i-1],uniqueVideoIDs, databaseRules);
-//            seqrules[i] = removeUnqualifiedForThreshold(seqrules[1]);
-//            displaySeqrulesMeasures(seqrules[i]);
-//        }
-
         seqrules[1] = new ArrayList<>();
         System.out.println("------------1--------------------");
-        seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs, databaseRules);
-        seqrules[1] = removeUnqualifiedForThreshold(seqrules[1]);
+        seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs,databaseRules);
         displaySeqrulesMeasures(seqrules[1]);
 
 
 
-        seqrules[2] = new ArrayList<>();
-        System.out.println("-----------2---------------------");
-        seqrules[2] = buildRuleCombination(seqrules[1],uniqueVideoIDs, databaseRules);
-        seqrules[2] = removeUnqualifiedForThreshold(seqrules[2]);
-        displaySeqrulesMeasures(seqrules[2]);
 
+//        for(ClassSequentialRules s: seqrules[0]){
+//            s.setSupport(calculateSupport(databaseRules,s.getVideoIds()));
+//        }
+
+//        seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
+//        displaySeqrulesMeasures(seqrules[0]);
+//
+//        displaySeqrulesMeasures(seqrules[0]);
+//
+//        System.out.println("seq1 size : " + seqrules[0].size());
+//
+//
+//        seqrules[1] = new ArrayList<>();
+//        System.out.println("------------1--------------------");
+//        seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs);
+//
+//
+//
+
+//        for(ClassSequentialRules s: seqrules[1]){
+//            for(int i=0; i<databaseRules.size(); i++){
+//                String newStr = s.getVideoIds().replaceAll(",", ".*");
+//                String tempPat = ".*" + newStr + ".*";
+//                Pattern p = Pattern.compile(tempPat);
+//                boolean b = false;
+//
+////                System.out.println(tempPat);
+//
+//                Matcher m = p.matcher(databaseRules.get(i).toString());
+//                b = m.matches();
+//                if (b == true) {
+//                    s.setSupport(1);
+//                }
+////        s.setSupport(1);
+//        }
+//
+//        for(ClassSequentialRules s: seqrules[1]){
+//            System.out.println(s.getVideoIds() + s.getSupport());
+//        }
+
+
+//
+//
+//
+//        for (int i=0; i<seqrules[0].size(); i++){
+//            seqrules[1].get(i).setSupport(1);
+//        }
+////        seqrules[1] = removeUnqualifiedForThreshold(seqrules[1]);
+//        displaySeqrulesMeasures(seqrules[1]);
+//
+
+
+//        seqrules[2] = new ArrayList<>();
+//        System.out.println("-----------2---------------------");
+//        seqrules[2] = buildRuleCombination(seqrules[1],uniqueVideoIDs, databaseRules);
+////        seqrules[2] = removeUnqualifiedForThreshold(seqrules[2]);
+////        displaySeqrulesMeasures(seqrules[2]);
+//
+//        for(int i=0; i<seqrules[2].size(); i++){
+//            seqrules[2].get(i).setSupport(calculateSupport(databaseRules,uniqueVideoIDs));
+//        }
 
 
 
@@ -460,7 +505,7 @@ public class AdminController {
         ArrayList<ClassSequentialRules> seqres = new ArrayList<>();
         for(ClassSequentialRules s: seqrules){
             for(int i=0; i<uniqueVideoIDs.size(); i++) {
-                ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +", " +uniqueVideoIDs.get(i), calculateSupport(databaseRules, s.getVideoIds()), 0, 0, 0);
+                ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +" , " +uniqueVideoIDs.get(i), calculateSupport(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i)), 0, 0, 0);
                 seqres.add(seq);
 //                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
             }
@@ -470,11 +515,11 @@ public class AdminController {
 
     public void displaySeqrulesMeasures(ArrayList<ClassSequentialRules> seqrules){
         for(int i=0; i<seqrules.size(); i++){
-            if(seqrules.get(i).getSupport()!=0) {
+//            if(seqrules.get(i).getSupport()!=0) {
                 System.out.println("{" + seqrules.get(i).getVideoIds() + "} : " + " support : " + seqrules.get(i).getSupport() +
                         "      confidence : " + seqrules.get(i).getConfidence() +
                         "      conviction : " + seqrules.get(i).getConviction());
-            }
+//            }
         }
 
     }
@@ -501,12 +546,14 @@ public class AdminController {
 
 
     public float calculateSupport(ArrayList<String> databaseRules, String seqToCheck ){
-        float support=0;
+        int support=0;
         for(int i=0; i<databaseRules.size(); i++){
             String newStr = seqToCheck.replaceAll(",", ".*");
             String tempPat = ".*" + newStr + ".*";
             Pattern p = Pattern.compile(tempPat);
             boolean b = false;
+
+//            System.out.println(tempPat);
 
             Matcher m = p.matcher(databaseRules.get(i).toString());
             b = m.matches();
@@ -515,10 +562,10 @@ public class AdminController {
             }
         }
 
-        support = support/databaseRules.size();
+        float fsupport = (float)support/(float)databaseRules.size();
 //        System.out.println("dbrules size" + databaseRules.size());
-//        System.out.println("SUPPORT : " + support);
-        return support;
+//        System.out.println("SUPPORT : " + fsupport);
+        return fsupport;
 
 
     }
@@ -528,7 +575,7 @@ public class AdminController {
         for(int i=0; i<sequenceids.size();i++){
             String asOne ="";
             for(int j=0; j<seqRules[i].size(); j++) {
-                asOne = asOne + seqRules[i].get(j).getVideoid() + ",";
+                asOne = asOne + seqRules[i].get(j).getVideoid() + " , ";
             }
             databaseRules.add(asOne);
 
