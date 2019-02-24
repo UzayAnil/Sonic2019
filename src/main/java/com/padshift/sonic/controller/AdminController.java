@@ -6,8 +6,9 @@ import com.padshift.sonic.repository.PlaylistRepository;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
+import com.sun.org.apache.bcel.internal.generic.FLOAD;
 import com.sun.org.apache.xpath.internal.operations.Mod;
-import org.hibernate.mapping.Array;
+import org.hibernate.mapping.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -410,17 +412,54 @@ public class AdminController {
         ArrayList<ClassSequentialRules>[] seqrules = (ArrayList<ClassSequentialRules>[])new ArrayList[10];
         seqrules[0] = new ArrayList<>();
         for(String id: uniqueVideoIDs){
-            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id.toString()),0,0,0);
+            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id.toString()),0);
             seqrules[0].add(seq);
         }
 
         seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
         displaySeqrulesMeasures(seqrules[0]);
 
-        seqrules[1] = new ArrayList<>();
         System.out.println("------------1--------------------");
+        seqrules[1] = new ArrayList<>();
         seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs,databaseRules);
+        seqrules[1] = removeUnqualifiedForThreshold(seqrules[1]);
         displaySeqrulesMeasures(seqrules[1]);
+
+        System.out.println("------------2--------------------");
+        seqrules[2] = new ArrayList<>();
+        seqrules[2] = buildRuleCombination(seqrules[1],uniqueVideoIDs,databaseRules);
+        seqrules[2] = removeUnqualifiedForThreshold(seqrules[2]);
+        displaySeqrulesMeasures(seqrules[2]);
+
+        System.out.println("------------3--------------------");
+        seqrules[3] = new ArrayList<>();
+        seqrules[3] = buildRuleCombination(seqrules[2],uniqueVideoIDs,databaseRules);
+        seqrules[3] = removeUnqualifiedForThreshold(seqrules[3]);
+        displaySeqrulesMeasures(seqrules[3]);
+//
+        System.out.println("------------4--------------------");
+        seqrules[4] = new ArrayList<>();
+        seqrules[4] = buildRuleCombination(seqrules[3],uniqueVideoIDs,databaseRules);
+        seqrules[4] = removeUnqualifiedForThreshold(seqrules[4]);
+        displaySeqrulesMeasures(seqrules[4]);
+//
+//
+        System.out.println("------------5--------------------");
+        seqrules[5] = new ArrayList<>();
+        seqrules[5] = buildRuleCombination(seqrules[4],uniqueVideoIDs,databaseRules);
+        seqrules[5] = removeUnqualifiedForThreshold(seqrules[5]);
+        displaySeqrulesMeasures(seqrules[5]);
+
+        System.out.println("------------6--------------------");
+        seqrules[6] = new ArrayList<>();
+        seqrules[6] = buildRuleCombination(seqrules[5],uniqueVideoIDs,databaseRules);
+        seqrules[6] = removeUnqualifiedForThreshold(seqrules[6]);
+        displaySeqrulesMeasures(seqrules[6]);
+        
+
+
+
+
 
 
 
@@ -505,7 +544,9 @@ public class AdminController {
         ArrayList<ClassSequentialRules> seqres = new ArrayList<>();
         for(ClassSequentialRules s: seqrules){
             for(int i=0; i<uniqueVideoIDs.size(); i++) {
-                ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +" , " +uniqueVideoIDs.get(i), calculateSupport(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i)), 0, 0, 0);
+                ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +" , " +uniqueVideoIDs.get(i),
+                                                                    calculateSupport(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i)),
+                                                                    calculateConfidence(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i),seqrules,s.getVideoIds()));
                 seqres.add(seq);
 //                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
             }
@@ -517,8 +558,7 @@ public class AdminController {
         for(int i=0; i<seqrules.size(); i++){
 //            if(seqrules.get(i).getSupport()!=0) {
                 System.out.println("{" + seqrules.get(i).getVideoIds() + "} : " + " support : " + seqrules.get(i).getSupport() +
-                        "      confidence : " + seqrules.get(i).getConfidence() +
-                        "      conviction : " + seqrules.get(i).getConviction());
+                        "      confidence : " + seqrules.get(i).getConfidence()  );
 //            }
         }
 
@@ -527,15 +567,27 @@ public class AdminController {
     public ArrayList<ClassSequentialRules> removeUnqualifiedForThreshold(ArrayList<ClassSequentialRules> seqrules){
         ArrayList<ClassSequentialRules> res = new ArrayList<>();
         float threshold=0;
+        ArrayList<Float> findMax= new ArrayList<>();
         for(int i=0; i<seqrules.size(); i++){
             threshold += seqrules.get(i).getSupport();
+            findMax.add(seqrules.get(i).getSupport());
         }
-        threshold = threshold/seqrules.size();
 
 
+        //threshold = (threshold/seqrules.size())*((float)4);
+
+        threshold = Collections.max(findMax);
+
+
+
+//        for(int i=0; i<seqrules.size(); i++){
+//            if(seqrules.get(i).getSupport()>(threshold)){
+//                res.add(seqrules.get(i));
+//            }
+//        }
 
         for(int i=0; i<seqrules.size(); i++){
-            if(seqrules.get(i).getSupport()>=(threshold)){
+            if(seqrules.get(i).getSupport()==(threshold)){
                 res.add(seqrules.get(i));
             }
         }
@@ -567,8 +619,41 @@ public class AdminController {
 //        System.out.println("SUPPORT : " + fsupport);
         return fsupport;
 
-
     }
+
+    public float calculateConfidence(ArrayList<String> databaseRules, String seqToCheck, ArrayList<ClassSequentialRules> prevSeqrules, String findInPrev){
+        float confidence=0;
+
+        int support=0;
+        for(int i=0; i<databaseRules.size(); i++){
+            String newStr = seqToCheck.replaceAll(",", ".*");
+            String tempPat = ".*" + newStr + ".*";
+            Pattern p = Pattern.compile(tempPat);
+            boolean b = false;
+
+//            System.out.println(tempPat);
+
+            Matcher m = p.matcher(databaseRules.get(i).toString());
+            b = m.matches();
+            if (b == true) {
+                support++;
+            }
+        }
+//        System.out.println( seqToCheck + "present:" + ((float)support/(float)databaseRules.size()) +"/" + supportPrevSet);
+        float prevSup=0;
+        for(ClassSequentialRules s: prevSeqrules){
+            if(findInPrev.equals(s.getVideoIds())){
+                prevSup = s.getSupport();
+            }
+        }
+//        System.out.println(support + "/" + databaseRules.size() + "/" + prevSup);
+        confidence = (support/(float)databaseRules.size())/prevSup;
+
+//        System.out.println("STOP");
+        return confidence;
+    }
+
+
 
     public ArrayList<String> buildDBRules(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
         ArrayList<String> databaseRules = new ArrayList<>();
@@ -1500,15 +1585,12 @@ public class AdminController {
         String videoIds;
         float support;
         float confidence;
-        float lift;
-        float conviction;
 
-        public ClassSequentialRules(String videoIds, float support, float confidence, float lift, float conviction) {
+        public ClassSequentialRules(String videoIds, float support, float confidence) {
             this.videoIds = videoIds;
             this.support = support;
             this.confidence = confidence;
-            this.lift = lift;
-            this.conviction = conviction;
+
         }
 
         public float getConfidence() {
@@ -1519,21 +1601,7 @@ public class AdminController {
             this.confidence = confidence;
         }
 
-        public float getLift() {
-            return lift;
-        }
 
-        public void setLift(float lift) {
-            this.lift = lift;
-        }
-
-        public float getConviction() {
-            return conviction;
-        }
-
-        public void setConviction(float conviction) {
-            this.conviction = conviction;
-        }
 
         public float getSupport() {
             return support;
