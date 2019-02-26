@@ -60,7 +60,7 @@
 </div>
 <body>
 
-<div id="content">
+    <div id="content">
     <div id="videocontent">
         <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
         <table class="canvas">
@@ -98,19 +98,79 @@
             </tr>
         </table>
         <!--&nbsp<a href="">NOIXES - Violence [Bass Boosted] </a>-->
-        Current Time: <a id="time"></a>
+        <!--Current Time:-->
+        <a id="time" type="hidden"></a>
+
+        <br>
+        <br>
+        <div class="card-container">
+            <!--<form action="/gotoPlaylistPlayer" method="post" id="pl">-->
+
+            <form action="/playPlaylist" method="post" id="playlist1">
+                <input type="hidden" name="choice" id="choice" value="1">
+                <a href="javascript:;" onclick="clickPlaylist1();">
+                    <div class="card" id="card">
+                        <div id="back">
+                            <img src="images/playlist1.png">
+                        </div>
+                        <img src="images/playlist1.png" id="art">
+                        <div id="title">SonicPlaylist 1</div>
+                        <!--<div id="artist">Porter Robinson</div>-->
+                    </div>
+                </a>
+            </form>
+            <!--</a>-->
+            <!--</form>-->
+
+            <form action="/playPlaylist" method="post" id="playlist2">
+                <input type="hidden" name="choice" id="choice" value="2">
+                <a href="javascript:;" onclick="clickPlaylist2();">
+                    <div class="card">
+                        <div id="back">
+                            <img src="images/playlist2.png">
+                        </div>
+                        <img src="images/playlist2.png" id="art">
+                        <div id="title">SonicPlaylist 2</div>
+                        <!--<div id="artist">Arty</div>-->
+                    </div>
+                </a>
+            </form>
+            <div class="card">
+                <div id="back">
+                    <img src="images/playlist3.png">
+                </div>
+                <img src="images/playlist3.png" id="art">
+                <div id="title">SonicPlaylist 2</div>
+                <!--<div id="artist">Imagine Dragons</div>-->
+            </div>
+
+
+
+
+        </div>
     </div>
 </div>
 
+
+</body>
+
+
 <script>
 
-    //    function myFunction() {
-    //        var x = document.getElementsByTagName("input")[0].getAttribute("name");
-    ////        var y = document.querySelector("input[type=radio]:checked").value;
-    ////        document.getElementById("rate").setAttribute("value",y);
-    //        document.getElementById("currentvid").setAttribute("value",x);
-    //        document.getElementById('upnv1').submit();
-    //    }
+    function clickPlaylist1(){
+        document.getElementById('playlist1').submit();
+    }
+    function clickPlaylist2(){
+        document.getElementById('playlist2').submit();
+    }
+
+    //        function myFunction() {
+    //            var x = document.getElementsByTagName("input")[0].getAttribute("name");
+    //    //        var y = document.querySelector("input[type=radio]:checked").value;
+    //    //        document.getElementById("rate").setAttribute("value",y);
+    //            document.getElementById("currentvid").setAttribute("value",x);
+    //            document.getElementById('upnv1').submit();
+    //        }
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');

@@ -9,64 +9,62 @@
 </head>
 <body>
 
-<div id="cont">
-    <div id="menu-fixed">
-
-        <a href="#cont">
-            <i class="material-icons back">&#xE314;</i>
-        </a>
-        <a href="#menu-fixed">
-            <div class="logo">
-                <img src="images/logofinal.png" style="width:70px;height:70px;">
-            </div>
-            <p class="pmenu">MENU</p>
-        </a>
-        <hr>
-
-        <ul class="menu">
-            <form method="post" action="/homepagev2" id="home">
-                <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
-            </form>
-
-            <form method="post" action="/gotoExplore" id="explore">
-                <li>
-                    <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
-                    <span class="sideb">Explore</span>
-                </li>
-            </form>
-            <form method="post" action="/gotoPlaylistExp" id="playlistExp">
-                <li>
-                    <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
-                    <span class="sideb">Playlist</span>
-                </li>
-            </form>
-
-            <form method="post" action="/gotoProfile" id="profile">
-                <li>
-                    <i class="material-icons" onclick="gotoProfile()">person</i><br>
-                    <span class="sideb">Profile</span>
-                </li>
-            </form>
-            <form method="post" action="/logoutUser" id="logout">
-                <li>
-                    <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
-                    <span class="sideb">Log-out</span>
-                </li>
-            </form>
-
-            <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
-        </ul>
-
-
-        <i class="material-icons info">&#xE88E;</i>
-    </div>
-</div>
 <main class="site-content">
+    <div>
+        <div id="cont">
+            <div id="menu-fixed">
 
+                <a href="#cont">
+                    <i class="material-icons back">&#xE314;</i>
+                </a>
+                <a href="#menu-fixed">
+                    <div class="logo">
+                        <img src="images/logofinal.png" style="width:70px;height:70px;">
+                    </div>
+                    <p class="pmenu">MENU</p>
+                </a>
+                <hr>
+
+                <ul class="menu">
+                    <form method="post" action="/homepagev2" id="home">
+                        <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    </form>
+
+                    <form method="post" action="/gotoExplore" id="explore">
+                        <li>
+                            <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
+                            <span class="sideb">Explore</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/gotoPlaylistExp" id="playlistExp">
+                        <li>
+                            <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
+                            <span class="sideb">Playlist</span>
+                        </li>
+                    </form>
+
+                    <form method="post" action="/gotoProfile" id="profile">
+                        <li>
+                            <i class="material-icons" onclick="gotoProfile()">person</i><br>
+                            <span class="sideb">Profile</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/logoutUser" id="logout">
+                        <li>
+                            <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
+                            <span class="sideb">Log-out</span>
+                        </li>
+                    </form>
+
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
+
+
+                <i class="material-icons info">&#xE88E;</i>
+            </div>
+        </div>
         <section class="video-area">
             <div class="wrapper">
-
-
                 <div class="video-column">
                     <div class="video-player">
                         <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
@@ -108,86 +106,68 @@
                         </form>
 
                         <div class="description">
-                            <!--<p>Caminandes: Episode 2 is an Open Movie produced by Blender Institute in Amsterdam, the-->
-                                <!--Netherlands. You can support the makers and open source projects by purchasing the 8 GB USB-->
-                                <!--card with all the movie data and tutorials.</p>-->
+                            <p>Caminandes: Episode 2 is an Open Movie produced by Blender Institute in Amsterdam, the
+                                Netherlands. You can support the makers and open source projects by purchasing the 8 GB USB
+                                card with all the movie data and tutorials.</p>
                         </div>
                     </div>
                     <h2 style="position:  relative;top: 0px;">RECOMMENDED VIDEOS</h2>
                     <div class="video-recommendation">
-                        <table>
-                            <tr>
-                                <ul class="items">
-                                        <div class="vidcontainer"  th:each="rv1 : ${r1}">
-                                            <form th:id="${rv1.videoid}" action="/submitrating" method="post" id="form1">
-                                                <li>
-                                                    <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv1.videoid}+'\').submit();'">
-                                                        <img th:src="${rv1.thumbnail}"/>
-                                                    </a>
-                                                    <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
-                                                    <a href="#">
-                                                        <div class="content">
-                                                            <h2 th:text="${rv1.title}"/>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <input type="hidden" id="timeSpentrec"  name="timeSpentrec">
-                                                <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                                            </form>
-                                        </div>
-                                </ul>
-                            </tr>
-                        </table>
+                        <form action="/submitrating" method="post" id="form1">
+                            <ul class="items">
+                                <div class="vidcontainer"  th:each="rv1 : ${r1}">
+                                    <li>
+                                        <a href="javascript:;" th:id="${rv1.videoid}" onclick="recommendedClick(this.id)">
+                                            <img th:src="${rv1.thumbnail}"/>
+                                        </a>
+                                        <input type="hidden" id="clickedR" name="clicked"/>
+                                        <input type="hidden" id="currentvids" name="current"/>
+                                        <input type="hidden" id="rates" name="rating"/>
+                                        <input type="hidden" id="timeSpents"  name="timeSpent">
+                                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                                        <a href="#">
+                                            <div class="content">
+                                                <h2 th:text="${rv1.title}"/>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </div>
+                            </ul>
+                        </form>
                     </div>
                 </div>
 
                 <!--<div id="video-playlist" class="video-playlist">-->
                     <!--<header class="playlist-title">Up next...</header>-->
-
-                    <!--&lt;!&ndash; HTML 5 allows us to wrap block-level elements in <a> tags. &ndash;&gt;-->
                     <!--<div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>-->
                     <!--<div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>-->
                     <!--<div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>-->
-
-                    <!--<form action="/gotoPlayer" method="post" id="upnv1">-->
-                        <!--<input type="hidden" th:value="${vididtoplay}" name="videoWatched">-->
+                    <!--&lt;!&ndash; HTML 5 allows us to wrap block-level elements in <a> tags. &ndash;&gt;-->
+                    <!--<form action="/submitrating" method="post" id="upnv1">-->
                         <!--<input type="hidden" id="timeSpent"  name="timeSpent">-->
+                        <!--<input type="hidden" th:value="${vididtoplay}" name="videoWatched">-->
+                        <!--<input type="hidden" id="rate" name="rating"/>-->
+                        <!--<input type="hidden" id="currentvid" name="current"/>-->
                         <!--<input type="hidden" id="clicked" name="clicked"/>-->
 
-
-
-
-                        <!--<a href="javascript:;" onclick="submitFunc1();"  class="next-video">-->
+                        <!--<a href="javascript:;" onclick="myFunction1()"  class="next-video">-->
                             <!--<img th:src="${tn1}" alt="">-->
-
-                            <!--&lt;!&ndash;<input type="hidden" name="clicked" th:value="${upnext1.videoid}"/>&ndash;&gt;-->
                             <!--<h3 class="next-video-title" th:text="${upnext1.title}" ></h3>-->
-
 
                             <!--<p class="next-video-info" th:text="${upnext1.artist}">-->
                             <!--</p>-->
                         <!--</a>-->
 
-
-
-                        <!--&lt;!&ndash;<input type="hidden" th:value="${vididtoplay}" name="videoWatched">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<input type="hidden" id="timeSpent"  name="timeSpent">&ndash;&gt;-->
-
-                        <!--<a href="javascript:;" onclick="submitFunc2();"  class="next-video">-->
+                        <!--<a href="javascript:;" onclick="myFunction2();"  class="next-video">-->
                             <!--<img th:src="${tn2}" alt="">-->
-                            <!--&lt;!&ndash;<input type="hidden" name="clicked" th:value="${upnext2.videoid}"/>&ndash;&gt;-->
                             <!--<h3 class="next-video-title" th:text="${upnext2.title}"></h3>-->
 
                             <!--<p class="next-video-info" th:text="${upnext2.artist}">-->
                             <!--</p>-->
                         <!--</a>-->
 
-
-                        <!--&lt;!&ndash;<input type="hidden" th:value="${vididtoplay}" name="videoWatched">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<input type="hidden" id="timeSpent"  name="timeSpent">&ndash;&gt;-->
-                        <!--<a  href="javascript:;" onclick="submitFunc3();"  class="next-video">-->
+                        <!--<a  href="javascript:;" onclick="myFunction3();"  class="next-video">-->
                             <!--<img th:src="${tn3}" alt="">-->
-                            <!--&lt;!&ndash;<input type="hidden" name="clicked" th:value="${upnext3.videoid}"/>&ndash;&gt;-->
                             <!--<h3 class="next-video-title" th:text="${upnext3.title}"></h3>-->
 
                             <!--<p class="next-video-info" th:text="${upnext3.artist}">-->
@@ -196,138 +176,103 @@
                     <!--</form>-->
 
                 <!--</div>-->
-
-                <br>
-                <br>
-                <br>
-                <br>
-
-                <div class="main">
-                    <div class="card-container">
-                        <form action="/gotoPlaylistPlayer" method="post" id="pl">
-                            <a href="javascript:;" onclick="clickPl();">
-                                <div class="card" id="card">
-                                    <div id="back">
-                                        <img src="images/playlist1.png">
-                                    </div>
-                                    <img src="images/playlist1.png" >
-                                    <div id="title">Playlist A</div>
-                                    <!--<div id="artist">Porter Robinson</div>-->
-                                </div>
-                            </a>
-
-                        </form>
-
-                        <div class="card">
-                            <div id="back">
-                                <img src="images/playlist2.png">
-                            </div>
-                            <img src="images/playlist2.png">
-                            <div id="title">Playlist B</div>
-                            <div id="artist">Arty</div>
-                        </div>
-                        <div class="card">
-                            <div id="back">
-                                <img src="images/playlist3.png">
-                            </div>
-                            <img src="images/playlist3.png">
-                            <div id="title">Playlist Br</div>
-                            <div id="artist">Imagine Dragons</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
-
-
-
-
+    </div>
 </main>
 <script>
-    function myFunction() {
+    function recommendedClick(id){
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rates").setAttribute("value",y);
+        document.getElementById("currentvids").setAttribute("value",x);
+        document.getElementById("clickedR").setAttribute("value",id);
+        document.getElementById('form1').submit();
+    }
+    function myFunction1() {
         var x = document.getElementsByTagName("input")[0].getAttribute("name");
         var y = document.querySelector("input[type=radio]:checked").value;
         document.getElementById("rate").setAttribute("value",y);
         document.getElementById("currentvid").setAttribute("value",x);
-
-        document.getElementById("timeSpentrec").setAttribute("value",document.getElementById("time"));
-        document.getElementById('upnv1').submit();
+        submitFunc1();
     }
-
-        // 2. This code loads the IFrame Player API code asynchronously.
-        var tag = document.createElement('script');
-
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // 3. This function creates an <iframe> (and YouTube player)
-        //    after the API code downloads.
-        var x = document.getElementById("vidid").textContent;
-        //    document.getElementById("demo").innerHTML = x;
-        var player;
-        var videotime = 0;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '480',
-                width: '100%',
-                videoId: x,
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        //    $('iframe').load( function() {
-        //        $('iframe').contents().find("head")
-        //                .append($("<style type='text/css'>  .my-class{height:854px; ,width:430px;}  </style>"));
-        //    });
-
-        // 4. The API will call this function when the video player is ready.
-        function onPlayerReady(event) {
-            event.target.playVideo();
-            function updateTime() {
-                var oldTime = videotime;
-                if(player && player.getCurrentTime) {
-                    videotime = player.getCurrentTime();
-
-                    console.log(videotime);
-                    document.getElementById("time").innerHTML = videotime;
-                    document.getElementById("timeSpentrec").innerHTML = videotime;
-                    document.getElementById("timeSpent").setAttribute("value",videotime);
-//                    document.getElementById("timeSpentrec").setAttribute("value",videotime);
-
-                }
-                if(videotime !== oldTime) {
-                    onProgress(videotime);
-                }
+    function myFunction2() {
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rate").setAttribute("value",y);
+        document.getElementById("currentvid").setAttribute("value",x);
+        submitFunc2()
+    }
+    function myFunction3() {
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rate").setAttribute("value",y);
+        document.getElementById("currentvid").setAttribute("value",x);
+        submitFunc3();
+    }
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var x = document.getElementById("vidid").textContent;
+    //    document.getElementById("demo").innerHTML = x;
+    var player;
+    var videotime = 0;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '480',
+            width: '854',
+            videoId: x,
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
             }
-            timeupdater = setInterval(updateTime, 100);
-        }
-
-        // when the time changes, this will be called.
-        function onProgress(currentTime) {
-            if(currentTime > 20) {
-                console.log("the video reached 20 seconds!");
+        });
+    }
+    //    $('iframe').load( function() {
+    //        $('iframe').contents().find("head")
+    //                .append($("<style type='text/css'>  .my-class{height:854px; ,width:430px;}  </style>"));
+    //    });
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+        function updateTime() {
+            var oldTime = videotime;
+            if(player && player.getCurrentTime) {
+                videotime = player.getCurrentTime();
+                console.log(videotime);
+                document.getElementById("time").innerHTML = videotime;
+                document.getElementById("timeSpent").setAttribute("value",videotime);
+                document.getElementById("timeSpents").setAttribute("value",videotime);
+            }
+            if(videotime !== oldTime) {
+                onProgress(videotime);
             }
         }
-
-        // 5. The API calls this function when the player's state changes.
-        //    The function indicates that when playing a video (state=1),
-        //    the player should play for six seconds and then stop.
-        var done = false;
-        function onPlayerStateChange(event) {
-    //        if (event.data == YT.PlayerState.PLAYING && !done) {
-    //            setTimeout(stopVideo, 6000);
-    //            done = true;
-    //        }
+        timeupdater = setInterval(updateTime, 100);
+    }
+    // when the time changes, this will be called.
+    function onProgress(currentTime) {
+        if(currentTime > 20) {
+            console.log("the video reached 20 seconds!");
         }
-        function stopVideo() {
-            player.stopVideo();
-        }
-
-
+    }
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+//        if (event.data == YT.PlayerState.PLAYING && !done) {
+//            setTimeout(stopVideo, 6000);
+//            done = true;
+//        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
     function submitFunc1() {
         console.log(v)
         var v = document.getElementById("clicked1").textContent;
@@ -343,30 +288,6 @@
         var v = document.getElementById("clicked3").textContent;
         document.getElementById("clicked").setAttribute("value",v);
         document.getElementById('upnv1').submit();
-    }
-
-    function clickPl(){
-        document.getElementById('pl').submit();
-    }
-
-
-    function gotoExplore() {
-        document.getElementById("explore").submit();
-    }
-
-    function gotoProfile() {
-        document.getElementById("profile").submit();
-    }
-
-    function logoutUser() {
-        document.getElementById("logout").submit();
-    }
-    function gotoPlaylistExplorer(){
-        document.getElementById("playlistExp").submit();
-    }
-
-    function gotoHome() {
-        document.getElementById("home").submit();
     }
 </script>
 </body>

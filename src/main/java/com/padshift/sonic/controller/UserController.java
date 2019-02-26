@@ -992,6 +992,7 @@ public class UserController {
     public String gotoPlayer(HttpServletRequest request, Model model, HttpSession session){
         String vididtoplay = request.getParameter("clicked");
         String videoWatched = request.getParameter("videoWatched");
+        String[] simusers = (String[]) session.getAttribute("similarusers");
 
         if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
             UserHistory userhist = new UserHistory();
@@ -1033,13 +1034,26 @@ public class UserController {
 
         ArrayList<VideoDetails> videoList = new ArrayList<VideoDetails>();
         videoList = videoService.findAllVideoDetails();
+        VideoDetails recommVids = new VideoDetails();
 
         ArrayList<VVD> vr1 = new ArrayList<VVD>();
 
+        String[] recommendedVids = cosineMatrix(session.getAttribute("userid").toString(), simusers);
+        System.out.println(recommendedVids[0]);
+        int j =0;
         for (int i = 0; i < 6; i++) {
-            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
-            vr1.add(vid);
-            vid = null;
+            if(recommendedVids[j] != null && i < recommendedVids.length){
+                recommVids = videoService.findByVideoid(recommendedVids[i]);
+                VVD vid = new VVD(recommVids.getVideoid(), recommVids.getTitle(), recommVids.getArtist(), recommVids.getGenre(), recommVids.getDate(),"https://i.ytimg.com/vi/" + recommVids.getVideoid() + "/mqdefault.jpg");
+                vr1.add(vid);
+                vid = null;
+                j++;
+            }
+            else{
+                VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+                vr1.add(vid);
+                vid = null;
+            }
         }
 
         model.addAttribute("r1", vr1);
@@ -1092,7 +1106,7 @@ public class UserController {
             }
             userService.saveUserHistory(userhist);
         }
-
+        System.out.println("video id : " + vididnexttoplay);
         try{
             Genre findgenre = videoService.findByGenreName(video.getGenre());
             UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), findgenre.getGenreId());
@@ -1181,8 +1195,207 @@ public class UserController {
         model.addAttribute("tn3", thumbnail3);
 
         return "VideoPlayerV2";
-
     }
+
+
+
+//    //before merging ruz
+//    @RequestMapping("/gotoPlayer")
+//    public String gotoPlayer(HttpServletRequest request, Model model, HttpSession session){
+//        String vididtoplay = request.getParameter("clicked");
+//        String videoWatched = request.getParameter("videoWatched");
+//
+//        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
+//            UserHistory userhist = new UserHistory();
+//            userhist.setUserId(session.getAttribute("userid").toString());
+//            userhist.setVideoid(videoWatched);
+//            userhist.setSeqid(session.getAttribute("sessionid").toString());
+//            userhist.setViewingDate(getLocalDate().toString());
+//            userhist.setViewingTime(getTime());
+//            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+//
+//            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+//            if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
+//                userhist.setViewingStatus("1");
+//            }else{
+//                userhist.setViewingStatus("0");
+//            }
+//            userService.saveUserHistory(userhist);
+//        }
+//
+//        session.setAttribute("vididtoplay", vididtoplay);
+//
+//        System.out.println("video id : " + vididtoplay);
+//        System.out.println("aaaaaaaaaaa" + session.getAttribute("userid"));
+//
+//
+//
+//
+//        VideoDetails playvid = videoService.findByVideoid(vididtoplay);
+//        ArrayList<VideoDetails> upnext = (ArrayList<VideoDetails>) videoService.findAllVideoDetails();
+////        Collections.sort(upnext);
+//        Collections.shuffle(upnext);
+//        System.out.println(playvid.getTitle() + " " + playvid.getArtist());
+//
+//        String url = "https://www.youtube.com/embed/" + playvid.getVideoid();
+//
+//        String thumbnail1 = "https://i.ytimg.com/vi/" + upnext.get(1).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail2 = "https://i.ytimg.com/vi/" + upnext.get(2).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail3 = "https://i.ytimg.com/vi/" + upnext.get(3).getVideoid() +"/mqdefault.jpg";
+//
+//        ArrayList<VideoDetails> videoList = new ArrayList<VideoDetails>();
+//        videoList = videoService.findAllVideoDetails();
+//
+//        ArrayList<VVD> vr1 = new ArrayList<VVD>();
+//
+//        for (int i = 0; i < 6; i++) {
+//            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+//            vr1.add(vid);
+//            vid = null;
+//        }
+//
+//        model.addAttribute("r1", vr1);
+//
+//        model.addAttribute("emblink", url);
+//        model.addAttribute("vididtoplay", playvid.getVideoid());
+//        model.addAttribute("vidtitle", playvid.getTitle());
+//        model.addAttribute("vidviews", concat(playvid.getViewCount()));
+//        model.addAttribute("vidlikes", concat(playvid.getLikes()));
+//
+////        model.addAttribute("upnext")
+//        model.addAttribute("upnext1", upnext.get(1));
+//        model.addAttribute("upnext2", upnext.get(2));
+//        model.addAttribute("upnext3", upnext.get(3));
+//        model.addAttribute("vidid", vididtoplay);
+//
+//        model.addAttribute("tn1", thumbnail1);
+//        model.addAttribute("tn2", thumbnail2);
+//        model.addAttribute("tn3", thumbnail3);
+//
+//        return "VideoPlayerV2";
+//
+//    }
+
+//    //before merging ruz
+//    @RequestMapping("/submitrating")
+//    public String submitRating(HttpServletRequest request, Model model, HttpSession session){
+//        int useragegroup = (Integer) session.getAttribute("useragegroup");
+//        int personalitygroup = (Integer) session.getAttribute("userpersonalitygroup");
+//        String[] simusers = (String[]) session.getAttribute("similarusers");
+//        String vididtoplay = request.getParameter("current");
+//        String vididnexttoplay = request.getParameter("clicked");
+//        String vidrating = request.getParameter("rating");
+//        VideoDetails video = videoService.findByVideoid(vididtoplay);
+//        String videoWatched = request.getParameter("videoWatched");
+//
+//        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
+//            UserHistory userhist = new UserHistory();
+//            userhist.setUserId(session.getAttribute("userid").toString());
+//            userhist.setVideoid(videoWatched);
+//            userhist.setSeqid(session.getAttribute("sessionid").toString());
+//            userhist.setViewingDate(getLocalDate().toString());
+//            userhist.setViewingTime(getTime());
+//            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+//
+//            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+//            if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
+//                userhist.setViewingStatus("1");
+//            }else{
+//                userhist.setViewingStatus("0");
+//            }
+//            userService.saveUserHistory(userhist);
+//        }
+//
+//        try{
+//            Genre findgenre = videoService.findByGenreName(video.getGenre());
+//            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), findgenre.getGenreId());
+//            incrementagegroup(useragegroup, video.getGenre());
+//            incrementpersonalitygroup(personalitygroup, video.getGenre());
+//            updategenreWeight(findgenre.getGenreId(), (Integer) session.getAttribute("userid"), userpref.getPrefWeight());
+//
+//        }catch (Exception e){
+//
+//        }
+//        List<UserHistory> currentuserhist = videoService.findAllByUserIdandVideoid(session.getAttribute("userid").toString(), vididtoplay);
+//
+//        try{
+//            VidRatings uservideorating = videoService.findVidRatByUserIdandVideoid(session.getAttribute("userid").toString(), vididtoplay);
+//            if(!vidrating.equals("0")){
+//                uservideorating.setRating(vidrating);
+//                videoService.saveVidrating(uservideorating);
+//            }
+//        }catch (Exception e){
+//            VidRatings newrating = new VidRatings();
+//            newrating.setUserId(session.getAttribute("userid").toString());
+//            newrating.setUserName(session.getAttribute("username").toString());
+//            newrating.setVideoid(vididtoplay);
+//            newrating.setRating(vidrating);
+//            videoService.saveVidrating(newrating);
+//        }
+//
+//        VideoDetails playvid = videoService.findByVideoid(vididnexttoplay);
+//        ArrayList<VideoDetails> upnext = (ArrayList<VideoDetails>) videoService.findAllVideoDetails();
+////        Collections.sort(upnext);
+//        Collections.shuffle(upnext);
+////        System.out.println(playvid.getTitle() + " " + playvid.getArtist());
+//
+//        String url = "https://www.youtube.com/embed/" + playvid.getVideoid();
+//
+//        String thumbnail1 = "https://i.ytimg.com/vi/" + upnext.get(1).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail2 = "https://i.ytimg.com/vi/" + upnext.get(2).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail3 = "https://i.ytimg.com/vi/" + upnext.get(3).getVideoid() +"/mqdefault.jpg";
+//
+//        ArrayList<VideoDetails> videoList = new ArrayList<VideoDetails>();
+//        videoList = videoService.findAllVideoDetails();
+//        VideoDetails recommVids = new VideoDetails();
+//
+//        ArrayList<VVD> vr1 = new ArrayList<VVD>();
+//
+//        String[] recommendedVids = cosineMatrix(session.getAttribute("userid").toString(), simusers);
+//        System.out.println(recommendedVids[0]);
+//        int j =0;
+//        for (int i = 0; i < 6; i++) {
+//            if(recommendedVids[j] != null && i < recommendedVids.length){
+//                recommVids = videoService.findByVideoid(recommendedVids[i]);
+//                VVD vid = new VVD(recommVids.getVideoid(), recommVids.getTitle(), recommVids.getArtist(), recommVids.getGenre(), recommVids.getDate(),"https://i.ytimg.com/vi/" + recommVids.getVideoid() + "/mqdefault.jpg");
+//                vr1.add(vid);
+//                vid = null;
+//                j++;
+//            }
+//            else{
+//                VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+//                vr1.add(vid);
+//                vid = null;
+//            }
+//        }
+//
+////        for (int i = 0; i < 6; i++) {
+////            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+////            vr1.add(vid);
+////            vid = null;
+////        }
+//
+//        model.addAttribute("r1", vr1);
+//
+//        model.addAttribute("emblink", url);
+//        model.addAttribute("vididtoplay", playvid.getVideoid());
+//        model.addAttribute("vidtitle", playvid.getTitle());
+//        model.addAttribute("vidviews", concat(playvid.getViewCount()));
+//        model.addAttribute("vidlikes", concat(playvid.getLikes()));
+//        model.addAttribute("vidid", vididnexttoplay);
+//
+////        model.addAttribute("upnext")
+//        model.addAttribute("upnext1", upnext.get(1));
+//        model.addAttribute("upnext2", upnext.get(2));
+//        model.addAttribute("upnext3", upnext.get(3));
+//
+//        model.addAttribute("tn1", thumbnail1);
+//        model.addAttribute("tn2", thumbnail2);
+//        model.addAttribute("tn3", thumbnail3);
+//
+//        return "VideoPlayerV2";
+//
+//    }
 
     private void incrementpersonalitygroup(int personalitygroup, String genre) {
         PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
@@ -1584,7 +1797,7 @@ public class UserController {
     //seqrule
 
     @RequestMapping("/playPlaylist")
-    public String playThisPlaylist(HttpServletRequest request, Model model){
+    public String playThisPlaylist(HttpServletRequest request, Model model, HttpSession session){
         String choiceOfPlaylist = request.getParameter("choice");
         ArrayList<Playlist> playListVideos = new ArrayList<>();
         if(choiceOfPlaylist.equals("1")){
@@ -1603,7 +1816,13 @@ public class UserController {
             System.out.println("[PL] - " + p.getVideoID());
         }
 
+
+
+
+
         model.addAttribute("vididtoplay", videos.get(0).getVideoid());
+
+//        model.addAttribute("vidtitle", videos.get(0).getMvtitle());
         model.addAttribute("plvids", videos);
 
         return "VideoPlayerWithPlaylist";
@@ -1777,12 +1996,23 @@ public class UserController {
             plvids.add(video.get(i));
         }
 
+
+
+
+//        Video v = videoService.findVideoByVideoid(playthisvid);
+
+//        model.addAttribute("vidtitle", v.getMvtitle());
+
         model.addAttribute("vididtoplay", playthisvid);
 
         model.addAttribute("plvids", plvids);
 
         return "VideoPlayerWithPlaylist";
     }
+
+
+
+
 
     public class upnextItem{
         String order;
