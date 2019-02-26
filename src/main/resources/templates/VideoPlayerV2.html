@@ -65,21 +65,25 @@
                         <table>
                             <tr>
                                 <ul class="items">
+                                    <form action="/submitrating" method="post" id="form1">
                                         <div class="vidcontainer"  th:each="rv1 : ${r1}">
-                                            <form th:id="${rv1.videoid}" action="/submitrating" method="post" id="form1">
-                                                <li>
-                                                    <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv1.videoid}+'\').submit();'">
-                                                        <img th:src="${rv1.thumbnail}"/>
-                                                    </a>
-                                                    <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
-                                                    <a href="#">
-                                                        <div class="content">
-                                                            <h2 th:text="${rv1.title}"/>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            </form>
+                                            <li>
+                                                <a href="javascript:;" th:id="${rv1.videoid}" onclick="recommendedClick(this.id)">
+                                                    <img th:src="${rv1.thumbnail}"/>
+                                                </a>
+                                                <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
+                                                <input type="hidden" id="currentvids" name="current"/>
+                                                <input type="hidden" id="rates" name="rating"/>
+                                                <input type="hidden" id="timeSpents"  name="timeSpent">
+                                                <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                                                <a href="#">
+                                                    <div class="content">
+                                                        <h2 th:text="${rv1.title}"/>
+                                                    </div>
+                                                </a>
+                                            </li>
                                         </div>
+                                    </form>
                                 </ul>
                             </tr>
                         </table>
@@ -131,6 +135,13 @@
 
 </main>
 <script>
+    function recommendedClick(id){
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rates").setAttribute("value",y);
+        document.getElementById("currentvids").setAttribute("value",x);
+        document.getElementById('form1').submit();
+    }
     function myFunction1() {
         var x = document.getElementsByTagName("input")[0].getAttribute("name");
         var y = document.querySelector("input[type=radio]:checked").value;
@@ -195,6 +206,7 @@
                 console.log(videotime);
                 document.getElementById("time").innerHTML = videotime;
                 document.getElementById("timeSpent").setAttribute("value",videotime);
+                document.getElementById("timeSpents").setAttribute("value",videotime);
             }
             if(videotime !== oldTime) {
                 onProgress(videotime);

@@ -844,6 +844,7 @@ public class UserController {
     public String gotoPlayer(HttpServletRequest request, Model model, HttpSession session){
         String vididtoplay = request.getParameter("clicked");
         String videoWatched = request.getParameter("videoWatched");
+        String[] simusers = (String[]) session.getAttribute("similarusers");
 
         if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
             UserHistory userhist = new UserHistory();
@@ -885,13 +886,26 @@ public class UserController {
 
         ArrayList<VideoDetails> videoList = new ArrayList<VideoDetails>();
         videoList = videoService.findAllVideoDetails();
+        VideoDetails recommVids = new VideoDetails();
 
         ArrayList<VVD> vr1 = new ArrayList<VVD>();
 
+        String[] recommendedVids = cosineMatrix(session.getAttribute("userid").toString(), simusers);
+        System.out.println(recommendedVids[0]);
+        int j =0;
         for (int i = 0; i < 6; i++) {
-            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
-            vr1.add(vid);
-            vid = null;
+            if(recommendedVids[j] != null && i < recommendedVids.length){
+                recommVids = videoService.findByVideoid(recommendedVids[i]);
+                VVD vid = new VVD(recommVids.getVideoid(), recommVids.getTitle(), recommVids.getArtist(), recommVids.getGenre(), recommVids.getDate(),"https://i.ytimg.com/vi/" + recommVids.getVideoid() + "/mqdefault.jpg");
+                vr1.add(vid);
+                vid = null;
+                j++;
+            }
+            else{
+                VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+                vr1.add(vid);
+                vid = null;
+            }
         }
 
         model.addAttribute("r1", vr1);
