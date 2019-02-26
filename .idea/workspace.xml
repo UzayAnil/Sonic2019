@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb35237d-3a34-4352-961d-cb2709f3389c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/AdminController$sequenceRule.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/AdminController$sequenceRule.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/AdminController$singleElement.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/AdminController$singleElement.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/AdminController.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/AdminController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController$upnextItem.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController$upnextItem.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController.class" afterPath="$PROJECT_DIR$/target/classes/com/padshift/sonic/controller/UserController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/static/stylesheets/vplayer.css" afterPath="$PROJECT_DIR$/src/main/resources/static/stylesheets/vplayer.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/templates/VideoPlayerV2.html" afterPath="$PROJECT_DIR$/src/main/resources/templates/VideoPlayerV2.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/templates/VideoPlayerV2.html" afterPath="$PROJECT_DIR$/target/classes/templates/VideoPlayerV2.html" />
     </list>
     <ignored path="demo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -112,8 +104,8 @@
       <file leaf-file-name="homepage.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/stylesheets/homepage.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="62" selection-start-line="0" selection-start-column="62" selection-end-line="0" selection-end-column="62" />
+            <state vertical-scroll-proportion="-8.769231">
+              <caret line="315" column="1" selection-start-line="119" selection-start-column="0" selection-end-line="315" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -122,8 +114,8 @@
       <file leaf-file-name="vplayer.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/stylesheets/vplayer.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="42.85481">
-              <caret line="1389" column="1" selection-start-line="1389" selection-start-column="1" selection-end-line="1389" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.9348659">
+              <caret line="1023" column="1" selection-start-line="1023" selection-start-column="1" selection-end-line="1023" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -219,8 +211,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/padshift/sonic/controller/AdminController.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/VideoPlayerWithPlaylist.html" />
         <option value="$PROJECT_DIR$/src/main/resources/static/stylesheets/vidplaywithplaylist.css" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/stylesheets/vplayer.css" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/VideoPlayerV2.html" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/stylesheets/vplayer.css" />
       </list>
     </option>
   </component>
@@ -1019,12 +1011,12 @@
       <workItem from="1550967578068" duration="7916000" />
       <workItem from="1551006941325" duration="14132000" />
       <workItem from="1551144309110" duration="2503000" />
-      <workItem from="1551148390313" duration="3283000" />
+      <workItem from="1551148390313" duration="4210000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="237238000" />
+    <option name="totallyTimeSpent" value="238165000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1553,14 +1545,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/Homepage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769">
-          <caret line="6" column="90" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/VideoPlayerV2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.9230769">
@@ -1576,18 +1560,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/Homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9230769">
+          <caret line="6" column="90" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/stylesheets/homepage.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="62" selection-start-line="0" selection-start-column="62" selection-end-line="0" selection-end-column="62" />
+        <state vertical-scroll-proportion="-8.769231">
+          <caret line="315" column="1" selection-start-line="119" selection-start-column="0" selection-end-line="315" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/stylesheets/vplayer.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="42.85481">
-          <caret line="1389" column="1" selection-start-line="1389" selection-start-column="1" selection-end-line="1389" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.9348659">
+          <caret line="1023" column="1" selection-start-line="1023" selection-start-column="1" selection-end-line="1023" selection-end-column="1" />
           <folding />
         </state>
       </provider>
