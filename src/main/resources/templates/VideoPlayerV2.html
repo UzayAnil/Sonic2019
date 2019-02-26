@@ -4,135 +4,185 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/stylesheets/vplayer.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="/js/vplayer.js"></script>
 </head>
 <body>
 
 <main class="site-content">
+    <div>
+        <div id="cont">
+            <div id="menu-fixed">
 
-    <section class="video-area">
-        <div class="wrapper">
+                <a href="#cont">
+                    <i class="material-icons back">&#xE314;</i>
+                </a>
+                <a href="#menu-fixed">
+                    <div class="logo">
+                        <img src="images/logofinal.png" style="width:70px;height:70px;">
+                    </div>
+                    <p class="pmenu">MENU</p>
+                </a>
+                <hr>
 
-
-            <div class="video-column">
-                <div class="video-player">
-                    <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
-                    <!--<iframe width="100%" height="480px" align="middle" th:src="${emblink}" frameborder="0"-->
-                    <!--allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
-
-                    <div id="player"></div>
-
-                    <script src="http://www.youtube.com/player_api"></script>
-
-
-
-                </div>
-                <div>Current Time: <span id="time"></span></div>
-                <div class="video-info">
-                    <form action="/submitrating" method="post" id="ratingform">
-                        <p class="video-popularity">
-                            <span class="title" th:text="${vidtitle}"> </span><br>
-                        <div class="star-rating">
-                            <span class="spanrating">RATING: </span>
-                            <fieldset>
-                                <input type="radio" id="star5" th:attr="name=${vidid}" value="5" /><label for="star5" title="Outstanding">5 stars</label>
-                                <input type="radio" id="star4" th:attr="name=${vidid}" value="4" /><label for="star4" title="Very Good">4 stars</label>
-                                <input type="radio" id="star3" th:attr="name=${vidid}" value="3" /><label for="star3" title="Good">3 stars</label>
-                                <input type="radio" id="star2" th:attr="name=${vidid}" value="2" /><label for="star2" title="Poor">2 stars</label>
-                                <input type="radio" id="star1" th:attr="name=${vidid}" value="1" /><label for="star1" title="Very Poor">1 star</label>
-                                <input type="radio" id="star0" th:attr="name=${vidid}" value="0" style="display: none;" checked/>
-                            </fieldset>
-                        </div>
-                        <div class="view-like">
-                            <span class="fontawesome-eye-open meta-icon"></span>
-                            <span class="views" th:text="${vidviews}"></span>
-                            <a href="#" id="likeThis" class="like-this">
-                                <span class="fontawesome-heart meta-icon like-heart"></span>
-                            </a>
-                            <span class="likes" th:text="${vidlikes}"></span>
-                        </div>
-                        </p>
+                <ul class="menu">
+                    <form method="post" action="/homepagev2" id="home">
+                        <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
                     </form>
 
-                    <div class="description">
-                        <p>Caminandes: Episode 2 is an Open Movie produced by Blender Institute in Amsterdam, the
-                            Netherlands. You can support the makers and open source projects by purchasing the 8 GB USB
-                            card with all the movie data and tutorials.</p>
-                    </div>
-                </div>
-                <h2 style="position:  relative;top: 0px;">RECOMMENDED VIDEOS</h2>
-                <div class="video-recommendation">
-                    <table>
-                        <tr>
-                            <ul class="items">
-                                <form action="/submitrating" method="post" id="form1">
-                                    <div class="vidcontainer"  th:each="rv1 : ${r1}">
-                                        <li>
-                                            <a href="javascript:;" th:id="${rv1.videoid}" onclick="recommendedClick(this.id)">
-                                                <img th:src="${rv1.thumbnail}"/>
-                                            </a>
-                                            <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
-                                            <input type="hidden" id="currentvids" name="current"/>
-                                            <input type="hidden" id="rates" name="rating"/>
-                                            <input type="hidden" id="timeSpents"  name="timeSpent">
-                                            <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                                            <a href="#">
-                                                <div class="content">
-                                                    <h2 th:text="${rv1.title}"/>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </div>
-                                </form>
-                            </ul>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+                    <form method="post" action="/gotoExplore" id="explore">
+                        <li>
+                            <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
+                            <span class="sideb">Explore</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/gotoPlaylistExp" id="playlistExp">
+                        <li>
+                            <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
+                            <span class="sideb">Playlist</span>
+                        </li>
+                    </form>
 
-            <div id="video-playlist" class="video-playlist">
-                <header class="playlist-title">Up next...</header>
-                <div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>
-                <div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>
-                <div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>
-                <!-- HTML 5 allows us to wrap block-level elements in <a> tags. -->
-                <form action="/submitrating" method="post" id="upnv1">
-                    <input type="hidden" id="timeSpent"  name="timeSpent">
-                    <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                    <input type="hidden" id="rate" name="rating"/>
-                    <input type="hidden" id="currentvid" name="current"/>
-                    <input type="hidden" id="clicked" name="clicked"/>
+                    <form method="post" action="/gotoProfile" id="profile">
+                        <li>
+                            <i class="material-icons" onclick="gotoProfile()">person</i><br>
+                            <span class="sideb">Profile</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/logoutUser" id="logout">
+                        <li>
+                            <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
+                            <span class="sideb">Log-out</span>
+                        </li>
+                    </form>
 
-                    <a href="javascript:;" onclick="myFunction1()"  class="next-video">
-                        <img th:src="${tn1}" alt="">
-                        <h3 class="next-video-title" th:text="${upnext1.title}" ></h3>
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
 
-                        <p class="next-video-info" th:text="${upnext1.artist}">
-                        </p>
-                    </a>
 
-                    <a href="javascript:;" onclick="myFunction2();"  class="next-video">
-                        <img th:src="${tn2}" alt="">
-                        <h3 class="next-video-title" th:text="${upnext2.title}"></h3>
-
-                        <p class="next-video-info" th:text="${upnext2.artist}">
-                        </p>
-                    </a>
-
-                    <a  href="javascript:;" onclick="myFunction3();"  class="next-video">
-                        <img th:src="${tn3}" alt="">
-                        <h3 class="next-video-title" th:text="${upnext3.title}"></h3>
-
-                        <p class="next-video-info" th:text="${upnext3.artist}">
-                        </p>
-                    </a>
-                </form>
-
+                <i class="material-icons info">&#xE88E;</i>
             </div>
         </div>
-    </section>
+        <section class="video-area">
+            <div class="wrapper">
+                <div class="video-column">
+                    <div class="video-player">
+                        <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
+                        <!--<iframe width="100%" height="480px" align="middle" th:src="${emblink}" frameborder="0"-->
+                        <!--allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+
+                        <div id="player"></div>
+
+                        <script src="http://www.youtube.com/player_api"></script>
 
 
+
+                    </div>
+                    <div>Current Time: <span id="time"></span></div>
+                    <div class="video-info">
+                        <form action="/submitrating" method="post" id="ratingform">
+                            <p class="video-popularity">
+                                <span class="title" th:text="${vidtitle}"> </span><br>
+                            <div class="star-rating">
+                                <span class="spanrating">RATING: </span>
+                                <fieldset>
+                                    <input type="radio" id="star5" th:attr="name=${vidid}" value="5" /><label for="star5" title="Outstanding">5 stars</label>
+                                    <input type="radio" id="star4" th:attr="name=${vidid}" value="4" /><label for="star4" title="Very Good">4 stars</label>
+                                    <input type="radio" id="star3" th:attr="name=${vidid}" value="3" /><label for="star3" title="Good">3 stars</label>
+                                    <input type="radio" id="star2" th:attr="name=${vidid}" value="2" /><label for="star2" title="Poor">2 stars</label>
+                                    <input type="radio" id="star1" th:attr="name=${vidid}" value="1" /><label for="star1" title="Very Poor">1 star</label>
+                                    <input type="radio" id="star0" th:attr="name=${vidid}" value="0" style="display: none;" checked/>
+                                </fieldset>
+                            </div>
+                            <div class="view-like">
+                                <span class="fontawesome-eye-open meta-icon"></span>
+                                <span class="views" th:text="${vidviews}"></span>
+                                <a href="#" id="likeThis" class="like-this">
+                                    <span class="fontawesome-heart meta-icon like-heart"></span>
+                                </a>
+                                <span class="likes" th:text="${vidlikes}"></span>
+                            </div>
+                            </p>
+                        </form>
+
+                        <div class="description">
+                            <p>Caminandes: Episode 2 is an Open Movie produced by Blender Institute in Amsterdam, the
+                                Netherlands. You can support the makers and open source projects by purchasing the 8 GB USB
+                                card with all the movie data and tutorials.</p>
+                        </div>
+                    </div>
+                    <h2 style="position:  relative;top: 0px;">RECOMMENDED VIDEOS</h2>
+                    <div class="video-recommendation">
+                        <table>
+                            <tr>
+                                <ul class="items">
+                                    <form action="/submitrating" method="post" id="form1">
+                                        <div class="vidcontainer"  th:each="rv1 : ${r1}">
+                                            <li>
+                                                <a href="javascript:;" th:id="${rv1.videoid}" onclick="recommendedClick(this.id)">
+                                                    <img th:src="${rv1.thumbnail}"/>
+                                                </a>
+                                                <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
+                                                <input type="hidden" id="currentvids" name="current"/>
+                                                <input type="hidden" id="rates" name="rating"/>
+                                                <input type="hidden" id="timeSpents"  name="timeSpent">
+                                                <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                                                <a href="#">
+                                                    <div class="content">
+                                                        <h2 th:text="${rv1.title}"/>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </div>
+                                    </form>
+                                </ul>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="video-playlist" class="video-playlist">
+                    <header class="playlist-title">Up next...</header>
+                    <div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>
+                    <div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>
+                    <div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>
+                    <!-- HTML 5 allows us to wrap block-level elements in <a> tags. -->
+                    <form action="/submitrating" method="post" id="upnv1">
+                        <input type="hidden" id="timeSpent"  name="timeSpent">
+                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                        <input type="hidden" id="rate" name="rating"/>
+                        <input type="hidden" id="currentvid" name="current"/>
+                        <input type="hidden" id="clicked" name="clicked"/>
+
+                        <a href="javascript:;" onclick="myFunction1()"  class="next-video">
+                            <img th:src="${tn1}" alt="">
+                            <h3 class="next-video-title" th:text="${upnext1.title}" ></h3>
+
+                            <p class="next-video-info" th:text="${upnext1.artist}">
+                            </p>
+                        </a>
+
+                        <a href="javascript:;" onclick="myFunction2();"  class="next-video">
+                            <img th:src="${tn2}" alt="">
+                            <h3 class="next-video-title" th:text="${upnext2.title}"></h3>
+
+                            <p class="next-video-info" th:text="${upnext2.artist}">
+                            </p>
+                        </a>
+
+                        <a  href="javascript:;" onclick="myFunction3();"  class="next-video">
+                            <img th:src="${tn3}" alt="">
+                            <h3 class="next-video-title" th:text="${upnext3.title}"></h3>
+
+                            <p class="next-video-info" th:text="${upnext3.artist}">
+                            </p>
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+        </section>
+    </div>
 </main>
 <script>
     function recommendedClick(id){
