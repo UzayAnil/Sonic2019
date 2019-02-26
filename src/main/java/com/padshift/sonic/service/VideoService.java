@@ -1,8 +1,6 @@
 package com.padshift.sonic.service;
 
 import com.padshift.sonic.entities.*;
-import com.padshift.sonic.repository.VideoDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,5 +62,20 @@ public interface VideoService {
 
     VideoDetails findVideoDetailsByVideoid(String videoWatched);
 
+    void savePlaylist(Playlist pl);
+
+    ArrayList<String> findDistinctPlaylistID();
+
+    ArrayList<Playlist> findAllPlaylistByPlaylistID(String plIDs);
+
+    Video findVideoByVideoid(String s);
+
+    ArrayList<RecVidTable> findRecVidTableByUserId(String userid);
+
+    ArrayList<Video> findAllVideo();
+
+
 //    void updateVidDuration(String videoid, long seconds);
+
+
 }

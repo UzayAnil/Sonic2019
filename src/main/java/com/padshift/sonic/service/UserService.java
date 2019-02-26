@@ -81,4 +81,6 @@ public interface UserService {
     ArrayList<String> findDistinctSequenceId();
 
     ArrayList<UserHistory> findUserHistoryBySeqid(String s);
+
+    void saveRecVidTable(RecVidTable v);
 }

@@ -38,6 +38,12 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     YoutubeAPIController youtubeAPIController;
 
+    @Autowired
+    PlaylistRepository playlistRepository;
+
+    @Autowired
+    RecVidTableRepository recVidTableRepository;
+
 
     @Override
     public void saveVideo(Video video) {
@@ -173,4 +179,37 @@ public class VideoServiceImpl implements VideoService {
     public VideoDetails findVideoDetailsByVideoid(String videoWatched) {
         return videoDetailsRepository.findByVideoid(videoWatched);
     }
+
+    @Override
+    public void savePlaylist(Playlist pl) {
+        playlistRepository.save(pl);
+        System.out.println("S A V E D : " + pl);
+    }
+
+    @Override
+    public ArrayList<String> findDistinctPlaylistID() {
+        return playlistRepository.findDistinctPlaylistID();
+    }
+
+    @Override
+    public ArrayList<Playlist> findAllPlaylistByPlaylistID(String plIDs) {
+        return playlistRepository.findAllByPlaylistID(plIDs);
+    }
+
+    @Override
+    public Video findVideoByVideoid(String s) {
+        return videoRepository.findByVideoid(s);
+    }
+
+    @Override
+    public ArrayList<RecVidTable> findRecVidTableByUserId(String userid) {
+        return recVidTableRepository.findByUserId(userid);
+    }
+
+    @Override
+    public ArrayList<Video> findAllVideo() {
+        return (ArrayList<Video>) videoRepository.findAll();
+    }
+
+
 }

@@ -21,7 +21,7 @@
                     <div class='card_right__rating'>
                         <div class='card_right__rating__stars'>
                             <fieldset class='rating'>
-                                <input id='star10' name="rating" type='radio' value='10' th:attr="name=${genre.genreName}" >
+                                <input id='star10' name="rating" type='radio' value='10' th:attr="name=${genre.genreName}" th:attrappend="id=${genre.genreName}" >
                                 <label class='full' for='star10' title='10 stars' th:attrappend="for=${genre.genreName}"></label>
 
                                 <input id='star9half' name='rating' type='radio' value='9.5' th:attr="name=${genre.genreName}" th:attrappend="id=${genre.genreName}">
@@ -78,7 +78,7 @@
                                 <input id='star1' name='rating' type='radio' value='1' th:attr="name=${genre.genreName}"  th:attrappend="id=${genre.genreName}">
                                 <label class='full' for='star1' title='1 star'  th:attrappend="for=${genre.genreName}"></label>
 
-                                <input id='starhalf' name='rating' type='radio' value='half' th:attr="name=${genre.genreName}"  th:attrappend="id=${genre.genreName}">
+                                <input id='starhalf' name='rating' type='radio' value='0.5' th:attr="name=${genre.genreName}"  th:attrappend="id=${genre.genreName}">
                                 <label class='half' for='starhalf' title='0.5 stars'  th:attrappend="for=${genre.genreName}"></label>
                             </fieldset>
                         </div>

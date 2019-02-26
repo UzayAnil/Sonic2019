@@ -33,6 +33,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PersonalityCriteriaRepository personalitycriteriaRepository;
 
+    @Autowired
+    RecVidTableRepository recVidTableRepository;
+
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
@@ -187,5 +190,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ArrayList<UserHistory> findUserHistoryBySeqid(String s) {
         return userHistoryRepository.findBySeqid(s);
+    }
+
+    @Override
+    public void saveRecVidTable(RecVidTable v) {
+         recVidTableRepository.save(v);
     }
 }

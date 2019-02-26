@@ -7,10 +7,12 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.An
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.CategoriesOptions;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Features;
+import com.ibm.watson.developer_cloud.visual_recognition.v3.model.Class;
 import com.padshift.sonic.entities.*;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.Session;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.mapping.Array;
@@ -92,12 +94,20 @@ public class UserController {
                 session.setAttribute("userpersonalitygroup", checkUser.getPersonalitycriteriaId());
                 System.out.println(checkUser.getUserId() + " " + checkUser.getUserName());
 
+                System.out.println("S E S S I O N " + session.getAttribute("sessionid"));
+
                 return showHomepage(model, session);
             } else {
                 return "signinsignup";
             }
         }
     }
+
+    @RequestMapping("/trygoogle")
+    public String trygoogle(){
+        return "trygoogle";
+    }
+
 
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -233,8 +243,34 @@ public class UserController {
             updategenreWeight(genres.get(i).getGenreId(), userid, temp);
         }
 
-        return showHomepage(model,session);
+        return showHomepageAfterReg(model,session);
 
+    }
+
+
+    @RequestMapping("/gotoExplore")
+    public String gotoExplore(Model model){
+        ArrayList<Genre> genres = videoService.findAllGenre();
+
+        model.addAttribute("genre", genres);
+        return showExplore(model);
+    }
+
+    @RequestMapping("/gotoProfile")
+    public String gotoProfile(){
+        return "testing";
+    }
+
+    @RequestMapping("/gotoPlaylistExp")
+    public String gotoPlaylistExplorer(){
+        return "PlaylistExplorer";
+    }
+
+    @RequestMapping("/logoutUser")
+    public String logoutUser(HttpSession session){
+
+        session.invalidate();
+        return "signinsignup";
     }
 
     public void updategenreWeight(int genreid, int userid, float temp){
@@ -371,8 +407,7 @@ public class UserController {
 
     String topgenre=null;
 
-    @RequestMapping("/homepagev2")
-    public String showHomepage(Model model, HttpSession session) {
+    public String showHomepageAfterReg(Model model, HttpSession session){
         String userid = session.getAttribute("userid").toString();
         System.out.println("" + userid);
         User user = userService.findByUserId(Integer.parseInt(userid));
@@ -396,6 +431,13 @@ public class UserController {
         }
 
         Collections.sort(recVideos);
+
+        for(int i=0; i<30; i++){
+            RecVidTable v = new RecVidTable(session.getAttribute("userid").toString(),recVideos.get(i).getVideoid(), recVideos.get(i).getWeight());
+            userService.saveRecVidTable(v);
+        }
+
+
 
 
         for(int i=0; i<10; i++){
@@ -441,6 +483,112 @@ public class UserController {
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i]+"======");
         }
+
+        System.out.println(" S E S S I O N : " + session.getAttribute("sessionid"));
+        model.addAttribute("r1", vr1);
+        model.addAttribute("r2", vr2);
+        model.addAttribute("r3", vr3);
+        model.addAttribute("r4", vr4);
+
+
+        return "Homepage";
+
+
+
+    }
+
+    @RequestMapping("/homepagev2")
+    public String showHomepage(Model model, HttpSession session) {
+        String userid = session.getAttribute("userid").toString();
+        System.out.println("" + userid);
+        User user = userService.findByUserId(Integer.parseInt(userid));
+
+        System.out.println(user.getUserId() + " "+ user.getUserName());
+
+
+//        ArrayList<VideoDetails> videos = videoService.findAllVideoDetails();
+//        ArrayList<RecVid> recVideos = new ArrayList<>();
+//
+//        for( VideoDetails vid : videos){
+//            RecVid rv = new RecVid();
+//            rv.setVideoid(vid.getVideoid());
+//            rv.setTitle(vid.getTitle());
+//            rv.setArtist(vid.getArtist());
+//            rv.setGenre(vid.getGenre());
+//            rv.setViewCount(vid.getViewCount());
+//
+//            rv.setWeight(computeInitialVideoWeight(vid,user));
+//            recVideos.add(rv);
+//        }
+//
+//        Collections.sort(recVideos);
+//
+//        //SAVE THE RECVIDEOS
+        ArrayList<RecVid> recVideos = new ArrayList<>();
+        ArrayList<RecVidTable> videos = videoService.findRecVidTableByUserId(userid);
+        for( RecVidTable vid : videos){
+            VideoDetails v = videoService.findByVideoid(vid.getVideoid());
+            RecVid rv = new RecVid();
+            rv.setVideoid(v.getVideoid());
+            rv.setTitle(v.getTitle());
+            rv.setArtist(v.getArtist());
+            rv.setGenre(v.getGenre());
+            rv.setViewCount(v.getViewCount());
+            rv.setWeight(vid.getRecScore());
+            recVideos.add(rv);
+
+        }
+
+        Collections.shuffle(recVideos);
+
+
+
+
+        for(int i=0; i<10; i++){
+            System.out.println(recVideos.get(i).getTitle() + " : " + recVideos.get(i).getWeight());
+        }
+
+        ArrayList<RecVid> vr1 = new ArrayList<RecVid>();
+        ArrayList<RecVid> vr2 = new ArrayList<RecVid>();
+        ArrayList<RecVid> vr3 = new ArrayList<RecVid>();
+        ArrayList<RecVid> vr4 = new ArrayList<RecVid>();
+
+        for(int i=0; i<=5; i++) {
+            RecVid vid1 = new RecVid(recVideos.get(i).getVideoid(), recVideos.get(i).getTitle(), recVideos.get(i).getArtist(), recVideos.get(i).getGenre(), "https://i.ytimg.com/vi/" + recVideos.get(i).getVideoid() + "/mqdefault.jpg");
+            vr1.add(vid1);
+            vid1 = null;
+        }
+
+        for(int i=6; i<=11; i++) {
+            RecVid vid2 = new RecVid(recVideos.get(i).getVideoid(), recVideos.get(i).getTitle(), recVideos.get(i).getArtist(), recVideos.get(i).getGenre(), "https://i.ytimg.com/vi/" + recVideos.get(i).getVideoid() + "/mqdefault.jpg");
+            vr2.add(vid2);
+            vid2 = null;
+        }
+
+        for(int i=12; i<=17; i++) {
+            RecVid vid3 = new RecVid(recVideos.get(i).getVideoid(), recVideos.get(i).getTitle(), recVideos.get(i).getArtist(), recVideos.get(i).getGenre(), "https://i.ytimg.com/vi/" + recVideos.get(i).getVideoid() + "/mqdefault.jpg");
+            vr3.add(vid3);
+            vid3 = null;
+        }
+
+
+        for(int i=18; i<=23; i++) {
+            RecVid vid4 = new RecVid(recVideos.get(i).getVideoid(), recVideos.get(i).getTitle(), recVideos.get(i).getArtist(), recVideos.get(i).getGenre(), "https://i.ytimg.com/vi/" + recVideos.get(i).getVideoid() + "/mqdefault.jpg");
+            vr4.add(vid4);
+            vid4 = null;
+
+
+        }
+
+        findsimilarUsers(session.getAttribute("userid").toString(), session);
+
+        String[] users = (String[]) session.getAttribute("similarusers");
+        System.out.println("SIMILAR USERS");
+        for (int i = 0; i < users.length; i++) {
+            System.out.println(users[i]+"======");
+        }
+
+        System.out.println(" S E S S I O N : " + session.getAttribute("sessionid"));
         model.addAttribute("r1", vr1);
         model.addAttribute("r2", vr2);
         model.addAttribute("r3", vr3);
@@ -1047,6 +1195,7 @@ public class UserController {
         model.addAttribute("tn3", thumbnail3);
 
         return "VideoPlayerV2";
+
     }
 
     private void incrementpersonalitygroup(int personalitygroup, String genre) {
@@ -1435,19 +1584,6 @@ public class UserController {
         return "Explore";
     }
 
-    @RequestMapping("/sidemenu")
-    public String sideMenu(HttpServletRequest request, Model model){
-
-        String explore = request.getParameter("explore");
-        System.out.println(explore);
-        System.out.println("bobo");
-        ArrayList<Genre> genres = videoService.findAllGenre();
-
-        model.addAttribute("genre", genres);
-        return showExplore(model);
-
-    }
-
     @RequestMapping("/admin")
     public String Admin(HttpServletRequest request, Model model){
         return "AdminPage";
@@ -1458,4 +1594,244 @@ public class UserController {
         String out = val.format(Long.valueOf(x));
         return out;
     }
+
+
+    //seqrule
+
+    @RequestMapping("/playPlaylist")
+    public String playThisPlaylist(HttpServletRequest request, Model model){
+        String choiceOfPlaylist = request.getParameter("choice");
+        ArrayList<Playlist> playListVideos = new ArrayList<>();
+        if(choiceOfPlaylist.equals("1")){
+            System.out.println("M O R N I N G - A F T  E R N O O N   P L  A Y L I S T");
+            playListVideos = videoService.findAllPlaylistByPlaylistID("plmornaft");
+        }else if(choiceOfPlaylist.equals("2")){
+            System.out.println("E V E N I N G   P L  A Y L I S T");
+            playListVideos = videoService.findAllPlaylistByPlaylistID("plevening");
+        }else{
+            playListVideos = videoService.findAllPlaylistByPlaylistID("plgeneral");
+        }
+
+        ArrayList<Video> videos = new ArrayList<>();
+        for(Playlist p: playListVideos){
+            videos.add(videoService.findVideoByVideoid(p.getVideoID()));
+            System.out.println("[PL] - " + p.getVideoID());
+        }
+
+        model.addAttribute("vididtoplay", videos.get(0).getVideoid());
+        model.addAttribute("plvids", videos);
+
+        return "VideoPlayerWithPlaylist";
+    }
+
+//    @RequestMapping("/populate")
+//    public String populate(Model model){
+//
+//        ArrayList<Video> allvids = videoService.findAllVideo();
+//        ArrayList<VideoDetails> vids = new ArrayList<>();
+//        for(Video s: allvids) {
+//            VideoDetails v = videoService.findVideoDetailsByVideoid(s.getVideoid());
+//            vids.add(v);
+//        }
+//
+//        Collections.sort(vids);
+//        ArrayList<VideoDetails> plvids = new ArrayList<>();
+//        for(int i=0; i<50; i++){
+//            plvids.add(vids.get(i));
+//        }
+//        ArrayList<Video> plvidsf = new ArrayList<>();
+//
+//        for(VideoDetails v : plvids){
+//            plvidsf.add(videoService.findVideoByVideoid(v.getVideoid()));
+//        }
+//
+//
+//        model.addAttribute("vididtoplay", plvidsf.get(0).getVideoid());
+//        model.addAttribute("plvids", plvidsf);
+//
+//
+//
+//        return "VideoPlayerWithPlaylist";
+//
+//
+//    }
+//
+//    @RequestMapping("/playPLItemPopu")
+//    public String playPLItemPopu(HttpServletRequest request, HttpSession session, Model model){
+//
+//
+//        String playthisvid = null;
+//        for(int i=0; i<20; i++) {
+//            if(request.getParameter("clicked"+i)!=null && !request.getParameter("clicked"+i).isEmpty()) {
+//                playthisvid = request.getParameter("clicked"+i);
+//            }
+//        }
+//
+//        String timeSpent = request.getParameter("timeSpent");
+//        String videoWatched = request.getParameter("videoWatched");
+//        System.out.println("Music Video Watched : " + videoWatched);
+//        System.out.println("Play on Next : " + playthisvid);
+//        System.out.println("Time Spent : " + timeSpent);
+//
+//
+////        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
+////        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
+////
+////        ArrayList<Video> plvids = new ArrayList<>();
+////        for(Playlist p : vidids){
+////            Video v = new Video();
+////            v= videoService.findVideoByVideoid(p.getVideoID().toString());
+////            plvids.add(v);
+////        }
+//
+//        if(videoWatched!=null){
+//            UserHistory userhist = new UserHistory();
+//            userhist.setUserId(session.getAttribute("userid").toString());
+//            userhist.setVideoid(videoWatched);
+//            userhist.setSeqid(session.getAttribute("sessionid").toString());
+//            userhist.setViewingDate(getLocalDate().toString());
+//            userhist.setViewingTime(getTime());
+//            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+//
+//            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+//            System.out.println("CURRENT TITLE : " + curviddur.getTitle());
+//            if(Float.parseFloat(timeSpent.toString())>curviddur.getVidDuration()/2) {
+//                userhist.setViewingStatus("1");
+//            }else{
+//                userhist.setViewingStatus("0");
+//            }
+//            userService.saveUserHistory(userhist);
+//        }
+//
+////        ArrayList<Video> allvids = videoService.findAllVideo();
+////        ArrayList<VideoDetails> vids = new ArrayList<>();
+////        for(Video s: allvids) {
+////            VideoDetails v = videoService.findVideoDetailsByVideoid(s.getVideoid());
+////            vids.add(v);
+////        }
+//
+//////        Collections.sort(vids);
+////        ArrayList<VideoDetails> plvids = new ArrayList<>();
+////        for(int i=0; i<50; i++){
+////            plvids.add(vids.get(i));
+////        }
+////        ArrayList<Video> plvidsf = new ArrayList<>();
+////
+////        for(VideoDetails v : plvids){
+////            plvidsf.add(( videoService.findVideoByVideoid(v.getVideoid()));
+////        }
+//
+//        ArrayList<Video> video = videoService.findAllVideo();
+//        ArrayList<Video> plvidsf = new ArrayList<>();
+//        Collections.shuffle(video);
+//        for(int i=0; i<50; i++){
+//            plvidsf.add(video.get(i));
+//        }
+//
+//
+//        model.addAttribute("vididtoplay", plvidsf.get(0).getVideoid());
+//        model.addAttribute("plvids", plvidsf);
+//
+//        return "VideoPlayerWithPlaylist";
+//    }
+//
+
+
+    @RequestMapping("/playPLItem")
+    public String playPLItem(HttpServletRequest request, HttpSession session, Model model){
+
+
+        String playthisvid = null;
+        for(int i=0; i<20; i++) {
+            if(request.getParameter("clicked"+i)!=null && !request.getParameter("clicked"+i).isEmpty()) {
+                playthisvid = request.getParameter("clicked"+i);
+            }
+        }
+
+        String timeSpent = request.getParameter("timeSpent");
+        String videoWatched = request.getParameter("videoWatched");
+        System.out.println("Music Video Watched : " + videoWatched);
+        System.out.println("Play on Next : " + playthisvid);
+        System.out.println("Time Spent : " + timeSpent);
+
+
+//        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
+//        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
+//
+//        ArrayList<Video> plvids = new ArrayList<>();
+//        for(Playlist p : vidids){
+//            Video v = new Video();
+//            v= videoService.findVideoByVideoid(p.getVideoID().toString());
+//            plvids.add(v);
+//        }
+
+        if(videoWatched!=null){
+            UserHistory userhist = new UserHistory();
+            userhist.setUserId(session.getAttribute("userid").toString());
+            userhist.setVideoid(videoWatched);
+            userhist.setSeqid(session.getAttribute("sessionid").toString());
+            userhist.setViewingDate(getLocalDate().toString());
+            userhist.setViewingTime(getTime());
+            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+
+            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+            System.out.println("CURRENT TITLE : " + curviddur.getTitle());
+            if(Float.parseFloat(timeSpent.toString())>curviddur.getVidDuration()/2) {
+                userhist.setViewingStatus("1");
+            }else{
+                userhist.setViewingStatus("0");
+            }
+            userService.saveUserHistory(userhist);
+        }
+
+
+        ArrayList<Video> video = videoService.findAllVideo();
+        ArrayList<Video> plvids = new ArrayList<>();
+        Collections.shuffle(video);
+        for(int i=0; i<50; i++){
+            plvids.add(video.get(i));
+        }
+
+        model.addAttribute("vididtoplay", playthisvid);
+
+        model.addAttribute("plvids", plvids);
+
+        return "VideoPlayerWithPlaylist";
+    }
+
+    public class upnextItem{
+        String order;
+        String tag;
+
+        public upnextItem(String order, String tag) {
+            this.order = order;
+            this.tag = tag;
+        }
+
+        public String getOrder() {
+            return order;
+        }
+
+        public void setOrder(String order) {
+            this.order = order;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+    }
+
+
+
+
+
+//    @RequestMapping("/vplayerpl")
+//    public String vplayerPL(){
+//        return "VideoPlayerWithPlaylist";
+//    }
+
 }
