@@ -281,17 +281,23 @@ a:link, a:visited {
 body {
     background: #080b13;
 }
-div {
-    top: 35%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    width: 1110px;
-    height: 375px;
-    box-shadow: 0 10px 20px black;
-    color:white;
-    font-family: fantasy;
-    transition: all .5s ease;
+#cont {
+    display: block;
+}
+
+#content{
+    display: block;
+}
+
+#videocontent{
+    position: relative;
+    top: 90px;
+    bottom: 0;
+    left: 8%;
+    right: 0;
+    width: 84%;
+    align-content: center;
+    margin: auto;
 }
 .canvas {
     background: transparent;

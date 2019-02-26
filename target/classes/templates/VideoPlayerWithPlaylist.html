@@ -6,97 +6,100 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Youtube Playlist (RIR)</title>
 </head>
+<div id="cont">
+    <div id="menu-fixed">
+
+        <a href="#cont">
+            <i class="material-icons back">&#xE314;</i>
+        </a>
+        <a href="#menu-fixed">
+            <div class="logo">
+                <img src="images/logofinal.png" style="width:70px;height:70px;">
+            </div>
+            <p class="pmenu">MENU</p>
+        </a>
+        <hr>
+
+        <ul class="menu">
+            <form method="post" action="/homepagev2" id="home">
+                <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
+            </form>
+
+            <form method="post" action="/gotoExplore" id="explore">
+                <li>
+                    <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
+                    <span class="sideb">Explore</span>
+                </li>
+            </form>
+            <form method="post" action="/gotoPlaylistExp" id="playlistExp">
+                <li>
+                    <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
+                    <span class="sideb">Playlist</span>
+                </li>
+            </form>
+
+            <form method="post" action="/gotoProfile" id="profile">
+                <li>
+                    <i class="material-icons" onclick="gotoProfile()">person</i><br>
+                    <span class="sideb">Profile</span>
+                </li>
+            </form>
+            <form method="post" action="/logoutUser" id="logout">
+                <li>
+                    <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
+                    <span class="sideb">Log-out</span>
+                </li>
+            </form>
+
+            <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+        </ul>
+
+
+        <i class="material-icons info">&#xE88E;</i>
+    </div>
+</div>
 <body>
-<!--<div id="cont">-->
-    <!--<div id="menu-fixed">-->
 
-        <!--<a href="#cont">-->
-            <!--<i class="material-icons back">&#xE314;</i>-->
-        <!--</a>-->
-        <!--<a href="#menu-fixed">-->
-            <!--<div class="logo">-->
-                <!--<img src="images/logofinal.png" style="width:70px;height:70px;">-->
-            <!--</div>-->
-            <!--<p class="pmenu">MENU</p>-->
-        <!--</a>-->
-        <!--<hr>-->
+<div id="content">
+    <div id="videocontent">
+        <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
+        <table class="canvas">
+            <tr>
+                <td class="video" rowspan="2">
+                    <!--<iframe width="600" height="310" src="https://www.youtube.com/embed/FkWSaaI3x5Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
 
-        <!--<ul class="menu">-->
-            <!--<form method="post" action="/homepagev2" id="home">-->
-                <!--<li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>-->
-            <!--</form>-->
-
-            <!--<form method="post" action="/gotoExplore" id="explore">-->
-                <!--<li>-->
-                    <!--<i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>-->
-                    <!--<span class="sideb">Explore</span>-->
-                <!--</li>-->
-            <!--</form>-->
-            <!--<form method="post" action="/gotoPlaylistExp" id="playlistExp">-->
-                <!--<li>-->
-                    <!--<i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>-->
-                    <!--<span class="sideb">Playlist</span>-->
-                <!--</li>-->
-            <!--</form>-->
-
-            <!--<form method="post" action="/gotoProfile" id="profile">-->
-                <!--<li>-->
-                    <!--<i class="material-icons" onclick="gotoProfile()">person</i><br>-->
-                    <!--<span class="sideb">Profile</span>-->
-                <!--</li>-->
-            <!--</form>-->
-            <!--<form method="post" action="/logoutUser" id="logout">-->
-                <!--<li>-->
-                    <!--<i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>-->
-                    <!--<span class="sideb">Log-out</span>-->
-                <!--</li>-->
-            <!--</form>-->
-
-            <!--<li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>-->
-        <!--</ul>-->
+                    <div id="player"></div><script src="http://www.youtube.com/player_api"></script>
+                </td>
+                <!--<td class="name">Bangers - Royalty free-->
+                <!--<p><h5 class="category">Bass Boosted</h5><h5 class="range">  09/10</h5></p>-->
+                <!--</td>-->
 
 
-        <!--<i class="material-icons info">&#xE88E;</i>-->
-    <!--</div>-->
-<!--</div>-->
-<div>
-    <div id="vidid" style="display:none;" th:text="${vididtoplay}"></div>
-    <table class="canvas">
-        <tr>
-            <td class="video" rowspan="2">
-                <!--<iframe width="600" height="310" src="https://www.youtube.com/embed/FkWSaaI3x5Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
-
-                <div id="player"></div><script src="http://www.youtube.com/player_api"></script>
-            </td>
-            <!--<td class="name">Bangers - Royalty free-->
-            <!--<p><h5 class="category">Bass Boosted</h5><h5 class="range">  09/10</h5></p>-->
-            <!--</td>-->
+            </tr>
+            <tr>
+                <td class="list" valign="middle">
+                    <section class="list">
+                        <form action="/playPLItem" method="post" id="plform">
+                            <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                            <input type="hidden" id="timeSpent"  name="timeSpent">
+                            <a th:each="v, i : ${plvids}" >
+                                <a type="hidden" name="index" th:text="${i.index}"></a>
+                                <p>&nbsp<a href="javascript:;" th:onclick="'submitFunc' + ${i.index} + '();'"><img th:src="${v.thumbnail}" width="100"> &nbsp <a th:text="${v.mvtitle}"></a></s></a>
+                                </p>
+                                <div style="display:none;" id="playthis" th:text="${v.videoid}" th:attrappend="id=${i.index}"></div>
+                                <input type="hidden" id="clicked" name="clicked" th:attrappend="id=${i.index},name=${i.index}" />
 
 
-        </tr>
-        <tr>
-            <td class="list" valign="middle">
-                <section class="list">
-                    <form action="/playPLItem" method="post" id="plform">
-                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                        <input type="hidden" id="timeSpent"  name="timeSpent">
-                        <a th:each="v, i : ${plvids}" >
-                            <a type="hidden" name="index" th:text="${i.index}"></a>
-                            <p>&nbsp<a href="javascript:;" th:onclick="'submitFunc' + ${i.index} + '();'"><img th:src="${v.thumbnail}" width="100"> &nbsp <a th:text="${v.mvtitle}"></a></s></a>
-                            </p>
-                            <div style="display:none;" id="playthis" th:text="${v.videoid}" th:attrappend="id=${i.index}"></div>
-                            <input type="hidden" id="clicked" name="clicked" th:attrappend="id=${i.index},name=${i.index}" />
-
-
-                            <hr color="grey">
-                        </a>
-                    </form>
-                </section>
-            </td>
-        </tr>
-    </table>
-    <!--&nbsp<a href="">NOIXES - Violence [Bass Boosted] </a>-->
-    Current Time: <a id="time"></a>
+                                <hr color="grey">
+                            </a>
+                        </form>
+                    </section>
+                </td>
+            </tr>
+        </table>
+        <!--&nbsp<a href="">NOIXES - Violence [Bass Boosted] </a>-->
+        Current Time: <a id="time"></a>
+    </div>
 </div>
 
 <script>

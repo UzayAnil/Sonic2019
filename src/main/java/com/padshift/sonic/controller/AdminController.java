@@ -401,7 +401,13 @@ public class AdminController {
         }
 
 
-        seqRules = isViewingTimeValid(seqRules,sequenceids);  //check time if viewing status is 0
+//        seqRules = isViewingTimeValid(seqRules,sequenceids);  //check time if viewing status is 0
+
+//        seqRules = isMorningAfternoon(seqRules,sequenceids); // check if belongs to morning or afternoon
+
+        seqRules = isEvening(seqRules,sequenceids);
+
+
 //        displaySeqFromDatabase(seqRules,sequenceids);
 
         ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,sequenceids);
@@ -419,55 +425,118 @@ public class AdminController {
         seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
         displaySeqrulesMeasures(seqrules[0]);
 
-        System.out.println("------------1--------------------");
-        seqrules[1] = new ArrayList<>();
-        seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs,databaseRules);
-        seqrules[1] = removeUnqualifiedForThreshold(seqrules[1]);
-        displaySeqrulesMeasures(seqrules[1]);
+        boolean flag= true;
+        int srIndex=1;
+        do{
+            seqrules[srIndex] = new ArrayList<>();
+            seqrules[srIndex] = buildRuleCombination(seqrules[srIndex-1],uniqueVideoIDs,databaseRules);
+            seqrules[srIndex] = removeUnqualifiedForThreshold(seqrules[srIndex]);
+            displaySeqrulesMeasures(seqrules[srIndex]);
+            if(seqrules[srIndex].get(0).getSupport()==0){
+                flag=false;
 
-        System.out.println("------------2--------------------");
-        seqrules[2] = new ArrayList<>();
-        seqrules[2] = buildRuleCombination(seqrules[1],uniqueVideoIDs,databaseRules);
-        seqrules[2] = removeUnqualifiedForThreshold(seqrules[2]);
-        displaySeqrulesMeasures(seqrules[2]);
+            }else{
+                srIndex++;
+            }
 
-        System.out.println("------------3--------------------");
-        seqrules[3] = new ArrayList<>();
-        seqrules[3] = buildRuleCombination(seqrules[2],uniqueVideoIDs,databaseRules);
-        seqrules[3] = removeUnqualifiedForThreshold(seqrules[3]);
-        displaySeqrulesMeasures(seqrules[3]);
+        }while (flag==true);
+        String[] parts = null;
+        for(int i=0; i<seqrules[srIndex-1].size(); i++){
+//            System.out.println("The sequence that made it : " + seqrules[srIndex-1].get(i).getVideoIds() );
+            parts = seqrules[srIndex-1].get(0).getVideoIds().toString().split(", ");
+        }
+
+//        parts = new HashSet<String>(Arrays.asList(parts)).toArray(new String[0]);
+
+//        Set<Integer> set = new LinkedHashSet<>(parts);
 //
-        System.out.println("------------4--------------------");
-        seqrules[4] = new ArrayList<>();
-        seqrules[4] = buildRuleCombination(seqrules[3],uniqueVideoIDs,databaseRules);
-        seqrules[4] = removeUnqualifiedForThreshold(seqrules[4]);
-        displaySeqrulesMeasures(seqrules[4]);
+//        for(String s : parts){
+//            System.out.println("-" + s.toString());
+//        }
+
+//        int length = parts.length;
+//        length = removeDuplicateElements(parts, length);
+
+//
+//        ArrayList<String> resultingPlaylist = new ArrayList<>();
+//
+//        for(int j=0; j<parts.length; j++){
+//
+//            if(Arrays.asList(parts).contains(parts[j].toString())) {
+//
+//                System.out.println("[PL]" + parts[j].toString());
+//            }else{
+//                resultingPlaylist.add(parts[j].toString());
+//                System.out.println("[PL pasok]" + parts[j].toString());
+//            }
+//
+//        }
+
+
+
+//        for(String uID : uniqueVideoIDs){
+//            if(resultingPlaylist.contains(uID.toString())){
+//                System.out.println("Already Part of the Playlist!");
+//            }else{
+//                resultingPlaylist.add(uID.toString());
+//            }
+//        }
+//
+//        Set<String> norep = new HashSet<String>(resultingPlaylist);
+//
+//        ArrayList<String> resFinal = new ArrayList<>();
+//
+//        for(String eOut: norep){
+//            resFinal.add(eOut);
+//        }
+//
+//        for(String f :resFinal){
+//            System.out.println("-" + f.toString());
+//        }
 //
 //
-        System.out.println("------------5--------------------");
-        seqrules[5] = new ArrayList<>();
-        seqrules[5] = buildRuleCombination(seqrules[4],uniqueVideoIDs,databaseRules);
-        seqrules[5] = removeUnqualifiedForThreshold(seqrules[5]);
-        displaySeqrulesMeasures(seqrules[5]);
-
-        System.out.println("------------6--------------------");
-        seqrules[6] = new ArrayList<>();
-        seqrules[6] = buildRuleCombination(seqrules[5],uniqueVideoIDs,databaseRules);
-        seqrules[6] = removeUnqualifiedForThreshold(seqrules[6]);
-        displaySeqrulesMeasures(seqrules[6]);
-        
-
-
-
-
-
-
-
-
+//
+//
+//        System.out.println("------------1--------------------");
+//        seqrules[1] = new ArrayList<>();
+//        seqrules[1] = buildRuleCombination(seqrules[0],uniqueVideoIDs,databaseRules);
+//        seqrules[1] = removeUnqualifiedForThreshold(seqrules[1]);
+//        displaySeqrulesMeasures(seqrules[1]);
+//
+//        System.out.println("------------2--------------------");
+//        seqrules[2] = new ArrayList<>();
+//        seqrules[2] = buildRuleCombination(seqrules[1],uniqueVideoIDs,databaseRules);
+//        seqrules[2] = removeUnqualifiedForThreshold(seqrules[2]);
+//        displaySeqrulesMeasures(seqrules[2]);
+//
+//        System.out.println("------------3--------------------");
+//        seqrules[3] = new ArrayList<>();
+//        seqrules[3] = buildRuleCombination(seqrules[2],uniqueVideoIDs,databaseRules);
+//        seqrules[3] = removeUnqualifiedForThreshold(seqrules[3]);
+//        displaySeqrulesMeasures(seqrules[3]);
+////
+//        System.out.println("------------4--------------------");
+//        seqrules[4] = new ArrayList<>();
+//        seqrules[4] = buildRuleCombination(seqrules[3],uniqueVideoIDs,databaseRules);
+//        seqrules[4] = removeUnqualifiedForThreshold(seqrules[4]);
+//        displaySeqrulesMeasures(seqrules[4]);
+////
+////
+//        System.out.println("------------5--------------------");
+//        seqrules[5] = new ArrayList<>();
+//        seqrules[5] = buildRuleCombination(seqrules[4],uniqueVideoIDs,databaseRules);
+//        seqrules[5] = removeUnqualifiedForThreshold(seqrules[5]);
+//        displaySeqrulesMeasures(seqrules[5]);
+//
+//        System.out.println("------------6--------------------");
+//        seqrules[6] = new ArrayList<>();
+//        seqrules[6] = buildRuleCombination(seqrules[5],uniqueVideoIDs,databaseRules);
+//        seqrules[6] = removeUnqualifiedForThreshold(seqrules[6]);
+//        displaySeqrulesMeasures(seqrules[6]);
+//
 //        for(ClassSequentialRules s: seqrules[0]){
 //            s.setSupport(calculateSupport(databaseRules,s.getVideoIds()));
 //        }
-
 //        seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
 //        displaySeqrulesMeasures(seqrules[0]);
 //
@@ -482,7 +551,6 @@ public class AdminController {
 //
 //
 //
-
 //        for(ClassSequentialRules s: seqrules[1]){
 //            for(int i=0; i<databaseRules.size(); i++){
 //                String newStr = s.getVideoIds().replaceAll(",", ".*");
@@ -503,8 +571,6 @@ public class AdminController {
 //        for(ClassSequentialRules s: seqrules[1]){
 //            System.out.println(s.getVideoIds() + s.getSupport());
 //        }
-
-
 //
 //
 //
@@ -532,13 +598,7 @@ public class AdminController {
 
     }
 
-    public ArrayList<ClassSequentialRules> calculateMeasures(ArrayList<ClassSequentialRules> s, ArrayList<String> databaseRules){
 
-        for(int i=0; i<s.size(); i++){
-            s.get(i).setSupport(calculateSupport(databaseRules,s.get(i).getVideoIds()));
-        }
-        return s;
-    }
 
     public ArrayList<ClassSequentialRules> buildRuleCombination(ArrayList<ClassSequentialRules> seqrules, ArrayList<String> uniqueVideoIDs, ArrayList<String> databaseRules){
         ArrayList<ClassSequentialRules> seqres = new ArrayList<>();
@@ -675,6 +735,36 @@ public class AdminController {
         for(int i=0; i<sequenceids.size();i++){
             for(int j=0; j<seqRules[i].size(); j++){
                 if(seqRules[i].get(j).getViewingStatus().equals("0")){
+                    seqRules[i].remove(j);
+                }
+            }
+        }
+
+        return seqRules;
+    }
+
+    public ArrayList<UserHistory>[] isMorningAfternoon(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        for(int i=0; i<sequenceids.size();i++){
+            for(int j=0; j<seqRules[i].size(); j++){
+                if(Integer.parseInt(seqRules[i].get(j).getViewingTime().substring(0,seqRules[i].get(j).getViewingTime().length()-6))<18
+                        && seqRules[i].get(j).getViewingStatus().equals("0")){
+
+                    seqRules[i].remove(j);
+                }
+            }
+        }
+
+        return seqRules;
+    }
+
+
+
+    public ArrayList<UserHistory>[] isEvening(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        for(int i=0; i<sequenceids.size();i++){
+            for(int j=0; j<seqRules[i].size(); j++){
+                if(Integer.parseInt(seqRules[i].get(j).getViewingTime().substring(0,seqRules[i].get(j).getViewingTime().length()-6))>=18
+                        && seqRules[i].get(j).getViewingStatus().equals("0")){
+
                     seqRules[i].remove(j);
                 }
             }
