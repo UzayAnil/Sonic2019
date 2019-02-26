@@ -137,45 +137,7 @@
                     </div>
                 </div>
 
-                <div id="video-playlist" class="video-playlist">
-                    <header class="playlist-title">Up next...</header>
-                    <div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>
-                    <div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>
-                    <div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>
-                    <!-- HTML 5 allows us to wrap block-level elements in <a> tags. -->
-                    <form action="/submitrating" method="post" id="upnv1">
-                        <input type="hidden" id="timeSpent"  name="timeSpent">
-                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                        <input type="hidden" id="rate" name="rating"/>
-                        <input type="hidden" id="currentvid" name="current"/>
-                        <input type="hidden" id="clicked" name="clicked"/>
-
-                        <a href="javascript:;" onclick="myFunction1()"  class="next-video">
-                            <img th:src="${tn1}" alt="">
-                            <h3 class="next-video-title" th:text="${upnext1.title}" ></h3>
-
-                            <p class="next-video-info" th:text="${upnext1.artist}">
-                            </p>
-                        </a>
-
-                        <a href="javascript:;" onclick="myFunction2();"  class="next-video">
-                            <img th:src="${tn2}" alt="">
-                            <h3 class="next-video-title" th:text="${upnext2.title}"></h3>
-
-                            <p class="next-video-info" th:text="${upnext2.artist}">
-                            </p>
-                        </a>
-
-                        <a  href="javascript:;" onclick="myFunction3();"  class="next-video">
-                            <img th:src="${tn3}" alt="">
-                            <h3 class="next-video-title" th:text="${upnext3.title}"></h3>
-
-                            <p class="next-video-info" th:text="${upnext3.artist}">
-                            </p>
-                        </a>
-                    </form>
-
-                </div>
+                
             </div>
         </section>
     </div>
@@ -188,27 +150,6 @@
         document.getElementById("currentvids").setAttribute("value",x);
         document.getElementById("clickedR").setAttribute("value",id);
         document.getElementById('form1').submit();
-    }
-    function myFunction1() {
-        var x = document.getElementsByTagName("input")[0].getAttribute("name");
-        var y = document.querySelector("input[type=radio]:checked").value;
-        document.getElementById("rate").setAttribute("value",y);
-        document.getElementById("currentvid").setAttribute("value",x);
-        submitFunc1();
-    }
-    function myFunction2() {
-        var x = document.getElementsByTagName("input")[0].getAttribute("name");
-        var y = document.querySelector("input[type=radio]:checked").value;
-        document.getElementById("rate").setAttribute("value",y);
-        document.getElementById("currentvid").setAttribute("value",x);
-        submitFunc2()
-    }
-    function myFunction3() {
-        var x = document.getElementsByTagName("input")[0].getAttribute("name");
-        var y = document.querySelector("input[type=radio]:checked").value;
-        document.getElementById("rate").setAttribute("value",y);
-        document.getElementById("currentvid").setAttribute("value",x);
-        submitFunc3();
     }
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -245,7 +186,6 @@
                 videotime = player.getCurrentTime();
                 console.log(videotime);
                 document.getElementById("time").innerHTML = videotime;
-                document.getElementById("timeSpent").setAttribute("value",videotime);
                 document.getElementById("timeSpents").setAttribute("value",videotime);
             }
             if(videotime !== oldTime) {
@@ -272,22 +212,6 @@
     }
     function stopVideo() {
         player.stopVideo();
-    }
-    function submitFunc1() {
-        console.log(v)
-        var v = document.getElementById("clicked1").textContent;
-        document.getElementById("clicked").setAttribute("value",v);
-        document.getElementById('upnv1').submit();
-    }
-    function submitFunc2() {
-        var v = document.getElementById("clicked2").textContent;
-        document.getElementById("clicked").setAttribute("value",v);
-        document.getElementById('upnv1').submit();
-    }
-    function submitFunc3() {
-        var v = document.getElementById("clicked3").textContent;
-        document.getElementById("clicked").setAttribute("value",v);
-        document.getElementById('upnv1').submit();
     }
 </script>
 </body>
