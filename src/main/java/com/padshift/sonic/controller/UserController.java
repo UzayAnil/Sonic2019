@@ -1106,7 +1106,7 @@ public class UserController {
             }
             userService.saveUserHistory(userhist);
         }
-
+        System.out.println("video id : " + vididnexttoplay);
         try{
             Genre findgenre = videoService.findByGenreName(video.getGenre());
             UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), findgenre.getGenreId());

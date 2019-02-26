@@ -1022,3 +1022,15 @@ progress::-webkit-progress-value {
     padding-left: 30px;
     line-height: 30px;
 }
+
+#menu-fixed :hover .sideb {
+    display: inline-block;
+    color: white;
+    bottom: 0px;
+}
+
+.sideb {
+    display: none;
+    position: relative;
+    bottom: 60px;
+}
