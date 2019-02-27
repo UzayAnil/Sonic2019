@@ -137,45 +137,45 @@
                     </div>
                 </div>
 
-                <!--<div id="video-playlist" class="video-playlist">-->
-                    <!--<header class="playlist-title">Up next...</header>-->
-                    <!--<div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>-->
-                    <!--<div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>-->
-                    <!--<div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>-->
-                    <!--&lt;!&ndash; HTML 5 allows us to wrap block-level elements in <a> tags. &ndash;&gt;-->
-                    <!--<form action="/submitrating" method="post" id="upnv1">-->
-                        <!--<input type="hidden" id="timeSpent"  name="timeSpent">-->
-                        <!--<input type="hidden" th:value="${vididtoplay}" name="videoWatched">-->
-                        <!--<input type="hidden" id="rate" name="rating"/>-->
-                        <!--<input type="hidden" id="currentvid" name="current"/>-->
-                        <!--<input type="hidden" id="clicked" name="clicked"/>-->
+                <div id="video-playlist" class="video-playlist" style="display: none">
+                    <header class="playlist-title">Up next...</header>
+                    <div style="display:none;" id="clicked1" th:text="${upnext1.videoid}"></div>
+                    <div style="display:none;" id="clicked2" th:text="${upnext2.videoid}"></div>
+                    <div style="display:none;" id="clicked3" th:text="${upnext3.videoid}"></div>
+                    <!-- HTML 5 allows us to wrap block-level elements in <a> tags. -->
+                    <form action="/submitrating" method="post" id="upnv1">
+                        <input type="hidden" id="timeSpent"  name="timeSpent">
+                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                        <input type="hidden" id="rate" name="rating"/>
+                        <input type="hidden" id="currentvid" name="current"/>
+                        <input type="hidden" id="clicked" name="clicked"/>
 
-                        <!--<a href="javascript:;" onclick="myFunction1()"  class="next-video">-->
-                            <!--<img th:src="${tn1}" alt="">-->
-                            <!--<h3 class="next-video-title" th:text="${upnext1.title}" ></h3>-->
+                        <a href="javascript:;" onclick="myFunction1()"  class="next-video">
+                            <img th:src="${tn1}" alt="">
+                            <h3 class="next-video-title" th:text="${upnext1.title}" ></h3>
 
-                            <!--<p class="next-video-info" th:text="${upnext1.artist}">-->
-                            <!--</p>-->
-                        <!--</a>-->
+                            <p class="next-video-info" th:text="${upnext1.artist}">
+                            </p>
+                        </a>
 
-                        <!--<a href="javascript:;" onclick="myFunction2();"  class="next-video">-->
-                            <!--<img th:src="${tn2}" alt="">-->
-                            <!--<h3 class="next-video-title" th:text="${upnext2.title}"></h3>-->
+                        <a href="javascript:;" onclick="myFunction2();"  class="next-video">
+                            <img th:src="${tn2}" alt="">
+                            <h3 class="next-video-title" th:text="${upnext2.title}"></h3>
 
-                            <!--<p class="next-video-info" th:text="${upnext2.artist}">-->
-                            <!--</p>-->
-                        <!--</a>-->
+                            <p class="next-video-info" th:text="${upnext2.artist}">
+                            </p>
+                        </a>
 
-                        <!--<a  href="javascript:;" onclick="myFunction3();"  class="next-video">-->
-                            <!--<img th:src="${tn3}" alt="">-->
-                            <!--<h3 class="next-video-title" th:text="${upnext3.title}"></h3>-->
+                        <a  href="javascript:;" onclick="myFunction3();"  class="next-video">
+                            <img th:src="${tn3}" alt="">
+                            <h3 class="next-video-title" th:text="${upnext3.title}"></h3>
 
-                            <!--<p class="next-video-info" th:text="${upnext3.artist}">-->
-                            <!--</p>-->
-                        <!--</a>-->
-                    <!--</form>-->
+                            <p class="next-video-info" th:text="${upnext3.artist}">
+                            </p>
+                        </a>
+                    </form>
 
-                <!--</div>-->
+                </div>
             </div>
         </section>
     </div>
@@ -288,6 +288,25 @@
         var v = document.getElementById("clicked3").textContent;
         document.getElementById("clicked").setAttribute("value",v);
         document.getElementById('upnv1').submit();
+    }
+
+
+    function gotoExplore() {
+        document.getElementById("explore").submit();
+    }
+
+    function gotoProfile() {
+        document.getElementById("profile").submit();
+    }
+
+    function logoutUser() {
+        document.getElementById("logout").submit();
+    }
+    function gotoPlaylistExplorer(){
+        document.getElementById("playlistExp").submit();
+    }
+    function gotoHome() {
+        document.getElementById("home").submit();
     }
 </script>
 </body>
