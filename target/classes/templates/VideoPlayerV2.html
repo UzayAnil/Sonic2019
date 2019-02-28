@@ -114,30 +114,28 @@
                     <h2 style="position:  relative;top: 0px;">RECOMMENDED VIDEOS</h2>
                     <div class="video-recommendation">
                         <form action="/submitrating" method="post" id="form1">
-                                <ul class="items">
-                                        <div class="vidcontainer"  th:each="rv1 : ${r1}">
-                                            <li>
-                                                <a href="javascript:;" th:id="${rv1.videoid}" onclick="recommendedClick(this.id)">
-                                                    <img th:src="${rv1.thumbnail}"/>
-                                                </a>
-                                                <input type="hidden" id="clickedR" name="clicked"/>
-                                                <input type="hidden" id="currentvids" name="current"/>
-                                                <input type="hidden" id="rates" name="rating"/>
-                                                <input type="hidden" id="timeSpents"  name="timeSpent">
-                                                <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
-                                                <a href="#">
-                                                    <div class="content">
-                                                        <h2 th:text="${rv1.title}"/>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </div>
-                                </ul>
+                            <ul class="items">
+                                <div class="vidcontainer"  th:each="rv1 : ${r1}">
+                                    <li>
+                                        <a href="javascript:;" th:id="${rv1.videoid}" onclick="recommendedClick(this.id)">
+                                            <img th:src="${rv1.thumbnail}"/>
+                                        </a>
+                                        <input type="hidden" id="clickedR" name="clicked"/>
+                                        <input type="hidden" id="currentvids" name="current"/>
+                                        <input type="hidden" id="rates" name="rating"/>
+                                        <input type="hidden" id="timeSpents"  name="timeSpent">
+                                        <input type="hidden" th:value="${vididtoplay}" name="videoWatched">
+                                        <a href="#">
+                                            <div class="content">
+                                                <h2 th:text="${rv1.title}"/>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </div>
+                            </ul>
                         </form>
                     </div>
                 </div>
-
-                
             </div>
         </section>
     </div>
