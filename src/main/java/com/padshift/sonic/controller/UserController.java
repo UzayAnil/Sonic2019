@@ -1777,6 +1777,26 @@ public class UserController {
         return "HomeFeed";
     }
 
+
+    @RequestMapping("/searchVideo")
+    public String searchVideo(HttpServletRequest request){
+        String queryString = "%" + request.getParameter("search") + "%";
+        System.out.println("Query this : " + queryString);
+
+        ArrayList<VideoDetails> videoResults = videoService.findVideoWhereTitleContains(queryString);
+
+        for(VideoDetails v : videoResults){
+            System.out.println("[result] : " + v.getTitle());
+        }
+
+        return "testing";
+    }
+
+    @RequestMapping("/showResult")
+    public String showResult(){
+        return "Search";
+    }
+
     @RequestMapping("/explore")
     public String showExplore(Model model){
         ArrayList<Genre> genres = videoService.findAllGenre();
@@ -2040,12 +2060,8 @@ public class UserController {
     public String gotoPlaylistF(HttpSession session, Model model){
         String currentTime = getTime();
 
-        ArrayList<String> generatedPlaylist = new ArrayList<>();
+
         ArrayList<String> sequenceids = userService.findDistinctSequenceId();
-
-        System.out.println("SEQ IDS SIZE : " + sequenceids.size());
-
-
         ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[sequenceids.size()];
 
         for(int i=0; i<sequenceids.size();i++){
@@ -2053,7 +2069,6 @@ public class UserController {
             Collections.sort(seqRules[i], UserHistory.TimeComparator);
         }
 
-        System.out.println("SIZE BEFORE FILTERING : " + seqRules.length);
 
         for(int i=0; i<sequenceids.size();i++){
             boolean found=false;
@@ -2077,6 +2092,24 @@ public class UserController {
         for(int i=0; i<sequenceids.size();i++){
             seqRulesFiltered[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
             Collections.sort(seqRulesFiltered[i], UserHistory.TimeComparator);
+        }
+        //CHECK BALIK SA EVLUATION SA O PLSSSSSSSSSSSSS
+
+
+
+        for(int i=0; i<sequenceids.size();i++){
+            System.out.print("[" + sequenceids.get(i).toString() + "]     ");
+
+            for(int j=0; j<seqRulesFiltered[i].size(); j++){
+                if(seqRulesFiltered[i].get(j).getViewingStatus().equals("0")){
+                    seqRulesFiltered[i].remove(j);
+                }
+            }
+
+            for(int j=0; j<seqRules[i].size(); j++){
+                System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+            }
+            System.out.println();
         }
 
 
