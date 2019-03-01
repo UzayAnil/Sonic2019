@@ -45,6 +45,10 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by ruzieljonm on 26/06/2018.
@@ -1106,7 +1110,7 @@ public class UserController {
             }
             userService.saveUserHistory(userhist);
         }
-
+        System.out.println("video id : " + vididnexttoplay);
         try{
             Genre findgenre = videoService.findByGenreName(video.getGenre());
             UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), findgenre.getGenreId());
@@ -1195,8 +1199,207 @@ public class UserController {
         model.addAttribute("tn3", thumbnail3);
 
         return "VideoPlayerV2";
-
     }
+
+
+
+//    //before merging ruz
+//    @RequestMapping("/gotoPlayer")
+//    public String gotoPlayer(HttpServletRequest request, Model model, HttpSession session){
+//        String vididtoplay = request.getParameter("clicked");
+//        String videoWatched = request.getParameter("videoWatched");
+//
+//        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
+//            UserHistory userhist = new UserHistory();
+//            userhist.setUserId(session.getAttribute("userid").toString());
+//            userhist.setVideoid(videoWatched);
+//            userhist.setSeqid(session.getAttribute("sessionid").toString());
+//            userhist.setViewingDate(getLocalDate().toString());
+//            userhist.setViewingTime(getTime());
+//            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+//
+//            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+//            if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
+//                userhist.setViewingStatus("1");
+//            }else{
+//                userhist.setViewingStatus("0");
+//            }
+//            userService.saveUserHistory(userhist);
+//        }
+//
+//        session.setAttribute("vididtoplay", vididtoplay);
+//
+//        System.out.println("video id : " + vididtoplay);
+//        System.out.println("aaaaaaaaaaa" + session.getAttribute("userid"));
+//
+//
+//
+//
+//        VideoDetails playvid = videoService.findByVideoid(vididtoplay);
+//        ArrayList<VideoDetails> upnext = (ArrayList<VideoDetails>) videoService.findAllVideoDetails();
+////        Collections.sort(upnext);
+//        Collections.shuffle(upnext);
+//        System.out.println(playvid.getTitle() + " " + playvid.getArtist());
+//
+//        String url = "https://www.youtube.com/embed/" + playvid.getVideoid();
+//
+//        String thumbnail1 = "https://i.ytimg.com/vi/" + upnext.get(1).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail2 = "https://i.ytimg.com/vi/" + upnext.get(2).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail3 = "https://i.ytimg.com/vi/" + upnext.get(3).getVideoid() +"/mqdefault.jpg";
+//
+//        ArrayList<VideoDetails> videoList = new ArrayList<VideoDetails>();
+//        videoList = videoService.findAllVideoDetails();
+//
+//        ArrayList<VVD> vr1 = new ArrayList<VVD>();
+//
+//        for (int i = 0; i < 6; i++) {
+//            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+//            vr1.add(vid);
+//            vid = null;
+//        }
+//
+//        model.addAttribute("r1", vr1);
+//
+//        model.addAttribute("emblink", url);
+//        model.addAttribute("vididtoplay", playvid.getVideoid());
+//        model.addAttribute("vidtitle", playvid.getTitle());
+//        model.addAttribute("vidviews", concat(playvid.getViewCount()));
+//        model.addAttribute("vidlikes", concat(playvid.getLikes()));
+//
+////        model.addAttribute("upnext")
+//        model.addAttribute("upnext1", upnext.get(1));
+//        model.addAttribute("upnext2", upnext.get(2));
+//        model.addAttribute("upnext3", upnext.get(3));
+//        model.addAttribute("vidid", vididtoplay);
+//
+//        model.addAttribute("tn1", thumbnail1);
+//        model.addAttribute("tn2", thumbnail2);
+//        model.addAttribute("tn3", thumbnail3);
+//
+//        return "VideoPlayerV2";
+//
+//    }
+
+//    //before merging ruz
+//    @RequestMapping("/submitrating")
+//    public String submitRating(HttpServletRequest request, Model model, HttpSession session){
+//        int useragegroup = (Integer) session.getAttribute("useragegroup");
+//        int personalitygroup = (Integer) session.getAttribute("userpersonalitygroup");
+//        String[] simusers = (String[]) session.getAttribute("similarusers");
+//        String vididtoplay = request.getParameter("current");
+//        String vididnexttoplay = request.getParameter("clicked");
+//        String vidrating = request.getParameter("rating");
+//        VideoDetails video = videoService.findByVideoid(vididtoplay);
+//        String videoWatched = request.getParameter("videoWatched");
+//
+//        if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
+//            UserHistory userhist = new UserHistory();
+//            userhist.setUserId(session.getAttribute("userid").toString());
+//            userhist.setVideoid(videoWatched);
+//            userhist.setSeqid(session.getAttribute("sessionid").toString());
+//            userhist.setViewingDate(getLocalDate().toString());
+//            userhist.setViewingTime(getTime());
+//            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+//
+//            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+//            if(Float.parseFloat(request.getParameter("timeSpent").toString())>curviddur.getVidDuration()/2) {
+//                userhist.setViewingStatus("1");
+//            }else{
+//                userhist.setViewingStatus("0");
+//            }
+//            userService.saveUserHistory(userhist);
+//        }
+//
+//        try{
+//            Genre findgenre = videoService.findByGenreName(video.getGenre());
+//            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), findgenre.getGenreId());
+//            incrementagegroup(useragegroup, video.getGenre());
+//            incrementpersonalitygroup(personalitygroup, video.getGenre());
+//            updategenreWeight(findgenre.getGenreId(), (Integer) session.getAttribute("userid"), userpref.getPrefWeight());
+//
+//        }catch (Exception e){
+//
+//        }
+//        List<UserHistory> currentuserhist = videoService.findAllByUserIdandVideoid(session.getAttribute("userid").toString(), vididtoplay);
+//
+//        try{
+//            VidRatings uservideorating = videoService.findVidRatByUserIdandVideoid(session.getAttribute("userid").toString(), vididtoplay);
+//            if(!vidrating.equals("0")){
+//                uservideorating.setRating(vidrating);
+//                videoService.saveVidrating(uservideorating);
+//            }
+//        }catch (Exception e){
+//            VidRatings newrating = new VidRatings();
+//            newrating.setUserId(session.getAttribute("userid").toString());
+//            newrating.setUserName(session.getAttribute("username").toString());
+//            newrating.setVideoid(vididtoplay);
+//            newrating.setRating(vidrating);
+//            videoService.saveVidrating(newrating);
+//        }
+//
+//        VideoDetails playvid = videoService.findByVideoid(vididnexttoplay);
+//        ArrayList<VideoDetails> upnext = (ArrayList<VideoDetails>) videoService.findAllVideoDetails();
+////        Collections.sort(upnext);
+//        Collections.shuffle(upnext);
+////        System.out.println(playvid.getTitle() + " " + playvid.getArtist());
+//
+//        String url = "https://www.youtube.com/embed/" + playvid.getVideoid();
+//
+//        String thumbnail1 = "https://i.ytimg.com/vi/" + upnext.get(1).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail2 = "https://i.ytimg.com/vi/" + upnext.get(2).getVideoid() +"/mqdefault.jpg";
+//        String thumbnail3 = "https://i.ytimg.com/vi/" + upnext.get(3).getVideoid() +"/mqdefault.jpg";
+//
+//        ArrayList<VideoDetails> videoList = new ArrayList<VideoDetails>();
+//        videoList = videoService.findAllVideoDetails();
+//        VideoDetails recommVids = new VideoDetails();
+//
+//        ArrayList<VVD> vr1 = new ArrayList<VVD>();
+//
+//        String[] recommendedVids = cosineMatrix(session.getAttribute("userid").toString(), simusers);
+//        System.out.println(recommendedVids[0]);
+//        int j =0;
+//        for (int i = 0; i < 6; i++) {
+//            if(recommendedVids[j] != null && i < recommendedVids.length){
+//                recommVids = videoService.findByVideoid(recommendedVids[i]);
+//                VVD vid = new VVD(recommVids.getVideoid(), recommVids.getTitle(), recommVids.getArtist(), recommVids.getGenre(), recommVids.getDate(),"https://i.ytimg.com/vi/" + recommVids.getVideoid() + "/mqdefault.jpg");
+//                vr1.add(vid);
+//                vid = null;
+//                j++;
+//            }
+//            else{
+//                VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+//                vr1.add(vid);
+//                vid = null;
+//            }
+//        }
+//
+////        for (int i = 0; i < 6; i++) {
+////            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+////            vr1.add(vid);
+////            vid = null;
+////        }
+//
+//        model.addAttribute("r1", vr1);
+//
+//        model.addAttribute("emblink", url);
+//        model.addAttribute("vididtoplay", playvid.getVideoid());
+//        model.addAttribute("vidtitle", playvid.getTitle());
+//        model.addAttribute("vidviews", concat(playvid.getViewCount()));
+//        model.addAttribute("vidlikes", concat(playvid.getLikes()));
+//        model.addAttribute("vidid", vididnexttoplay);
+//
+////        model.addAttribute("upnext")
+//        model.addAttribute("upnext1", upnext.get(1));
+//        model.addAttribute("upnext2", upnext.get(2));
+//        model.addAttribute("upnext3", upnext.get(3));
+//
+//        model.addAttribute("tn1", thumbnail1);
+//        model.addAttribute("tn2", thumbnail2);
+//        model.addAttribute("tn3", thumbnail3);
+//
+//        return "VideoPlayerV2";
+//
+//    }
 
     private void incrementpersonalitygroup(int personalitygroup, String genre) {
         PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
@@ -1596,10 +1799,31 @@ public class UserController {
     }
 
 
+    @RequestMapping("/latestExplore")
+    public String showLatestExplore(HttpSession session, Model model){
+//        String username = session.getAttribute("username").toString();
+//        model.addAttribute("username", username);
+
+        ArrayList<VideoDetails> recVideos = videoService.findAllVideoDetails();
+
+        Collections.shuffle(recVideos);
+        ArrayList<RecVid> vr1 = new ArrayList<>();
+        for(int i=0; i<=5; i++) {
+            RecVid vid1 = new RecVid(recVideos.get(i).getVideoid(), recVideos.get(i).getTitle(), recVideos.get(i).getArtist(), recVideos.get(i).getGenre(), "https://i.ytimg.com/vi/" + recVideos.get(i).getVideoid() + "/mqdefault.jpg");
+            vr1.add(vid1);
+            vid1 = null;
+        }
+
+        model.addAttribute("r1", vr1);
+
+        return "LatestExplore";
+    }
+
+
     //seqrule
 
     @RequestMapping("/playPlaylist")
-    public String playThisPlaylist(HttpServletRequest request, Model model){
+    public String playThisPlaylist(HttpServletRequest request, Model model, HttpSession session){
         String choiceOfPlaylist = request.getParameter("choice");
         ArrayList<Playlist> playListVideos = new ArrayList<>();
         if(choiceOfPlaylist.equals("1")){
@@ -1618,23 +1842,105 @@ public class UserController {
             System.out.println("[PL] - " + p.getVideoID());
         }
 
+
+
+
+
         model.addAttribute("vididtoplay", videos.get(0).getVideoid());
+
+//        model.addAttribute("vidtitle", videos.get(0).getMvtitle());
         model.addAttribute("plvids", videos);
 
         return "VideoPlayerWithPlaylist";
     }
 
-//    @RequestMapping("/populate")
-//    public String populate(Model model){
+    @RequestMapping("/populate")
+    public String populate(Model model){
+
+        ArrayList<Video> allvids = videoService.findAllVideo();
+        ArrayList<VideoDetails> vids = new ArrayList<>();
+        for(Video s: allvids) {
+            VideoDetails v = videoService.findVideoDetailsByVideoid(s.getVideoid());
+            vids.add(v);
+        }
+
+        Collections.sort(vids);
+        ArrayList<VideoDetails> plvids = new ArrayList<>();
+        for(int i=0; i<50; i++){
+            plvids.add(vids.get(i));
+        }
+        ArrayList<Video> plvidsf = new ArrayList<>();
+
+        for(VideoDetails v : plvids){
+            plvidsf.add(videoService.findVideoByVideoid(v.getVideoid()));
+        }
+
+
+        model.addAttribute("vididtoplay", plvidsf.get(0).getVideoid());
+        model.addAttribute("plvids", plvidsf);
+
+
+
+        return "VideoPlayerWithPlaylist";
+
+
+    }
+
+    @RequestMapping("/playPLItemPopu")
+    public String playPLItemPopu(HttpServletRequest request, HttpSession session, Model model){
+
+
+        String playthisvid = null;
+        for(int i=0; i<20; i++) {
+            if(request.getParameter("clicked"+i)!=null && !request.getParameter("clicked"+i).isEmpty()) {
+                playthisvid = request.getParameter("clicked"+i);
+            }
+        }
+
+        String timeSpent = request.getParameter("timeSpent");
+        String videoWatched = request.getParameter("videoWatched");
+        System.out.println("Music Video Watched : " + videoWatched);
+        System.out.println("Play on Next : " + playthisvid);
+        System.out.println("Time Spent : " + timeSpent);
+
+
+//        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
+//        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
 //
+//        ArrayList<Video> plvids = new ArrayList<>();
+//        for(Playlist p : vidids){
+//            Video v = new Video();
+//            v= videoService.findVideoByVideoid(p.getVideoID().toString());
+//            plvids.add(v);
+//        }
+
+        if(videoWatched!=null){
+            UserHistory userhist = new UserHistory();
+            userhist.setUserId(session.getAttribute("userid").toString());
+            userhist.setVideoid(videoWatched);
+            userhist.setSeqid(session.getAttribute("sessionid").toString());
+            userhist.setViewingDate(getLocalDate().toString());
+            userhist.setViewingTime(getTime());
+            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
+
+            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
+            System.out.println("CURRENT TITLE : " + curviddur.getTitle());
+            if(Float.parseFloat(timeSpent.toString())>curviddur.getVidDuration()/2) {
+                userhist.setViewingStatus("1");
+            }else{
+                userhist.setViewingStatus("0");
+            }
+            userService.saveUserHistory(userhist);
+        }
+
 //        ArrayList<Video> allvids = videoService.findAllVideo();
 //        ArrayList<VideoDetails> vids = new ArrayList<>();
 //        for(Video s: allvids) {
 //            VideoDetails v = videoService.findVideoDetailsByVideoid(s.getVideoid());
 //            vids.add(v);
 //        }
-//
-//        Collections.sort(vids);
+
+////        Collections.sort(vids);
 //        ArrayList<VideoDetails> plvids = new ArrayList<>();
 //        for(int i=0; i<50; i++){
 //            plvids.add(vids.get(i));
@@ -1642,99 +1948,23 @@ public class UserController {
 //        ArrayList<Video> plvidsf = new ArrayList<>();
 //
 //        for(VideoDetails v : plvids){
-//            plvidsf.add(videoService.findVideoByVideoid(v.getVideoid()));
+//            plvidsf.add(( videoService.findVideoByVideoid(v.getVideoid()));
 //        }
-//
-//
-//        model.addAttribute("vididtoplay", plvidsf.get(0).getVideoid());
-//        model.addAttribute("plvids", plvidsf);
-//
-//
-//
-//        return "VideoPlayerWithPlaylist";
-//
-//
-//    }
-//
-//    @RequestMapping("/playPLItemPopu")
-//    public String playPLItemPopu(HttpServletRequest request, HttpSession session, Model model){
-//
-//
-//        String playthisvid = null;
-//        for(int i=0; i<20; i++) {
-//            if(request.getParameter("clicked"+i)!=null && !request.getParameter("clicked"+i).isEmpty()) {
-//                playthisvid = request.getParameter("clicked"+i);
-//            }
-//        }
-//
-//        String timeSpent = request.getParameter("timeSpent");
-//        String videoWatched = request.getParameter("videoWatched");
-//        System.out.println("Music Video Watched : " + videoWatched);
-//        System.out.println("Play on Next : " + playthisvid);
-//        System.out.println("Time Spent : " + timeSpent);
-//
-//
-////        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
-////        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
-////
-////        ArrayList<Video> plvids = new ArrayList<>();
-////        for(Playlist p : vidids){
-////            Video v = new Video();
-////            v= videoService.findVideoByVideoid(p.getVideoID().toString());
-////            plvids.add(v);
-////        }
-//
-//        if(videoWatched!=null){
-//            UserHistory userhist = new UserHistory();
-//            userhist.setUserId(session.getAttribute("userid").toString());
-//            userhist.setVideoid(videoWatched);
-//            userhist.setSeqid(session.getAttribute("sessionid").toString());
-//            userhist.setViewingDate(getLocalDate().toString());
-//            userhist.setViewingTime(getTime());
-//            userhist.setTimeSpent(request.getParameter("timeSpent").toString());
-//
-//            VideoDetails curviddur = videoService.findVideoDetailsByVideoid(videoWatched);
-//            System.out.println("CURRENT TITLE : " + curviddur.getTitle());
-//            if(Float.parseFloat(timeSpent.toString())>curviddur.getVidDuration()/2) {
-//                userhist.setViewingStatus("1");
-//            }else{
-//                userhist.setViewingStatus("0");
-//            }
-//            userService.saveUserHistory(userhist);
-//        }
-//
-////        ArrayList<Video> allvids = videoService.findAllVideo();
-////        ArrayList<VideoDetails> vids = new ArrayList<>();
-////        for(Video s: allvids) {
-////            VideoDetails v = videoService.findVideoDetailsByVideoid(s.getVideoid());
-////            vids.add(v);
-////        }
-//
-//////        Collections.sort(vids);
-////        ArrayList<VideoDetails> plvids = new ArrayList<>();
-////        for(int i=0; i<50; i++){
-////            plvids.add(vids.get(i));
-////        }
-////        ArrayList<Video> plvidsf = new ArrayList<>();
-////
-////        for(VideoDetails v : plvids){
-////            plvidsf.add(( videoService.findVideoByVideoid(v.getVideoid()));
-////        }
-//
-//        ArrayList<Video> video = videoService.findAllVideo();
-//        ArrayList<Video> plvidsf = new ArrayList<>();
-//        Collections.shuffle(video);
-//        for(int i=0; i<50; i++){
-//            plvidsf.add(video.get(i));
-//        }
-//
-//
-//        model.addAttribute("vididtoplay", plvidsf.get(0).getVideoid());
-//        model.addAttribute("plvids", plvidsf);
-//
-//        return "VideoPlayerWithPlaylist";
-//    }
-//
+
+        ArrayList<Video> video = videoService.findAllVideo();
+        ArrayList<Video> plvidsf = new ArrayList<>();
+        Collections.shuffle(video);
+        for(int i=0; i<50; i++){
+            plvidsf.add(video.get(i));
+        }
+
+
+        model.addAttribute("vididtoplay", plvidsf.get(0).getVideoid());
+        model.addAttribute("plvids", plvidsf);
+
+        return "VideoPlayerWithPlaylist";
+    }
+
 
 
     @RequestMapping("/playPLItem")
@@ -1792,12 +2022,306 @@ public class UserController {
             plvids.add(video.get(i));
         }
 
+
+
+
+//        Video v = videoService.findVideoByVideoid(playthisvid);
+
+//        model.addAttribute("vidtitle", v.getMvtitle());
+
         model.addAttribute("vididtoplay", playthisvid);
 
         model.addAttribute("plvids", plvids);
 
         return "VideoPlayerWithPlaylist";
     }
+
+
+    @RequestMapping("/gotoplaylistF")
+    public String gotoPlaylistF(HttpSession session, Model model){
+        String currentTime = getTime();
+
+        ArrayList<String> generatedPlaylist = new ArrayList<>();
+        ArrayList<String> sequenceids = userService.findDistinctSequenceId();
+
+        System.out.println("SEQ IDS SIZE : " + sequenceids.size());
+
+
+        ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[sequenceids.size()];
+
+        for(int i=0; i<sequenceids.size();i++){
+            seqRules[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
+            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+        }
+
+        System.out.println("SIZE BEFORE FILTERING : " + seqRules.length);
+
+        for(int i=0; i<sequenceids.size();i++){
+            boolean found=false;
+                for (int j = 0; j < seqRules[i].size(); j++) {
+                    if (seqRules[i].get(j).getViewingTime().equals(currentTime.substring(0, currentTime.length() - 6))) {
+                        found = true;
+                        break;
+                    } else {
+                        found = false;
+                    }
+                }
+
+
+            if(found==false){
+               sequenceids.remove(i);
+            }
+        }
+
+        ArrayList<UserHistory>[] seqRulesFiltered = (ArrayList<UserHistory>[])new ArrayList[sequenceids.size()];
+
+        for(int i=0; i<sequenceids.size();i++){
+            seqRulesFiltered[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
+            Collections.sort(seqRulesFiltered[i], UserHistory.TimeComparator);
+        }
+
+
+
+        System.out.println("SIZE AFTER FILTERING : " + seqRulesFiltered.length);
+
+
+        ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,sequenceids);
+
+        ArrayList<String> databaseRules = buildDBRules(seqRules,sequenceids);
+
+        ArrayList<ClassSequentialRules>[] seqrules = (ArrayList<ClassSequentialRules>[])new ArrayList[10];
+        seqrules[0] = new ArrayList<>();
+        for(String id: uniqueVideoIDs){
+            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id.toString()),0);
+            seqrules[0].add(seq);
+        }
+
+        seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
+        displaySeqrulesMeasures(seqrules[0]);
+
+        boolean flag= true;
+        int srIndex=1;
+        do{
+            seqrules[srIndex] = new ArrayList<>();
+            seqrules[srIndex] = buildRuleCombination(seqrules[srIndex-1],uniqueVideoIDs,databaseRules);
+            seqrules[srIndex] = removeUnqualifiedForThreshold(seqrules[srIndex]);
+            displaySeqrulesMeasures(seqrules[srIndex]);
+            if(seqrules[srIndex].get(0).getSupport()==0){
+                flag=false;
+
+            }else{
+                srIndex++;
+            }
+
+        }while (flag==true);
+        String[] parts = null;
+        for(int i=0; i<seqrules[srIndex-1].size(); i++){
+//            System.out.println("The sequence that made it : " + seqrules[srIndex-1].get(i).getVideoIds() );
+            parts = seqrules[srIndex-1].get(0).getVideoIds().toString().split(", ");
+        }
+
+
+        for (String p : parts){
+            System.out.println("[pl]" + p.toString());
+        }
+
+
+        ArrayList<String> finalList = new ArrayList<String>(Arrays.asList(parts));
+        ArrayList<String> finalListest = new ArrayList<>();
+        for(int i=0; i<seqRulesFiltered.length; i++){
+            for(int j=0; j<seqRulesFiltered[i].size(); j++){
+                if(!finalList.contains(seqRulesFiltered[i].get(j).getVideoid().toString())){
+                    finalList.add(seqRulesFiltered[i].get(j).getVideoid());
+                }
+            }
+        }
+
+        for(String s: finalList){
+            if(!finalListest.contains(s.toString())){
+                finalListest.add(s);
+            }
+        }
+
+
+
+        for( String s: finalList){
+            System.out.println("[ f ] - " + s.toString() );
+        }
+
+
+
+
+
+
+        return "testing";
+//        return "VideoPlayerWithPlaylist";
+
+    }
+
+    public float calculateConfidence(ArrayList<String> databaseRules, String seqToCheck, ArrayList<ClassSequentialRules> prevSeqrules, String findInPrev){
+        float confidence=0;
+
+        int support=0;
+        for(int i=0; i<databaseRules.size(); i++){
+            String newStr = seqToCheck.replaceAll(",", ".*");
+            String tempPat = ".*" + newStr + ".*";
+            Pattern p = Pattern.compile(tempPat);
+            boolean b = false;
+
+//            System.out.println(tempPat);
+
+            Matcher m = p.matcher(databaseRules.get(i).toString());
+            b = m.matches();
+            if (b == true) {
+                support++;
+            }
+        }
+//        System.out.println( seqToCheck + "present:" + ((float)support/(float)databaseRules.size()) +"/" + supportPrevSet);
+        float prevSup=0;
+        for(ClassSequentialRules s: prevSeqrules){
+            if(findInPrev.equals(s.getVideoIds())){
+                prevSup = s.getSupport();
+            }
+        }
+//        System.out.println(support + "/" + databaseRules.size() + "/" + prevSup);
+        confidence = (support/(float)databaseRules.size())/prevSup;
+
+//        System.out.println("STOP");
+        return confidence;
+    }
+
+
+    public ArrayList<ClassSequentialRules> buildRuleCombination(ArrayList<ClassSequentialRules> seqrules, ArrayList<String> uniqueVideoIDs, ArrayList<String> databaseRules){
+        ArrayList<ClassSequentialRules> seqres = new ArrayList<>();
+        for(ClassSequentialRules s: seqrules){
+            for(int i=0; i<uniqueVideoIDs.size(); i++) {
+                ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +" , " +uniqueVideoIDs.get(i),
+                        calculateSupport(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i)),
+                        calculateConfidence(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i),seqrules,s.getVideoIds()));
+                seqres.add(seq);
+//                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
+            }
+        }
+        return seqres;
+    }
+
+    public void displaySeqrulesMeasures(ArrayList<ClassSequentialRules> seqrules){
+        for(int i=0; i<seqrules.size(); i++){
+//            if(seqrules.get(i).getSupport()!=0) {
+            System.out.println("{" + seqrules.get(i).getVideoIds() + "} : " + " support : " + seqrules.get(i).getSupport() +
+                    "      confidence : " + seqrules.get(i).getConfidence()  );
+//            }
+        }
+
+    }
+
+    public ArrayList<ClassSequentialRules> removeUnqualifiedForThreshold(ArrayList<ClassSequentialRules> seqrules){
+        ArrayList<ClassSequentialRules> res = new ArrayList<>();
+        float threshold=0;
+        ArrayList<Float> findMax= new ArrayList<>();
+        for(int i=0; i<seqrules.size(); i++){
+            threshold += seqrules.get(i).getSupport();
+            findMax.add(seqrules.get(i).getSupport());
+        }
+
+
+        //threshold = (threshold/seqrules.size())*((float)4);
+
+        threshold = Collections.max(findMax);
+
+
+//        for(int i=0; i<seqrules.size(); i++){
+//            if(seqrules.get(i).getSupport()>(threshold)){
+//                res.add(seqrules.get(i));
+//            }
+//        }
+
+        for(int i=0; i<seqrules.size(); i++){
+            if(seqrules.get(i).getSupport()==(threshold)){
+                res.add(seqrules.get(i));
+            }
+        }
+        System.out.println("T H R E S H O L D : " + threshold);
+
+        return res;
+    }
+
+    public float getSecMax(ArrayList<Float> list){
+        float secondLargest = (float) list.get(0);
+        float largest = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            if(list.get(i) > largest) {
+                secondLargest = largest;
+                largest = list.get(i);
+            }
+            if(list.get(i) > secondLargest && list.get(i) != largest) {
+                secondLargest = list.get(i);
+            }
+        }
+        System.out.print("Second biggest number ");
+        return secondLargest;
+    }
+
+    public ArrayList<String> getUniqueVideoIDs(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        ArrayList<String> uniqueVidIDS = new ArrayList<>();
+
+        for(int i=0; i<sequenceids.size();i++){
+            for(int j=0; j<seqRules[i].size(); j++){
+                if(uniqueVidIDS.contains(seqRules[i].get(j).getVideoid())){
+//                    System.out.println("Already Existed!");
+                }else{
+                    uniqueVidIDS.add(seqRules[i].get(j).getVideoid());
+                }
+
+            }
+        }
+
+        return uniqueVidIDS;
+    }
+
+    public ArrayList<String> buildDBRules(ArrayList<UserHistory>[] seqRules,  ArrayList<String> sequenceids){
+        ArrayList<String> databaseRules = new ArrayList<>();
+        for(int i=0; i<sequenceids.size();i++){
+            String asOne ="";
+            for(int j=0; j<seqRules[i].size(); j++) {
+                asOne = asOne + seqRules[i].get(j).getVideoid() + " , ";
+            }
+            databaseRules.add(asOne);
+
+        }
+
+        return  databaseRules;
+    }
+
+    public float calculateSupport(ArrayList<String> databaseRules, String seqToCheck ){
+        int support=0;
+        for(int i=0; i<databaseRules.size(); i++){
+            String newStr = seqToCheck.replaceAll(",", ".*");
+            String tempPat = ".*" + newStr + ".*";
+            Pattern p = Pattern.compile(tempPat);
+            boolean b = false;
+
+//            System.out.println(tempPat);
+
+            Matcher m = p.matcher(databaseRules.get(i).toString());
+            b = m.matches();
+            if (b == true) {
+                support++;
+            }
+        }
+
+        float fsupport = (float)support/(float)databaseRules.size();
+//        System.out.println("dbrules size" + databaseRules.size());
+//        System.out.println("SUPPORT : " + fsupport);
+        return fsupport;
+
+    }
+
+
+
+
+
+
 
     public class upnextItem{
         String order;
@@ -1825,6 +2349,44 @@ public class UserController {
         }
     }
 
+    public class ClassSequentialRules {
+        String videoIds;
+        float support;
+        float confidence;
+
+        public ClassSequentialRules(String videoIds, float support, float confidence) {
+            this.videoIds = videoIds;
+            this.support = support;
+            this.confidence = confidence;
+
+        }
+
+        public float getConfidence() {
+            return confidence;
+        }
+
+        public void setConfidence(float confidence) {
+            this.confidence = confidence;
+        }
+
+
+
+        public float getSupport() {
+            return support;
+        }
+
+        public void setSupport(float support) {
+            this.support = support;
+        }
+
+        public String getVideoIds() {
+            return videoIds;
+        }
+
+        public void setVideoIds(String videoIds) {
+            this.videoIds = videoIds;
+        }
+    }
 
 
 

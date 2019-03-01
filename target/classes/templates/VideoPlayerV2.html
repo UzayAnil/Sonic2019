@@ -149,6 +149,28 @@
         document.getElementById("clickedR").setAttribute("value",id);
         document.getElementById('form1').submit();
     }
+    function myFunction1() {
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rate").setAttribute("value",y);
+        document.getElementById("currentvid").setAttribute("value",x);
+        submitFunc1();
+    }
+    function myFunction2() {
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rate").setAttribute("value",y);
+        document.getElementById("currentvid").setAttribute("value",x);
+        submitFunc2()
+    }
+    function myFunction3() {
+        var x = document.getElementsByTagName("input")[0].getAttribute("name");
+        var y = document.querySelector("input[type=radio]:checked").value;
+        document.getElementById("rate").setAttribute("value",y);
+        document.getElementById("currentvid").setAttribute("value",x);
+        submitFunc3();
+    }
+
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
@@ -210,6 +232,29 @@
     }
     function stopVideo() {
         player.stopVideo();
+    }
+
+    function gotoExplore() {
+        document.getElementById("explore").submit();
+    }
+
+    function gotoProfile() {
+        document.getElementById("profile").submit();
+    }
+
+    function logoutUser() {
+        document.getElementById("logout").submit();
+    }
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+
+    function stopVideo() {
+        player.stopVideo();
+    }
+
+    function gotoHome() {
+        document.getElementById("home").submit();
     }
 </script>
 </body>

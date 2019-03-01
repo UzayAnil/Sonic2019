@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/stylesheets/latestexplore.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/play-circle?style=regular&from=io" \>
+    <script src="/js/explore.js"></script>
+</head>
+<body>
+
+    <div>
+        <div id="cont">
+            <div id="menu-fixed">
+
+                <a href="#cont">
+                    <i class="material-icons back">&#xE314;</i>
+                </a>
+                <a href="#menu-fixed">
+                    <div class="logo">
+                        <img src="images/logofinal.png" style="width:70px;height:70px;">
+                    </div>
+                    <p class="pmenu">MENU</p>
+                </a>
+                <hr>
+
+                <ul class="menu">
+                    <form method="post" action="/homepagev2" id="home">
+                        <li><i class="material-icons" onclick="gotoHome()">&#xE88A;</i><br><span class="sideb">Home</span></li>
+                    </form>
+
+                    <form method="post" action="/gotoExplore" id="explore">
+                        <li>
+                            <i class="material-icons" onclick="gotoExplore()">&#xe02c;</i><br>
+                            <span class="sideb">Explore</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/gotoPlaylistExp" id="playlistExp">
+                        <li>
+                            <i class="material-icons" onclick="gotoPlaylistExplorer()">&#xe02c;</i><br>
+                            <span class="sideb">Playlist</span>
+                        </li>
+                    </form>
+
+                    <form method="post" action="/gotoProfile" id="profile">
+                        <li>
+                            <i class="material-icons" onclick="gotoProfile()">person</i><br>
+                            <span class="sideb">Profile</span>
+                        </li>
+                    </form>
+                    <form method="post" action="/logoutUser" id="logout">
+                        <li>
+                            <i class="material-icons" onclick="logoutUser()">&#xE8B8;</i><br>
+                            <span class="sideb">Log-out</span>
+                        </li>
+                    </form>
+
+                    <li><i class="material-icons">&#xE8B6;</i><br><span class="sideb">Search</span></li>
+                </ul>
+
+
+                <i class="material-icons info">&#xE88E;</i>
+            </div>
+        </div>
+    </div>
+    <div class=top-bar>
+
+
+        <div class="top-bar-right">
+            <div class="top-bar-search-bar">
+                <input class="top-bar-search-input"name="search" placeholder="Search...">
+                <div class="top-bar-search-button">
+                    <div class="fa fa-search"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <!--<h1>Made for you,</h1> <span th:text="${username}"></span>-->
+        <h2 style="position: absolute; left: 15%; top: 10%; color: white;">Playlists made for you, username.</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="overlayer">
+                    <i style="font-size: 65px;top: 30%;position: relative;color: white;" class="fa">&#xf144;</i>
+                </div>
+                <img src="https://i.pinimg.com/736x/02/b8/94/02b894f7ea6ad9f724648ee511ad018f--edm-music-house-music.jpg" alt="">
+                <div class="title">
+                    <a href="#">Hover over</a>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="overlayer">
+                    <i style="font-size: 65px;top: 30%;position: relative;color: white;" class="fa">&#xf144;</i>
+                </div>
+                <img src="https://altwall.net/img/albums/adb1c0cbab29b842b28e6aa1e8e57f47_2013.jpg" alt="">
+                <div class="title">
+                    <a href="#">Hover over</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="overlayer">
+                    <i style="font-size: 65px;top: 30%;position: relative;color: white;" class="fa">&#xf144;</i>
+                </div>
+                <img src="https://is4-ssl.mzstatic.com/image/thumb/Music7/v4/4b/06/29/4b062955-ecce-e362-78f1-025f18eed20a/source/1200x1200bb.jpg" alt="">
+                <div class="title">
+                    <a href="#">Hover over</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="overlayer">
+                    <i style="font-size: 65px;top: 30%;position: relative;color: white;" class="fa">&#xf144;</i>
+                </div>
+                <img src="https://media1.popsugar-assets.com/files/thumbor/L-VT9k0GKckWWnpo3n2YBq4f9tE/fit-in/1024x1024/filters:format_auto-!!-:strip_icc-!!-/2017/08/03/846/n/37139775/2d0d134e5983773fe90560.65157921_edit_img_image_17921777_1501786115/i/Camila-Cabello-Havana-Song.jpg" alt="">
+                <div class="title">
+                    <a href="#">Hover over</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="overlayer">
+                    <i style="font-size: 65px;top: 30%;position: relative;color: white;" class="fa">&#xf144;</i>
+                </div>
+                <img src="https://i.pinimg.com/736x/ed/b1/10/edb1100257bb6d0ceee624696d9c9f1f--cover-art-album-covers.jpg" alt="">
+                <div class="title">
+                    <a href="#">Hover over</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper_section_2">
+
+            <ul class="items">
+            <div class="vidcontainer"  th:each="rv1 : ${r1}">
+                <form th:id="${rv1.videoid}" action="/gotoPlayer" method="get">
+                    <li>
+                        <a href="javascript:;" th:onclick="'document.getElementById(\''+${rv1.videoid}+'\').submit();'">
+                            <img th:src="${rv1.thumbnail}"/>
+                        </a>
+                        <input type="hidden" name="clicked" th:value="${rv1.videoid}"/>
+                        <a href="#">
+                            <div class="content">
+                                <h2 th:text="${rv1.title}"/>
+                            </div>
+                        </a>
+                    </li>
+                </form>
+            </div>
+            </ul>
+            <!--<div class="cards">-->
+
+
+
+                <!--<div class="card">-->
+                    <!--<div class="overlayer">-->
+                        <!--<i class="far fa-play-circle"></i>-->
+                    <!--</div>-->
+                    <!--<img src="https://i.pinimg.com/736x/cf/74/03/cf74032199d378808402329b3765ac72&#45;&#45;music-albums-in-color.jpg" alt="">-->
+                    <!--<div class="title">-->
+                        <!--<a href="#">Hover over</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+
+                <!--<div class="card">-->
+                    <!--<div class="overlayer">-->
+                        <!--<i class="far fa-play-circle"></i>-->
+                    <!--</div>-->
+                    <!--<img src="https://i.pinimg.com/736x/00/a1/3c/00a13cf897548091f4042cba761ef00d&#45;&#45;cd-cover-dance-music.jpg" alt="">-->
+                    <!--<div class="title">-->
+                        <!--<a href="#">Hover over</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
+        </div>
+
+
+
+    </div>
+</body>
+<script>
+    function gotoExplore() {
+        document.getElementById("explore").submit();
+    }
+
+    function gotoProfile() {
+        document.getElementById("profile").submit();
+    }
+
+    function logoutUser() {
+        document.getElementById("logout").submit();
+    }
+    function gotoPlaylistExplorer(){
+        document.getElementById("playlistExp").submit();
+    }
+    function gotoHome() {
+        document.getElementById("home").submit();
+    }
+</script>
+
+
+</html>

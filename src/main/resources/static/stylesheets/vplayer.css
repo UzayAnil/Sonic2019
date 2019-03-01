@@ -850,7 +850,6 @@ progress::-webkit-progress-value {
     transition: all 0.3s;
     box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.19), 8px 0px 10px rgba(0, 0, 0, 0.23);
     text-align: center;
-    overflow: auto;
 }
 #menu-fixed .material-icons.back {
     display: none;
