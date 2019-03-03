@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -67,50 +67,27 @@
 
 <div class="search__container">
     <ul class="card">
-        <li class="search-item">
-            <div class="search-item__image" style="background-image: url(http://placehold.it/100x100);"></div>
-            <div class="search-item__content">
-                <p class="text--medium">
-                    SURNAME, Forname
-                    <span class="label label--red text--upcase">Warning</span>
-                </p>
-                <p class="text--small text--muted">17 Ryburn Road, Waverley, Rotherham, S60 8AU</p>
-                <p class="text--small text--muted">30/08/1989, Male</p>
+
+        <li class="search-item" th:each="r : ${results}">
+            <form th:id="${r.videoid}" action="/gotoPlayer" method="get">
+                <input type="hidden" name="clicked" th:value="${r.videoid}"/>
+            <img class="search-item__image" th:src="${r.thumbnail}" href="javascript:;" th:onclick="'document.getElementById(\''+${r.videoid}+'\').submit();'" >
+            </form>
+                <div class="search-item__content">
+                <p class="text--medium" th:text="${r.title}"></p>
+
+                <p class="text--small text--muted" th:text="${r.artist}"></p>
+                <!--<p class="text&#45;&#45;small text&#45;&#45;muted" th:text="{r.genre}"></p>-->
             </div>
-            <div class="search-item__options">
-                <button class="button button--outline button--small">Add to PNB</button>
-            </div>
+
+            <!--<div class="search-item__options">-->
+                <!--<button class="button button&#45;&#45;outline button&#45;&#45;small">Add to PNB</button>-->
+            <!--</div>-->
+
         </li>
 
-        <li class="search-item">
-            <div class="search-item__image" style="background-image: url(http://placehold.it/100x100);"></div>
-            <div class="search-item__content">
-                <p class="text--medium">
-                    SURNAME, Forname
-                    <span class="label label--red text--upcase">Warning</span>
-                </p>
-                <p class="text--small text--muted">17 Ryburn Road, Waverley, Rotherham, S60 8AU</p>
-                <p class="text--small text--muted">30/08/1989, Male</p>
-            </div>
-            <div class="search-item__options">
-                <button class="button button--outline button--small">Add to PNB</button>
-            </div>
-        </li>
 
-        <li class="search-item">
-            <div class="search-item__image" style="background-image: url(http://placehold.it/100x100);"></div>
-            <div class="search-item__content">
-                <p class="text--medium">
-                    SURNAME, Forname
-                    <span class="label label--red text--upcase">Warning</span>
-                </p>
-                <p class="text--small text--muted">17 Ryburn Road, Waverley, Rotherham, S60 8AU</p>
-                <p class="text--small text--muted">30/08/1989, Male</p>
-            </div>
-            <div class="search-item__options">
-                <button class="button button--outline button--small">Add to PNB</button>
-            </div>
-        </li>
+
     </ul>
 </div>
 

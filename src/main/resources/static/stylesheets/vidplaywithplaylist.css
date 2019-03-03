@@ -380,7 +380,7 @@ span {
 
 body {
     font-family: "Lato", sans-serif;
-    background: white url("../images/bar3.gif") no-repeat center center  fixed;
+    /*background: white url("../images/bar3.gif") no-repeat center center  fixed;*/
     background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;

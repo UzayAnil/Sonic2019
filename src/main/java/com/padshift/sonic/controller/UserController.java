@@ -1779,17 +1779,28 @@ public class UserController {
 
 
     @RequestMapping("/searchVideo")
-    public String searchVideo(HttpServletRequest request){
+    public String searchVideo(HttpServletRequest request, Model model){
         String queryString = "%" + request.getParameter("search") + "%";
         System.out.println("Query this : " + queryString);
 
         ArrayList<VideoDetails> videoResults = videoService.findVideoWhereTitleContains(queryString);
-
+        ArrayList<RecVid> videos = new ArrayList<>();
         for(VideoDetails v : videoResults){
             System.out.println("[result] : " + v.getTitle());
+            RecVid rv = new RecVid(v.getVideoid(),v.getTitle(), v.getArtist(), v.getGenre(), "https://i.ytimg.com/vi/" + v.getVideoid() + "/mqdefault.jpg");
+            System.out.println(v.getVideoid() + v.getTitle() +  v.getArtist() + v.getGenre() + "https://i.ytimg.com/vi/" + v.getVideoid() + "/mqdefault.jpg");
+            videos.add(rv);
         }
 
-        return "testing";
+
+
+
+
+
+        model.addAttribute("results", videos);
+
+
+        return "Search";
     }
 
     @RequestMapping("/showResult")
@@ -2175,9 +2186,13 @@ public class UserController {
         }
 
 
+        ArrayList<Video> vids = new ArrayList<>();
+        for(int i=0; i<20; i++){
+            System.out.println("[ f ] - " + finalList.get(i).toString() );
+            Video v = videoService.findVideoByVideoid(finalList.get(i).toString());
+            Video nv = new Video(v.getVideoid(), v.getMvtitle(), v.getThumbnail());
+            vids.add(nv);
 
-        for( String s: finalList){
-            System.out.println("[ f ] - " + s.toString() );
         }
 
 
@@ -2185,8 +2200,10 @@ public class UserController {
 
 
 
-        return "testing";
-//        return "VideoPlayerWithPlaylist";
+//        return "testing";
+        model.addAttribute("vididtoplay", vids.get(0).getVideoid());
+        model.addAttribute("plvids", vids);
+        return "VideoPlayerWithPlaylist";
 
     }
 
@@ -2260,7 +2277,7 @@ public class UserController {
         //threshold = (threshold/seqrules.size())*((float)4);
 
         threshold = Collections.max(findMax);
-
+//        threshold = getSecMax(findMax);
 
 //        for(int i=0; i<seqrules.size(); i++){
 //            if(seqrules.get(i).getSupport()>(threshold)){
@@ -2347,6 +2364,23 @@ public class UserController {
 //        System.out.println("SUPPORT : " + fsupport);
         return fsupport;
 
+    }
+
+
+    @RequestMapping("/outp")
+    public String outPlaylist(){
+
+        ArrayList<Playlist> p = videoService.findAllPlaylistByPlaylistID("plevening");
+
+        ArrayList<Video> pl = new ArrayList<>();
+        for(Playlist pli : p){
+            pl.add(videoService.findVideoByVideoid(pli.getVideoID()));
+        }
+
+        for(Video v: pl){
+            System.out.println(v.getMvtitle());
+        }
+        return "testing";
     }
 
 
