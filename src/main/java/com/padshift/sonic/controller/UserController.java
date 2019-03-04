@@ -12,6 +12,7 @@ import com.padshift.sonic.entities.*;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
+import java.util.Random;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.Session;
 import org.hibernate.annotations.SourceType;
@@ -1042,6 +1043,7 @@ public class UserController {
 
         ArrayList<VVD> vr1 = new ArrayList<VVD>();
 
+        Random rand = new Random();
         String[] recommendedVids = cosineMatrix(session.getAttribute("userid").toString(), simusers);
         System.out.println(recommendedVids[0]);
         int j =0;
@@ -1054,7 +1056,7 @@ public class UserController {
                 j++;
             }
             else{
-                VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
+                VVD vid = new VVD(videoList.get(rand.nextInt(videoList.size())).getVideoid(), videoList.get(rand.nextInt(videoList.size())).getTitle(), videoList.get(rand.nextInt(videoList.size())).getArtist(), videoList.get(rand.nextInt(videoList.size())).getGenre(), videoList.get(rand.nextInt(videoList.size())).getDate(),"https://i.ytimg.com/vi/" + videoList.get(rand.nextInt(videoList.size())).getVideoid() + "/mqdefault.jpg");
                 vr1.add(vid);
                 vid = null;
             }
@@ -1156,6 +1158,7 @@ public class UserController {
 
         ArrayList<VVD> vr1 = new ArrayList<VVD>();
 
+        Random rand = new Random();
         String[] recommendedVids = cosineMatrix(session.getAttribute("userid").toString(), simusers);
         System.out.println(recommendedVids[0]);
         int j =0;
@@ -1168,8 +1171,7 @@ public class UserController {
                 j++;
             }
             else{
-                VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
-                vr1.add(vid);
+                VVD vid = new VVD(videoList.get(rand.nextInt(videoList.size())).getVideoid(), videoList.get(rand.nextInt(videoList.size())).getTitle(), videoList.get(rand.nextInt(videoList.size())).getArtist(), videoList.get(rand.nextInt(videoList.size())).getGenre(), videoList.get(rand.nextInt(videoList.size())).getDate(),"https://i.ytimg.com/vi/" + videoList.get(rand.nextInt(videoList.size())).getVideoid() + "/mqdefault.jpg");                vr1.add(vid);
                 vid = null;
             }
         }
@@ -1722,10 +1724,8 @@ public class UserController {
         String tempvidId = "";
         for (int i = 0; i < predictedVidId.length; i++) {
 //            System.out.println(predictedVidId[i]+": "+predictedRate[i]);
-            for (int j = i + 1; j < predictedVidId.length; j++)
-            {
-                if (predictedRate[i] < predictedRate[j])
-                {
+            for (int j = i + 1; j < predictedVidId.length; j++) {
+                if (predictedRate[i] < predictedRate[j]) {
                     temp = predictedRate[i];
                     tempvidId = predictedVidId[i];
                     predictedRate[i] = predictedRate[j];
@@ -1738,6 +1738,7 @@ public class UserController {
         for (int i = 0; i < predictedVidId.length; i++) {
             System.out.println(predictedVidId[i]+": "+predictedRate[i]);
         }
+
         DecimalFormat numberFormat = new DecimalFormat("#");
 //        System.out.println(numberFormat.format(predictedRate[1])+"KASGDKSJGADJKGASD");
 //        updateRating(predictedVidId, predictedRate, currentuser);
