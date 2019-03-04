@@ -1,221 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300);
-html, body {
-    margin: 0;
-    font-family: 'Roboto';
-    background: #f1f1f1;
-    overflow: auto;
-}
-
-#cont:target > menu-fixed {
-    width: 120px;
-    background: #111;
-    transition: all 0.3s;
-}
-#cont:target > menu-fixed > a .material-icons.back {
-    display: none;
-}
-#cont:target > menu-fixed > .menu li {
-    text-align: center;
-    width: 40%;
-}
-#cont:target > menu-fixed > .menu li > p {
-    display: none;
-}
-
-#menu-fixed {
-    width: 120px;
-    z-index: 2;
-    height: 100%;
-    background: #0F0F0F;
-    position: fixed;
-    transition: all 0.3s;
-    box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.19), 8px 0px 10px rgba(0, 0, 0, 0.23);
-    text-align: center;
-    overflow: auto;
-}
-#menu-fixed .material-icons.back {
-    display: none;
-    color: white;
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    font-size: 36px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-#menu-fixed .material-icons.back:hover {
-    color: #009688;
-    transition: color 0.3s;
-}
-#menu-fixed:target {
-    width: 280px;
-    background: #000;
-    transition: all 0.3s ease-out;
-}
-#menu-fixed:target > .notes {
-    transition: all 0.2s;
-    z-index: 0;
-    opacity: 0;
-}
-#menu-fixed:target > a .material-icons.back {
-    display: block;
-}
-#menu-fixed:target > a > .logo {
-    width: 60%;
-    height: 47px;
-    margin: auto;
-}
-#menu-fixed:target > a > .logo > span {
-    display: none;
-}
-#menu-fixed:target > a > .logo > p {
-    display: block;
-}
-#menu-fixed:target > .menu li {
-    text-align: left;
-    width: 100%;
-}
-#menu-fixed:target > .menu li:hover::after {
-    content: '';
-    display: block;
-    position: absolute;
-    background: rgba(38, 166, 154, 0.1);
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 4px;
-    transition-delay: 0.5s;
-}
-#menu-fixed:target > .menu li:hover > p {
-    color: white;
-}
-#menu-fixed:target > .menu li > p {
-    display: inline-block;
-}
-#menu-fixed .logo {
-    width: 100%;
-    height: 70px;
-    position: relative;
-    cursor: pointer;
-}
-#menu-fixed .logo p {
-    display: none;
-    color: #999;
-    font-size: 23px;
-    padding-bottom: 0;
-    font-weight: 300;
-}
-#menu-fixed .logo span {
-    width: 10px;
-    height: 10px;
-    backrground: #0A0A0A;
-    position: absolute;
-    margin: auto;
-    left: 75%;
-    right: 0;
-    top: 500%;
-    transform: rotateZ(45deg);
-    -webkit-transform: rotateZ(45deg);
-    border: 8px solid white;
-    transition: all 0.2s;
-}
-#menu-fixed .logo:hover ~ p {
-    color: white;
-    transition: all 0.3s;
-}
-#menu-fixed .logo:hover > span {
-    width: 0;
-    height: 0;
-    border-left: 15px solid white;
-    border-right: 15px solid rgba(0, 0, 0, 0);
-    border-top: 15px solid rgba(0, 0, 0, 0);
-    border-bottom: 15px solid rgba(0, 0, 0, 0);
-    transition: all 0.2s;
-    transform: rotateZ(0deg) translateX(10px);
-    -webkit-transform: rotateZ(0deg) translateX(10px);
-}
-#menu-fixed .logo:hover > span::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 0;
-    border-left: 8px solid #111;
-    border-right: 8px solid rgba(0, 0, 0, 0);
-    border-top: 8px solid rgba(0, 0, 0, 0);
-    border-bottom: 8px solid rgba(0, 0, 0, 0);
-    left: -15px;
-    position: absolute;
-    top: -8px;
-}
-#menu-fixed .pmenu {
-    margin: 0;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 14px;
-    font-weight: 300;
-}
-#menu-fixed hr {
-    position: relative;
-    top: 10px;
-    width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-#menu-fixed .menu {
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    top: 10px;
-}
-#menu-fixed .menu li {
-    padding: 15px;
-    margin: auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom-style: dotted;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    transition: all 0.3s;
-}
-#menu-fixed .menu li:last-child {
-    border: none;
-}
-#menu-fixed .menu li:hover {
-    background: #000;
-    transition: all 0.3s;
-    transition-delay: 0.5s;
-}
-#menu-fixed .menu li:hover > .material-icons {
-    color: white;
-}
-#menu-fixed .menu li .material-icons {
-    color: #999;
-}
-#menu-fixed .menu li p {
-    display: none;
-    margin: auto;
-    color: #888;
-    font-size: 14px;
-    font-weight: 300;
-    position: absolute;
-    padding-left: 30px;
-    line-height: 30px;
-}
-
-#menu-fixed :hover .sideb {
-    display: inline-block;
-    color: white;
-    bottom: 0px;
-}
-
-.sideb {
-    display: none;
-    position: relative;
-    bottom: 60px;
-}
-
 .material-icons.info {
     color: #999;
     position: absolute;
@@ -569,4 +351,222 @@ body {
     font-family: 'Segoe UI';
     font-size: 14px;
     color: #707070;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300);
+html, body {
+    margin: 0;
+    font-family: 'Roboto';
+    background: #f1f1f1;
+    overflow: auto;
+}
+
+#cont:target > menu-fixed {
+    width: 120px;
+    background: #111;
+    transition: all 0.3s;
+}
+#cont:target > menu-fixed > a .material-icons.back {
+    display: none;
+}
+#cont:target > menu-fixed > .menu li {
+    text-align: center;
+    width: 40%;
+}
+#cont:target > menu-fixed > .menu li > p {
+    display: none;
+}
+
+#menu-fixed {
+    width: 120px;
+    z-index: 2;
+    height: 100%;
+    background: #0F0F0F;
+    position: fixed;
+    transition: all 0.3s;
+    box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.19), 8px 0px 10px rgba(0, 0, 0, 0.23);
+    text-align: center;
+    overflow: auto;
+}
+#menu-fixed .material-icons.back {
+    display: none;
+    color: white;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 36px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+#menu-fixed .material-icons.back:hover {
+    color: #009688;
+    transition: color 0.3s;
+}
+#menu-fixed:target {
+    width: 280px;
+    background: #000;
+    transition: all 0.3s ease-out;
+}
+#menu-fixed:target > .notes {
+    transition: all 0.2s;
+    z-index: 0;
+    opacity: 0;
+}
+#menu-fixed:target > a .material-icons.back {
+    display: block;
+}
+#menu-fixed:target > a > .logo {
+    width: 60%;
+    height: 47px;
+    margin: auto;
+}
+#menu-fixed:target > a > .logo > span {
+    display: none;
+}
+#menu-fixed:target > a > .logo > p {
+    display: block;
+}
+#menu-fixed:target > .menu li {
+    text-align: left;
+    width: 100%;
+}
+#menu-fixed:target > .menu li:hover::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: rgba(38, 166, 154, 0.1);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+    transition-delay: 0.5s;
+}
+#menu-fixed:target > .menu li:hover > p {
+    color: white;
+}
+#menu-fixed:target > .menu li > p {
+    display: inline-block;
+}
+#menu-fixed .logo {
+    width: 100%;
+    height: 70px;
+    position: relative;
+    cursor: pointer;
+}
+#menu-fixed .logo p {
+    display: none;
+    color: #999;
+    font-size: 23px;
+    padding-bottom: 0;
+    font-weight: 300;
+}
+#menu-fixed .logo span {
+    width: 10px;
+    height: 10px;
+    backrground: #0A0A0A;
+    position: absolute;
+    margin: auto;
+    left: 75%;
+    right: 0;
+    top: 500%;
+    transform: rotateZ(45deg);
+    -webkit-transform: rotateZ(45deg);
+    border: 8px solid white;
+    transition: all 0.2s;
+}
+#menu-fixed .logo:hover ~ p {
+    color: white;
+    transition: all 0.3s;
+}
+#menu-fixed .logo:hover > span {
+    width: 0;
+    height: 0;
+    border-left: 15px solid white;
+    border-right: 15px solid rgba(0, 0, 0, 0);
+    border-top: 15px solid rgba(0, 0, 0, 0);
+    border-bottom: 15px solid rgba(0, 0, 0, 0);
+    transition: all 0.2s;
+    transform: rotateZ(0deg) translateX(10px);
+    -webkit-transform: rotateZ(0deg) translateX(10px);
+}
+#menu-fixed .logo:hover > span::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 8px solid #111;
+    border-right: 8px solid rgba(0, 0, 0, 0);
+    border-top: 8px solid rgba(0, 0, 0, 0);
+    border-bottom: 8px solid rgba(0, 0, 0, 0);
+    left: -15px;
+    position: absolute;
+    top: -8px;
+}
+#menu-fixed .pmenu {
+    margin: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    font-weight: 300;
+}
+#menu-fixed hr {
+    position: relative;
+    top: 10px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+#menu-fixed .menu {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    top: 10px;
+}
+#menu-fixed .menu li {
+    padding: 15px;
+    margin: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom-style: dotted;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s;
+}
+#menu-fixed .menu li:last-child {
+    border: none;
+}
+#menu-fixed .menu li:hover {
+    background: #000;
+    transition: all 0.3s;
+    transition-delay: 0.5s;
+}
+#menu-fixed .menu li:hover > .material-icons {
+    color: white;
+}
+#menu-fixed .menu li .material-icons {
+    color: #999;
+}
+#menu-fixed .menu li p {
+    display: none;
+    margin: auto;
+    color: #888;
+    font-size: 14px;
+    font-weight: 300;
+    position: absolute;
+    padding-left: 30px;
+    line-height: 30px;
+}
+
+#menu-fixed :hover .sideb {
+    display: inline-block;
+    color: white;
+    bottom: 0px;
+}
+
+.sideb {
+    display: none;
+    position: relative;
+    bottom: 60px;
 }
