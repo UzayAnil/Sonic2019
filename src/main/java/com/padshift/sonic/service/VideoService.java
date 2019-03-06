@@ -76,6 +76,8 @@ public interface VideoService {
 
     ArrayList<VideoDetails> findVideoWhereTitleContains(String queryString);
 
+//    ArrayList<String> findAllVideoId();
+
 
 //    void updateVidDuration(String videoid, long seconds);
 

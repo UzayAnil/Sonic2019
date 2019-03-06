@@ -19,12 +19,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Time;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * Created by ruzieljonm on 26/09/2018.
@@ -605,8 +613,8 @@ public class AdminController {
         for(ClassSequentialRules s: seqrules){
             for(int i=0; i<uniqueVideoIDs.size(); i++) {
                 ClassSequentialRules seq = new ClassSequentialRules(s.getVideoIds() +" , " +uniqueVideoIDs.get(i),
-                                                                    calculateSupport(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i)),
-                                                                    calculateConfidence(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i),seqrules,s.getVideoIds()));
+                        calculateSupport(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i)),
+                        calculateConfidence(databaseRules,s.getVideoIds() +" , " +uniqueVideoIDs.get(i),seqrules,s.getVideoIds()));
                 seqres.add(seq);
 //                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
             }
@@ -617,8 +625,8 @@ public class AdminController {
     public void displaySeqrulesMeasures(ArrayList<ClassSequentialRules> seqrules){
         for(int i=0; i<seqrules.size(); i++){
 //            if(seqrules.get(i).getSupport()!=0) {
-                System.out.println("{" + seqrules.get(i).getVideoIds() + "} : " + " support : " + seqrules.get(i).getSupport() +
-                        "      confidence : " + seqrules.get(i).getConfidence()  );
+            System.out.println("{" + seqrules.get(i).getVideoIds() + "} : " + " support : " + seqrules.get(i).getSupport() +
+                    "      confidence : " + seqrules.get(i).getConfidence()  );
 //            }
         }
 
@@ -1174,7 +1182,7 @@ public class AdminController {
     }
 
 
-//    @RequestMapping("/generatePlaylistEvening")
+    //    @RequestMapping("/generatePlaylistEvening")
     @RequestMapping("/generatePlaylistMorAft")
     public String generatePlaylistTimeBased(){
         ArrayList<String> generatedPlaylist = new ArrayList<>();
@@ -1524,11 +1532,11 @@ public class AdminController {
     public ArrayList<String> createPlaylist(ArrayList<sequenceRule> seq){
         ArrayList<String> playlist = new ArrayList<>();
         ArrayList<sequenceRule> seqtemp = new ArrayList<>();
-       for(int i=0; i<seq.size(); i++){
-           if(seq.get(i).getSupport()<=0){
-               seq.remove(i);
-           }
-       }
+        for(int i=0; i<seq.size(); i++){
+            if(seq.get(i).getSupport()<=0){
+                seq.remove(i);
+            }
+        }
         String[] parts = seq.get(0).getVideoIds().toString().split(", ");
         for(int j=0; j<parts.length; j++){
             playlist.add(parts[j].toString());
@@ -1617,6 +1625,75 @@ public class AdminController {
 
         }
         return seqtemp;
+    }
+
+
+//    public void testLoad(String row) throws IOException, JobNotFoundException, InterruptedException {
+//        CSVReader reader = new CSVReader(new FileReader("/Users/bone/Desktop/foo_data.tab"), '\t');
+//        String[] record;
+//        while ((record = reader.readNext()) != null) {
+//            for (String value : record) {
+//                System.out.println(value); // Debug only
+//            }
+//        }
+//    }
+
+    @RequestMapping("/displaytsv")
+    public void displatTSV() throws IOException {
+        StringTokenizer st ;
+        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Downloads/jamdata.tsv"));
+        String dataRow = TSVFile.readLine(); // Read first line.
+        ArrayList<Video> videos = videoService.findAllVideo();
+
+        ArrayList<User> users = userService.findAllUsers();
+        while (dataRow != null){
+            st = new StringTokenizer(dataRow,"\t");
+            List<String> dataArray = new ArrayList<String>() ;
+            while(st.hasMoreElements()){
+                dataArray.add(st.nextElement().toString());
+            }
+
+            dataArray.remove(1);
+            Random rand = new Random();
+//            videos.get(rand.nextInt(videos.size()));
+
+            dataArray.add("3596");
+            dataArray.add(videos.get(rand.nextInt(videos.size())).getVideoid());
+
+            Random r = new Random();
+            float random = 200 + r.nextFloat() * (250 - 200);
+            dataArray.add(String.valueOf(random));
+            dataArray.add(getLocalDate().toString());
+
+
+            final Random randomt = new Random();
+            final int millisInDay = 24*60*60*1000;
+            Time time = new Time((long)randomt.nextInt(millisInDay));
+
+            dataArray.add(time.toString());
+
+
+
+
+
+
+
+            for (String item:dataArray) {
+                System.out.print(item + "  ");
+            }
+            System.out.println(); // Print the data line.
+            dataRow = TSVFile.readLine(); // Read next line of data.
+        }
+        // Close the file once all data has been read.
+        TSVFile.close();
+
+        // End the printout with a blank line.
+        System.out.println();
+
+    }
+
+    public static LocalDate getLocalDate() {
+        return LocalDate.now();
     }
 
     public class singleElement{

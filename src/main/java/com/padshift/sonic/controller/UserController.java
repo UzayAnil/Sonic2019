@@ -87,7 +87,7 @@ public class UserController {
         String userName = request.getParameter("inputUserName1");
         String userPass = request.getParameter("inputPassword1");
 
-        if(userName.equals("admin") && userPass.equals("admin")){
+        if(userName.equals("admin") && userPass.equals("admin")){ //admin log-in
             return "HomePageAdmin";
         }else {
 
@@ -211,7 +211,6 @@ public class UserController {
             System.out.println(genres.get(i).getGenreName());
         }
 
-
         model.addAttribute("genres", genres);
         model.addAttribute("starname", "pota");
 
@@ -255,13 +254,7 @@ public class UserController {
     }
 
 
-//    @RequestMapping("/gotoExplore")
-//    public String gotoExplore(Model model){
-//        ArrayList<Genre> genres = videoService.findAllGenre();
-//
-//        model.addAttribute("genre", genres);
-//        return showExplore(model);
-//    }
+
 
     @RequestMapping("/gotoProfile")
     public String gotoProfile(){
@@ -513,24 +506,7 @@ public class UserController {
         System.out.println(user.getUserId() + " "+ user.getUserName());
 
 
-//        ArrayList<VideoDetails> videos = videoService.findAllVideoDetails();
-//        ArrayList<RecVid> recVideos = new ArrayList<>();
-//
-//        for( VideoDetails vid : videos){
-//            RecVid rv = new RecVid();
-//            rv.setVideoid(vid.getVideoid());
-//            rv.setTitle(vid.getTitle());
-//            rv.setArtist(vid.getArtist());
-//            rv.setGenre(vid.getGenre());
-//            rv.setViewCount(vid.getViewCount());
-//
-//            rv.setWeight(computeInitialVideoWeight(vid,user));
-//            recVideos.add(rv);
-//        }
-//
-//        Collections.sort(recVideos);
-//
-//        //SAVE THE RECVIDEOS
+
         ArrayList<RecVid> recVideos = new ArrayList<>();
         ArrayList<RecVidTable> videos = videoService.findRecVidTableByUserId(userid);
         for( RecVidTable vid : videos){
@@ -547,8 +523,6 @@ public class UserController {
         }
 
         Collections.shuffle(recVideos);
-
-
 
 
         for(int i=0; i<10; i++){
@@ -971,9 +945,9 @@ public class UserController {
         float likes;
         float views = Float.parseFloat(video.getViewCount().toString());
         if(video.getLikes().equals("0")){
-             likes =1;
+            likes =1;
         }else{
-             likes = Float.parseFloat(video.getLikes().toString());
+            likes = Float.parseFloat(video.getLikes().toString());
         }
 
         if(genweight == 0){
@@ -1177,11 +1151,7 @@ public class UserController {
             }
         }
 
-//        for (int i = 0; i < 6; i++) {
-//            VVD vid = new VVD(videoList.get(i).getVideoid(), videoList.get(i).getTitle(), videoList.get(i).getArtist(), videoList.get(i).getGenre(), videoList.get(i).getDate(),"https://i.ytimg.com/vi/" + videoList.get(i).getVideoid() + "/mqdefault.jpg");
-//            vr1.add(vid);
-//            vid = null;
-//        }
+
 
         model.addAttribute("r1", vr1);
 
@@ -1581,18 +1551,7 @@ public class UserController {
             arrUser[i] = allusers.get(i);
         }
 
-//        for (int i = 0; i < cosineValue.length; i++)
-//        {
-//            for (int j = i + 1; j < cosineValue.length; j++)
-//            {
-//                if (cosineValue[i] < cosineValue[j])
-//                {
-//                    temp = cosineValue[i];
-//                    cosineValue[i] = cosineValue[j];
-//                    cosineValue[j] = temp;
-//                }
-//            }
-//        }
+
 
         for (int i = 0; i < arrUser.length; i++) {
             System.out.println(arrUser[i]);
@@ -1867,9 +1826,7 @@ public class UserController {
 
     @RequestMapping("/gotoplaylistMorn")
     public String playMornPlaylist(HttpServletRequest request, Model model, HttpSession session){
-//        String choiceOfPlaylist = request.getParameter("choice");
         ArrayList<Playlist> playListVideos = new ArrayList<>();
-
 
         playListVideos = videoService.findAllPlaylistByPlaylistID("plmornaft");
 
@@ -1882,8 +1839,6 @@ public class UserController {
 
 
         model.addAttribute("vididtoplay", videos.get(0).getVideoid());
-
-//        model.addAttribute("vidtitle", videos.get(0).getMvtitle());
         model.addAttribute("plvids", videos);
 
         return "VideoPlayerWithPlaylist";
@@ -1891,7 +1846,6 @@ public class UserController {
 
     @RequestMapping("/gotoplaylistEve")
     public String playEvePlaylist(HttpServletRequest request, Model model, HttpSession session){
-//        String choiceOfPlaylist = request.getParameter("choice");
         ArrayList<Playlist> playListVideos = new ArrayList<>();
 
 
@@ -1906,8 +1860,6 @@ public class UserController {
 
 
         model.addAttribute("vididtoplay", videos.get(0).getVideoid());
-
-//        model.addAttribute("vidtitle", videos.get(0).getMvtitle());
         model.addAttribute("plvids", videos);
 
         return "VideoPlayerWithPlaylist";
@@ -1964,16 +1916,6 @@ public class UserController {
         System.out.println("Time Spent : " + timeSpent);
 
 
-//        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
-//        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
-//
-//        ArrayList<Video> plvids = new ArrayList<>();
-//        for(Playlist p : vidids){
-//            Video v = new Video();
-//            v= videoService.findVideoByVideoid(p.getVideoID().toString());
-//            plvids.add(v);
-//        }
-
         if(videoWatched!=null){
             UserHistory userhist = new UserHistory();
             userhist.setUserId(session.getAttribute("userid").toString());
@@ -1993,23 +1935,6 @@ public class UserController {
             userService.saveUserHistory(userhist);
         }
 
-//        ArrayList<Video> allvids = videoService.findAllVideo();
-//        ArrayList<VideoDetails> vids = new ArrayList<>();
-//        for(Video s: allvids) {
-//            VideoDetails v = videoService.findVideoDetailsByVideoid(s.getVideoid());
-//            vids.add(v);
-//        }
-
-////        Collections.sort(vids);
-//        ArrayList<VideoDetails> plvids = new ArrayList<>();
-//        for(int i=0; i<50; i++){
-//            plvids.add(vids.get(i));
-//        }
-//        ArrayList<Video> plvidsf = new ArrayList<>();
-//
-//        for(VideoDetails v : plvids){
-//            plvidsf.add(( videoService.findVideoByVideoid(v.getVideoid()));
-//        }
 
         ArrayList<Video> video = videoService.findAllVideo();
         ArrayList<Video> plvidsf = new ArrayList<>();
@@ -2045,16 +1970,6 @@ public class UserController {
         System.out.println("Time Spent : " + timeSpent);
 
 
-//        ArrayList<String> plIDs = videoService.findDistinctPlaylistID();
-//        ArrayList<Playlist> vidids = videoService.findAllPlaylistByPlaylistID(plIDs.get(0).toString());
-//
-//        ArrayList<Video> plvids = new ArrayList<>();
-//        for(Playlist p : vidids){
-//            Video v = new Video();
-//            v= videoService.findVideoByVideoid(p.getVideoID().toString());
-//            plvids.add(v);
-//        }
-
         if(videoWatched!=null){
             UserHistory userhist = new UserHistory();
             userhist.setUserId(session.getAttribute("userid").toString());
@@ -2083,14 +1998,7 @@ public class UserController {
         }
 
 
-
-
-//        Video v = videoService.findVideoByVideoid(playthisvid);
-
-//        model.addAttribute("vidtitle", v.getMvtitle());
-
         model.addAttribute("vididtoplay", playthisvid);
-
         model.addAttribute("plvids", plvids);
 
         return "VideoPlayerWithPlaylist";
@@ -2117,8 +2025,8 @@ public class UserController {
 
     @RequestMapping("/gotoplaylistF")
     public String gotoPlaylistF(HttpSession session, Model model){
-        String currentTime = getTime();
-//        String currentTime = "9:20:12";
+//        String currentTime = getTime();
+        String currentTime = "2:20:12";
 
         ArrayList<String> sequenceids = userService.findDistinctSequenceId();
         ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[sequenceids.size()];
@@ -2131,18 +2039,18 @@ public class UserController {
 
         for(int i=0; i<sequenceids.size();i++){
             boolean found=false;
-                for (int j = 0; j < seqRules[i].size(); j++) {
-                    if (seqRules[i].get(j).getViewingTime().equals(currentTime.substring(0, currentTime.length() - 6))) {
-                        found = true;
-                        break;
-                    } else {
-                        found = false;
-                    }
+            for (int j = 0; j < seqRules[i].size(); j++) {
+                if (seqRules[i].get(j).getViewingTime().equals(currentTime.substring(0, currentTime.length() - 6))) {
+                    found = true;
+                    break;
+                } else {
+                    found = false;
                 }
+            }
 
 
             if(found==false){
-               sequenceids.remove(i);
+                sequenceids.remove(i);
             }
         }
 
@@ -2152,7 +2060,7 @@ public class UserController {
             seqRulesFiltered[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
             Collections.sort(seqRulesFiltered[i], UserHistory.TimeComparator);
         }
-        //CHECK BALIK SA EVLUATION SA O PLSSSSSSSSSSSSS
+
 
 
 
@@ -2218,7 +2126,7 @@ public class UserController {
 
 
         ArrayList<String> finalList = new ArrayList<String>(Arrays.asList(parts));
-        ArrayList<String> finalListest = new ArrayList<>();
+
         for(int i=0; i<seqRulesFiltered.length; i++){
             for(int j=0; j<seqRulesFiltered[i].size(); j++){
                 if(!finalList.contains(seqRulesFiltered[i].get(j).getVideoid().toString())){
@@ -2226,22 +2134,17 @@ public class UserController {
                 }
             }
         }
+        ArrayList<String> finalListest = new ArrayList<>();
 
-        for(String s: finalList){
-            if(!finalListest.contains(s.toString())){
-                finalListest.add(s);
-            }
-        }
-
-//        Set<String> set = new LinkedHashSet<>(finalList);
-//
-//        for(String s: set){
-//            finalListest.add(s.toString());
+        finalListest = removeDuplicates(finalList);
+//        for(int i=0; i<20; i++){
+//            if(!finalListest.contains(finalList.get(i).toString())){
+//                finalListest.add(finalList.get(i).toString());
+//            }
 //        }
 
-
         ArrayList<Video> vids = new ArrayList<>();
-        for(int i=0; i<25; i++){
+        for(int i=0; i<20; i++){
             System.out.println("[ f ] - " + finalListest.get(i).toString() );
             Video v = videoService.findVideoByVideoid(finalListest.get(i).toString());
             Video nv = new Video(v.getVideoid(), v.getMvtitle(), v.getThumbnail());
@@ -2251,11 +2154,6 @@ public class UserController {
         }
 
 
-
-
-
-
-//        return "testing";
         model.addAttribute("vididtoplay", vids.get(0).getVideoid());
         model.addAttribute("plvids", vids);
         return "VideoPlayerWithPlaylist";
@@ -2272,7 +2170,6 @@ public class UserController {
             Pattern p = Pattern.compile(tempPat);
             boolean b = false;
 
-//            System.out.println(tempPat);
 
             Matcher m = p.matcher(databaseRules.get(i).toString());
             b = m.matches();
@@ -2301,10 +2198,10 @@ public class UserController {
 
             for(int i=0; i<uniqueVideoIDs.size(); i++) {
 //                if(!s.getVideoIds().toString().contains(uniqueVideoIDs.get(i))) {
-                    ClassSequentialRules seq = new ClassSequentialRules(seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i),
-                            calculateSupport(databaseRules, seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i)),
-                            calculateConfidence(databaseRules, seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i), seqrules, seqrules.get(j).getVideoIds()));
-                    seqres.add(seq);
+                ClassSequentialRules seq = new ClassSequentialRules(seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i),
+                        calculateSupport(databaseRules, seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i)),
+                        calculateConfidence(databaseRules, seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i), seqrules, seqrules.get(j).getVideoIds()));
+                seqres.add(seq);
 //                }
 //                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
             }
@@ -2333,15 +2230,9 @@ public class UserController {
 
 
         //threshold = (threshold/seqrules.size())*((float)4);
-
         threshold = Collections.max(findMax);
 //        threshold = getSecMax(findMax);
 
-//        for(int i=0; i<seqrules.size(); i++){
-//            if(seqrules.get(i).getSupport()>(threshold)){
-//                res.add(seqrules.get(i));
-//            }
-//        }
 
         for(int i=0; i<seqrules.size(); i++){
             if(seqrules.get(i).getSupport()==(threshold)){

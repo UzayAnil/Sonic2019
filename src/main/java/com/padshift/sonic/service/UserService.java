@@ -83,4 +83,6 @@ public interface UserService {
     ArrayList<UserHistory> findUserHistoryBySeqid(String s);
 
     void saveRecVidTable(RecVidTable v);
+
+    ArrayList<User> findAllUsers();
 }

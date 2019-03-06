@@ -196,4 +196,9 @@ public class UserServiceImpl implements UserService {
     public void saveRecVidTable(RecVidTable v) {
          recVidTableRepository.save(v);
     }
+
+    @Override
+    public ArrayList<User> findAllUsers() {
+        return userRepository.findAll();
+    }
 }

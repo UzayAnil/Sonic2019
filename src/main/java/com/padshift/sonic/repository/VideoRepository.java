@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,5 +20,6 @@ public interface VideoRepository extends JpaRepository<Video,Long> {
 
     Video findByVideoid(String s);
 
-
+//    @Query("SELECT videoid FROM video")
+//    ArrayList<String> findAllVideoId();
 }
