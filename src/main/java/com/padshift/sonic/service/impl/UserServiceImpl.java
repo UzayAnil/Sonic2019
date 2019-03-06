@@ -196,4 +196,66 @@ public class UserServiceImpl implements UserService {
     public void saveRecVidTable(RecVidTable v) {
          recVidTableRepository.save(v);
     }
+
+    @Override
+    public float sumOfgenrebyAgegroup(int agegroup) {
+        return agecriteriaRepository.sumOfgenrebyAgegroup(agegroup);
+    }
+
+    @Override
+    public float sumOfgenrebypersonality(int personality) {
+        return personalitycriteriaRepository.sumOfgenrebypersonality(personality);
+    }
+
+    @Override
+    public float popAgecount() {
+        return agecriteriaRepository.popAgecount();
+    }
+
+    @Override
+    public float rockAgecount() {
+        return agecriteriaRepository.rockAgecount();
+    }
+
+    @Override
+    public float alternativeAgecount() {
+        return agecriteriaRepository.alternativeAgecount();
+    }
+
+    @Override
+    public float rnbAgecount() {
+        return agecriteriaRepository.rnbAgecount();
+    }
+
+    @Override
+    public float countryAgecount() {
+        return agecriteriaRepository.countryAgecount();
+    }
+
+    @Override
+    public float houseAgecount() {
+        return agecriteriaRepository.houseAgecount();
+    }
+
+    @Override
+    public float reggaeAgecount() {
+        return agecriteriaRepository.reggaeAgecount();
+    }
+
+    @Override
+    public float religiousAgecount() {
+        return agecriteriaRepository.religiousAgecount();
+    }
+
+    @Override
+    public float hiphopAgecount() {
+        return agecriteriaRepository.hiphopAgecount();
+    }
+
+    @Override
+    public float AllViews() {
+        return agecriteriaRepository.AllViews();
+    }
+
+
 }

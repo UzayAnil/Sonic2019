@@ -83,4 +83,29 @@ public interface UserService {
     ArrayList<UserHistory> findUserHistoryBySeqid(String s);
 
     void saveRecVidTable(RecVidTable v);
+
+    float sumOfgenrebyAgegroup(int agegroup);
+
+    float sumOfgenrebypersonality(int personality);
+
+    float popAgecount();
+
+    float rockAgecount();
+
+    float alternativeAgecount();
+
+    float rnbAgecount();
+
+    float countryAgecount();
+
+
+    float houseAgecount();
+
+    float reggaeAgecount();
+
+    float religiousAgecount();
+
+    float hiphopAgecount();
+
+    float AllViews();
 }

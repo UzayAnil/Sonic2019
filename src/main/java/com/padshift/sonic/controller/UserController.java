@@ -286,113 +286,65 @@ public class UserController {
         int personality = user.getPersonalitycriteriaId();
         AgeCriteria useragegroup = userService.findByAgeCriteriaId(agegroup);
         PersonalityCriteria personalitygroup = userService.findByPersonalityCriteriaId(personality);
-        float agetotalviews = useragegroup.getAlternativeMusic() + useragegroup.getCountryMusic() + useragegroup.getHiphopMusic() + useragegroup.getHouseMusic() + useragegroup.getPopMusic() + useragegroup.getReggaeMusic() + useragegroup.getReligiousMusic() + useragegroup.getRnbMusic() + useragegroup.getRockMusic();
-        float personalitytotalviews = personalitygroup.getAlternativeMusic() + personalitygroup.getCountryMusic() + personalitygroup.getHiphopMusic() + personalitygroup.getHouseMusic() + personalitygroup.getPopMusic() + personalitygroup.getReggaeMusic() + personalitygroup.getReligiousMusic() + personalitygroup.getRnbMusic() + personalitygroup.getRockMusic();
-        float totalpersonality1 = personalities.get(0).getAlternativeMusic() + personalities.get(0).getCountryMusic() + personalities.get(0).getHiphopMusic() + personalities.get(0).getHouseMusic() + personalities.get(0).getPopMusic() + personalities.get(0).getReggaeMusic() +personalities.get(0).getReligiousMusic() + personalities.get(0).getRnbMusic() + personalities.get(0).getRockMusic();
-        float totalpersonality2 = personalities.get(1).getAlternativeMusic() + personalities.get(1).getCountryMusic() + personalities.get(1).getHiphopMusic() + personalities.get(1).getHouseMusic() + personalities.get(1).getPopMusic() + personalities.get(1).getReggaeMusic() +personalities.get(1).getReligiousMusic() + personalities.get(1).getRnbMusic() + personalities.get(1).getRockMusic();
-        float totalviews = totalpersonality1 + totalpersonality2;
-        float userInput = temp;
-        float genreAgePop,genreAgeRock, genreAgeAlt, genreAgeRBS, genreAgeCntry, genreAgeHouse, genreAgeReg, genreAgeRel, genreAgeHH;
+        float agetotalviews = userService.sumOfgenrebyAgegroup(agegroup);
+        float personalitytotalviews = userService.sumOfgenrebypersonality(personality);
+        float totalviews = userService.AllViews();
         float genweight;
-
-        float genrePTPop,genrePTRock, genrePTAlt, genrePTRBS, genrePTCntry, genrePTHouse, genrePTReg, genrePTRel, genrePTHH;
-
         float genreAge = 0;
         float genrePT =0;
         float genreWT = 0;
 
-        if(genreid == 1 && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),1).getPrefWeight();
+        System.out.println("AGE TOTAL VIEWS: "+ agetotalviews);
+        System.out.println("PERSONALITY TOTAL VIEWS: "+ personalitytotalviews);
+        if(genreid == 1){
             genreAge = (float) useragegroup.getPopMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getPopMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.popAgecount()/totalviews;
         }
-        if(genreid == 2 && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),2).getPrefWeight();
+        if(genreid == 2){
             genreAge = (float) useragegroup.getRockMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getRockMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.rockAgecount()/totalviews;
         }
 
-        if(genreid == 3  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),3).getPrefWeight();
+        if(genreid == 3){
             genreAge = (float) useragegroup.getAlternativeMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getAlternativeMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.alternativeAgecount()/totalviews;
         }
-        if(genreid == 4  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),4).getPrefWeight();
+        if(genreid == 4){
             genreAge = (float) useragegroup.getRnbMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getRnbMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.rnbAgecount()/totalviews;
         }
-        if(genreid == 5  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),5).getPrefWeight();
+        if(genreid == 5){
             genreAge = (float) useragegroup.getCountryMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.countryAgecount()/totalviews;
         }
-        if(genreid == 6  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),6).getPrefWeight();
-            genreAge = (float) useragegroup.getCountryMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+        if(genreid == 6){
+            genreAge = (float) useragegroup.getHouseMusic()/agetotalviews;
+            genrePT = (float) personalitygroup.getHouseMusic()/personalitytotalviews;
+            genreWT = userService.houseAgecount()/totalviews;
         }
-        if(genreid == 7  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),7).getPrefWeight();
+        if(genreid == 7){
             genreAge = (float) useragegroup.getReggaeMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getReggaeMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.reggaeAgecount()/totalviews;
         }
-        if(genreid == 8  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),8).getPrefWeight();
+        if(genreid == 8){
             genreAge = (float) useragegroup.getReligiousMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getReligiousMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.religiousAgecount()/totalviews;
         }
-        if(genreid == 9  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),9).getPrefWeight();
+        if(genreid == 9){
             genreAge = (float) useragegroup.getHiphopMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getHiphopMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+            genreWT = userService.hiphopAgecount()/totalviews;
         }
 
-        if(agetotalviews == 9){
-            genreAge = 1;
-        }
-        if(personalitytotalviews == 9){
-            genrePT = 1;
-        }
-        if(totalviews == 18){
-            genreWT = 1;
-        }
-
-        float uipercent, agepercent,pertypepercent;
-        Criteria ui = userService.findCriteriaByCriteriaName("userinput");
-        System.out.println("++++++ LOOL - "+ ui.toString());
-        if(ui.toString()!=null){
-            uipercent=ui.getCriteriaPercentage();
-        }else{
-            uipercent=0;
-        }
-
-        Criteria age = userService.findCriteriaByCriteriaName("age");
-        if(age!=null){
-            agepercent = age.getCriteriaPercentage();
-        }else{
-            agepercent=0;
-        }
-
-        Criteria pertype = userService.findCriteriaByCriteriaName("personality");
-        if(pertype!=null){
-            pertypepercent = pertype.getCriteriaPercentage();
-        }else{
-            pertypepercent=0;
-        }
-
-        int likes = 0;
         System.out.println("Genre ID: "+genreid);
-        System.out.println("Total Views: "+agetotalviews);
+        System.out.println("Total Views: "+totalviews);
         System.out.println("Personal Total Views"+personalitytotalviews);
         System.out.println("UserInput: "+temp);
         System.out.println("genreAge: "+genreAge);
@@ -1056,7 +1008,8 @@ public class UserController {
                 j++;
             }
             else{
-                VVD vid = new VVD(videoList.get(rand.nextInt(videoList.size())).getVideoid(), videoList.get(rand.nextInt(videoList.size())).getTitle(), videoList.get(rand.nextInt(videoList.size())).getArtist(), videoList.get(rand.nextInt(videoList.size())).getGenre(), videoList.get(rand.nextInt(videoList.size())).getDate(),"https://i.ytimg.com/vi/" + videoList.get(rand.nextInt(videoList.size())).getVideoid() + "/mqdefault.jpg");
+                int random = rand.nextInt(videoList.size());
+                VVD vid = new VVD(videoList.get(random).getVideoid(), videoList.get(random).getTitle(), videoList.get(random).getArtist(), videoList.get(random).getGenre(), videoList.get(random).getDate(),"https://i.ytimg.com/vi/" + videoList.get(random).getVideoid() + "/mqdefault.jpg");
                 vr1.add(vid);
                 vid = null;
             }
@@ -1171,7 +1124,9 @@ public class UserController {
                 j++;
             }
             else{
-                VVD vid = new VVD(videoList.get(rand.nextInt(videoList.size())).getVideoid(), videoList.get(rand.nextInt(videoList.size())).getTitle(), videoList.get(rand.nextInt(videoList.size())).getArtist(), videoList.get(rand.nextInt(videoList.size())).getGenre(), videoList.get(rand.nextInt(videoList.size())).getDate(),"https://i.ytimg.com/vi/" + videoList.get(rand.nextInt(videoList.size())).getVideoid() + "/mqdefault.jpg");                vr1.add(vid);
+                int random = rand.nextInt(videoList.size());
+                VVD vid = new VVD(videoList.get(random).getVideoid(), videoList.get(random).getTitle(), videoList.get(random).getArtist(), videoList.get(random).getGenre(), videoList.get(random).getDate(),"https://i.ytimg.com/vi/" + videoList.get(random).getVideoid() + "/mqdefault.jpg");
+                vr1.add(vid);
                 vid = null;
             }
         }
@@ -1405,66 +1360,101 @@ public class UserController {
 
     private void incrementpersonalitygroup(int personalitygroup, String genre) {
         PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
-        if(genre.contains("Pop")){
+        if(genre.equals("Pop Music")){
+            System.out.println("lolo-"+genre);
             personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        if(genre.contains("House")){
-            personalitycriteria.setPopMusic(personalitycriteria.getHouseMusic()+1);
+        if(genre.equals("House Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        if(genre.contains("Alternative")){
-            personalitycriteria.setPopMusic(personalitycriteria.getAlternativeMusic()+1);
+        if(genre.equals("Alternative Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        if(genre.contains("Reggae")){
-            personalitycriteria.setPopMusic(personalitycriteria.getReggaeMusic()+1);
+        if(genre.equals("Reggae Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        if(genre.contains("R&B/Soul")){
-            personalitycriteria.setPopMusic(personalitycriteria.getRnbMusic()+1);
+        if(genre.equals("R&B/Soul Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        if(genre.contains("Religious")){
-            personalitycriteria.setPopMusic(personalitycriteria.getReligiousMusic()+1);
+        if(genre.equals("Religious Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        if(genre.contains("Country")){
-            personalitycriteria.setPopMusic(personalitycriteria.getCountryMusic()+1);
+        if(genre.equals("Country Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
         if(genre.contains("Rock")){
-            personalitycriteria.setPopMusic(personalitycriteria.getRockMusic()+1);
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
         if(genre.contains("Hip-Hop/Rap")){
-            personalitycriteria.setPopMusic(personalitycriteria.getHiphopMusic()+1);
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
         }
-        userService.savePersonalityCriteria(personalitycriteria);
     }
 
     public void incrementagegroup(int agegroup, String genre){
         AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
-        if(genre.contains("Pop")){
+
+        if(genre.equals("Pop Music")){
+//            System.out.println("BOBO-"+genre);
             agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("House")){
-            agecriteria.setPopMusic(agecriteria.getHouseMusic()+1);
+        if(genre.equals("House Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("Alternative")){
-            agecriteria.setPopMusic(agecriteria.getAlternativeMusic()+1);
+        if(genre.equals("Alternative Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("Reggae")){
-            agecriteria.setPopMusic(agecriteria.getReggaeMusic()+1);
+        if(genre.equals("Reggae Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("R&B/Soul")){
-            agecriteria.setPopMusic(agecriteria.getRnbMusic()+1);
+        if(genre.equals("R&B/Soul Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("Religious")){
-            agecriteria.setPopMusic(agecriteria.getReligiousMusic()+1);
+        if(genre.equals("Religious Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setReggaeMusic(agecriteria.getReligiousMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("Country")){
-            agecriteria.setPopMusic(agecriteria.getCountryMusic()+1);
+        if(genre.equals("Country Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("Rock")){
-            agecriteria.setPopMusic(agecriteria.getRockMusic()+1);
+        if(genre.equals("Rock Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        if(genre.contains("Hip-Hop/Rap")){
-            agecriteria.setPopMusic(agecriteria.getHiphopMusic()+1);
+        if(genre.equals("Hip-Hop/Rap Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
         }
-        userService.saveAgeCriteria(agecriteria);
     }
 
     public String[] cosineMatrix(String currentuserId, String[] simusers){

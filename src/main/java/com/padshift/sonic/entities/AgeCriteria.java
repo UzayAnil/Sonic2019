@@ -15,32 +15,32 @@ public class AgeCriteria {
     @Column(name="ageGroup")
     private String ageGroup;
 
-    @Column(name="houseMusic", nullable = false)
-    private int houseMusic = 1;
+    @Column(name="houseMusic")
+    private int houseMusic = 0;
 
-    @Column(name="alternativeMusic", nullable = false)
-    private int alternativeMusic = 1;
+    @Column(name="alternativeMusic")
+    private int alternativeMusic = 0;
 
-    @Column(name="reggaeMusic", nullable = false)
-    private int reggaeMusic = 1;
+    @Column(name="reggaeMusic")
+    private int reggaeMusic = 0;
 
-    @Column(name="rnbMusic", nullable = false)
-    private int rnbMusic = 1;
+    @Column(name="rnbMusic")
+    private int rnbMusic = 0;
 
-    @Column(name="religiousMusic", nullable = false)
-    private int religiousMusic = 1;
+    @Column(name="religiousMusic")
+    private int religiousMusic = 0;
 
-    @Column(name="countryMusic", nullable = false)
-    private int countryMusic = 1;
+    @Column(name="countryMusic")
+    private int countryMusic = 0;
 
-    @Column(name="popMusic", nullable = false)
-    private int popMusic = 1;
+    @Column(name="popMusic")
+    private int popMusic = 0;
 
-    @Column(name="rockMusic", nullable = false)
-    private int rockMusic = 1;
+    @Column(name="rockMusic")
+    private int rockMusic = 0;
 
-    @Column(name="hiphopMusic", nullable = false)
-    private int hiphopMusic = 1;
+    @Column(name="hiphopMusic")
+    private int hiphopMusic = 0;
 
     public int getHouseMusic() {
         return houseMusic;
