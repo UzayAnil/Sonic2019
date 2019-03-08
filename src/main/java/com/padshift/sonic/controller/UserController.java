@@ -2023,6 +2023,130 @@ public class UserController {
         return result;
     }
 
+
+    @RequestMapping("/revisedPLG")
+    public String genPL(){
+
+//        String currentTime = getTime();
+        String currentTime = "2:20:12";
+        ArrayList<UserHistory> uh = userService.findByViewingTimeStartingWith(currentTime.substring(0, currentTime.length() - 6));
+        ArrayList<String>  distinctID = userService.findAllDistinctSequenceID(currentTime.substring(0, currentTime.length() - 6));
+        System.out.println(distinctID.size());
+
+
+        ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[distinctID.size()];
+
+        for(int i=0; i<distinctID.size();i++){
+            seqRules[i] = userService.findUserHistoryBySeqid(distinctID.get(i).toString());
+            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+        }
+
+
+        for(int i=0; i<distinctID.size();i++){
+            System.out.print("[" + distinctID.get(i).toString() + "]     ");
+            for(int j=0; j<seqRules[i].size(); j++){
+                System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+            }
+            System.out.println();
+        }
+
+
+
+        ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,distinctID);
+
+        ArrayList<String> databaseRules = buildDBRules(seqRules,distinctID);
+
+
+        ArrayList<ClassSequentialRules>[] seqrules = (ArrayList<ClassSequentialRules>[])new ArrayList[10];
+        seqrules[0] = new ArrayList<>();
+        for(String id: uniqueVideoIDs){
+            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id.toString()),0);
+            seqrules[0].add(seq);
+        }
+
+        seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
+        displaySeqrulesMeasures(seqrules[0]);
+
+        boolean flag= true;
+        int srIndex=1;
+        do{
+            seqrules[srIndex] = new ArrayList<>();
+            seqrules[srIndex] = buildRuleCombination(seqrules[srIndex-1],uniqueVideoIDs,databaseRules);
+            seqrules[srIndex] = removeUnqualifiedForThreshold(seqrules[srIndex]);
+            displaySeqrulesMeasures(seqrules[srIndex]);
+            if(seqrules[srIndex].get(0).getSupport()==0){
+                flag=false;
+
+            }else{
+                srIndex++;
+            }
+
+        }while (flag==true);
+        String[] parts = null;
+        for(int i=0; i<seqrules[srIndex-1].size(); i++){
+//            System.out.println("The sequence that made it : " + seqrules[srIndex-1].get(i).getVideoIds() );
+            parts = seqrules[srIndex-1].get(0).getVideoIds().toString().split(", ");
+        }
+
+
+        for (String p : parts){
+            System.out.println("[pl]" + p.toString());
+        }
+
+
+        ArrayList<String> finalList = new ArrayList<String>(Arrays.asList(parts));
+
+        for(int i=0; i<seqRules.length; i++){
+            for(int j=0; j<seqRules[i].size(); j++){
+                if(!finalList.contains(seqRules[i].get(j).getVideoid().toString())){
+                    finalList.add(seqRules[i].get(j).getVideoid());
+                }
+            }
+        }
+        ArrayList<String> finalListest = new ArrayList<>();
+
+        finalListest = removeDuplicates(finalList);
+//        for(int i=0; i<20; i++){
+//            if(!finalListest.contains(finalList.get(i).toString())){
+//                finalListest.add(finalList.get(i).toString());
+//            }
+//        }
+
+        ArrayList<Video> vids = new ArrayList<>();
+        for(int i=0; i<20; i++){
+            System.out.println("[ f ] - " + finalListest.get(i).toString() );
+            Video v = videoService.findVideoByVideoid(finalListest.get(i).toString());
+            Video nv = new Video(v.getVideoid(), v.getMvtitle(), v.getThumbnail());
+            vids.add(nv);
+            System.out.println(v.getMvtitle());
+
+        }
+
+
+
+////        for(UserHistory h: uh){
+////            System.out.println(h.getSeqid() + "  " + h.getVideoid() + "  " + h.getViewingTime());
+////        }
+//
+//        ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[uh.size()];
+//
+//        for(int i=0; i<uh.size();i++){
+//            seqRules[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
+//            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+//        }
+//
+//        ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,sequenceids);
+//
+//        ArrayList<String> databaseRules = buildDBRules(seqRules,sequenceids);
+
+
+
+
+        return "testing";
+    }
+
+
+
     @RequestMapping("/gotoplaylistF")
     public String gotoPlaylistF(HttpSession session, Model model){
 //        String currentTime = getTime();
@@ -2195,6 +2319,9 @@ public class UserController {
     public ArrayList<ClassSequentialRules> buildRuleCombination(ArrayList<ClassSequentialRules> seqrules, ArrayList<String> uniqueVideoIDs, ArrayList<String> databaseRules){
         ArrayList<ClassSequentialRules> seqres = new ArrayList<>();
         for(int j=0; j<1; j++){
+//
+//           String[] parts = seqrules.get(j).toString().split(", ");
+//            if(Arrays.asList(parts).contains(   ))
 
             for(int i=0; i<uniqueVideoIDs.size(); i++) {
 //                if(!s.getVideoIds().toString().contains(uniqueVideoIDs.get(i))) {
@@ -2203,7 +2330,7 @@ public class UserController {
                         calculateConfidence(databaseRules, seqrules.get(j).getVideoIds() + " , " + uniqueVideoIDs.get(i), seqrules, seqrules.get(j).getVideoIds()));
                 seqres.add(seq);
 //                }
-//                System.out.println(s.getVideoIds() +", " +uniqueVideoIDs.get(i));
+//                System.out.println(seqrules.get(j).getVideoIds() +", " +uniqueVideoIDs.get(i));
             }
         }
         return seqres;
@@ -2232,10 +2359,11 @@ public class UserController {
         //threshold = (threshold/seqrules.size())*((float)4);
         threshold = Collections.max(findMax);
 //        threshold = getSecMax(findMax);
+//        threshold = threshold/seqrules.size();
 
 
         for(int i=0; i<seqrules.size(); i++){
-            if(seqrules.get(i).getSupport()==(threshold)){
+            if(seqrules.get(i).getSupport()>=(threshold)){
                 res.add(seqrules.get(i));
             }
         }

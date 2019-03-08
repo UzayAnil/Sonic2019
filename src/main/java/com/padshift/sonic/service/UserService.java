@@ -85,4 +85,8 @@ public interface UserService {
     void saveRecVidTable(RecVidTable v);
 
     ArrayList<User> findAllUsers();
+
+    ArrayList<UserHistory> findByViewingTimeStartingWith(String substring);
+
+    ArrayList<String> findAllDistinctSequenceID(String ctime);
 }

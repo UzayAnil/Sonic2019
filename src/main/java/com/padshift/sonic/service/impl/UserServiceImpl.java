@@ -201,4 +201,14 @@ public class UserServiceImpl implements UserService {
     public ArrayList<User> findAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public ArrayList<UserHistory> findByViewingTimeStartingWith(String substring) {
+        return userHistoryRepository.findByViewingTimeStartingWith(substring);
+    }
+
+    @Override
+    public ArrayList<String> findAllDistinctSequenceID(String ctime) {
+        return userHistoryRepository.findAllDistinctSequenceID(ctime);
+    }
 }

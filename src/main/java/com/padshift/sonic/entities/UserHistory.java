@@ -41,6 +41,19 @@ public class UserHistory implements Serializable, Comparable<UserHistory>{
     @Column(name="viewingTime")
     private String viewingTime;
 
+    public UserHistory() {
+    }
+
+    public UserHistory(String seqid, String userId, String videoid, String timeSpent, String viewingDate, String viewingStatus, String viewingTime) {
+        this.seqid = seqid;
+        this.userId = userId;
+        this.videoid = videoid;
+        this.timeSpent = timeSpent;
+        this.viewingDate = viewingDate;
+        this.viewingStatus = viewingStatus;
+        this.viewingTime = viewingTime;
+    }
+
     public String getSeqid() {
         return seqid;
     }

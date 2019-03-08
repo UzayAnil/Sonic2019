@@ -30,6 +30,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1641,7 +1642,7 @@ public class AdminController {
     @RequestMapping("/displaytsv")
     public void displatTSV() throws IOException {
         StringTokenizer st ;
-        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Downloads/jamdata.tsv"));
+        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Downloads/agegroup_4A.tsv"));
         String dataRow = TSVFile.readLine(); // Read first line.
         ArrayList<Video> videos = videoService.findAllVideo();
 
@@ -1657,7 +1658,7 @@ public class AdminController {
             Random rand = new Random();
 //            videos.get(rand.nextInt(videos.size()));
 
-            dataArray.add("3596");
+            dataArray.add("72223");
             dataArray.add(videos.get(rand.nextInt(videos.size())).getVideoid());
 
             Random r = new Random();
@@ -1673,6 +1674,19 @@ public class AdminController {
             dataArray.add(time.toString());
 
 
+            UserHistory u = new UserHistory(dataArray.get(0), dataArray.get(1), dataArray.get(2), dataArray.get(3), dataArray.get(4), "1", dataArray.get(5));
+//            u.setSeqid(dataArray.get(0));
+//            u.setUserId(dataArray.get(1));
+//            u.setVideoid(dataArray.get(2));
+//            u.se
+
+            VideoDetails video = videoService.findVideoDetailsByVideoid(dataArray.get(2));
+            userService.saveUserHistory(u);
+            incrementagegroup(4, video.getGenre());
+            incrementpersonalitygroup(1, video.getGenre());
+
+//            VidRatings vr = new VidRatings("3596", "wavemayols", dataArray.get(2), Integer.toString(ThreadLocalRandom.current().nextInt(1, 5)));
+//            videoService.saveVidrating(vr);
 
 
 
@@ -1690,6 +1704,105 @@ public class AdminController {
         // End the printout with a blank line.
         System.out.println();
 
+    }
+
+    public void incrementagegroup(int agegroup, String genre){
+        AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
+
+        if(genre.equals("Pop Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("House Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("Alternative Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("Reggae Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("R&B/Soul Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("Religious Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setReggaeMusic(agecriteria.getReligiousMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("Country Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("Rock Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+        if(genre.equals("Hip-Hop/Rap Music")){
+//            System.out.println("BOBO-"+genre);
+            agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
+            userService.saveAgeCriteria(agecriteria);
+        }
+    }
+
+    private void incrementpersonalitygroup(int personalitygroup, String genre) {
+        PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
+        if(genre.equals("Pop Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.equals("House Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.equals("Alternative Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.equals("Reggae Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.equals("R&B/Soul Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.equals("Religious Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.equals("Country Music")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.contains("Rock")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
+        if(genre.contains("Hip-Hop/Rap")){
+            System.out.println("lolo-"+genre);
+            personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
+            userService.savePersonalityCriteria(personalitycriteria);
+        }
     }
 
     public static LocalDate getLocalDate() {
