@@ -110,4 +110,18 @@ public interface UserService {
     float AllViews();
 
     double genweightbygenreanduserid(int i, String s);
+
+    ArrayList<Integer> distinctUserIdPref();
+
+    float getGenWeight(int userid, int genreid);
+
+    void saveFindSimilarUsers(FindSimilarUsers newSim);
+
+    void deleteFindsimilarTable();
+
+    ArrayList<FindSimilarUsers> findotherusers(int currentuserId);
+
+    FindSimilarUsers findCurrentUserByUserId(int currentuserId);
+
+    ArrayList<FindSimilarUsers> similarusers(int currentuser);
 }

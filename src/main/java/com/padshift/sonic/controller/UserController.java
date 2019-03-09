@@ -17,6 +17,7 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.Session;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.mapping.Array;
+import org.json.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -296,52 +297,45 @@ public class UserController {
 
         System.out.println("AGE TOTAL VIEWS: "+ agetotalviews);
         System.out.println("PERSONALITY TOTAL VIEWS: "+ personalitytotalviews);
-        if(genreid == 1 && totalviews!=0){
-            genreAge = (float) useragegroup.getPopMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getPopMusic()/personalitytotalviews;
-            genreWT = userService.popAgecount()/totalviews;
+        if(totalviews != 0){
+            switch(genreid){
+                case 1: genreAge = useragegroup.getPopMusic();
+                    genrePT = personalitygroup.getPopMusic();
+                    genreWT = userService.popAgecount();
+                    break;
+                case 2: genreAge = useragegroup.getRockMusic();
+                    genrePT = personalitygroup.getRockMusic();
+                    genreWT = userService.rockAgecount();
+                    break;
+                case 3: genreAge = useragegroup.getAlternativeMusic();
+                    genrePT = personalitygroup.getAlternativeMusic();
+                    genreWT = userService.alternativeAgecount();
+                    break;
+                case 4: genreAge = useragegroup.getRnbMusic();
+                    genrePT = personalitygroup.getRnbMusic();
+                    genreWT = userService.rnbAgecount();
+                    break;
+                case 5: genreAge = useragegroup.getCountryMusic();
+                    genrePT = personalitygroup.getCountryMusic();
+                    genreWT = userService.countryAgecount();
+                    break;
+                case 6: genreAge = useragegroup.getHouseMusic();
+                    genrePT = personalitygroup.getHouseMusic();
+                    genreWT = userService.houseAgecount();
+                    break;
+                case 7: genreAge = useragegroup.getReggaeMusic();
+                    genrePT = personalitygroup.getReggaeMusic();
+                    genreWT = userService.reggaeAgecount();
+                    break;
+                case 8: genreAge = useragegroup.getReligiousMusic();
+                    genrePT = personalitygroup.getReligiousMusic();
+                    genreWT = userService.religiousAgecount();
+                    break;
+                case 9: genreAge = useragegroup.getHiphopMusic();
+                    genrePT = personalitygroup.getHiphopMusic();
+                    genreWT = userService.hiphopAgecount();
+            }
         }
-        if(genreid == 2 && totalviews!=0){
-            genreAge = (float) useragegroup.getRockMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getRockMusic()/personalitytotalviews;
-            genreWT = userService.rockAgecount()/totalviews;
-        }
-        if(genreid == 3 && totalviews!=0){
-            genreAge = (float) useragegroup.getAlternativeMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getAlternativeMusic()/personalitytotalviews;
-            genreWT = userService.alternativeAgecount()/totalviews;
-        }
-        if(genreid == 4 && totalviews!=0){
-            genreAge = (float) useragegroup.getRnbMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getRnbMusic()/personalitytotalviews;
-            genreWT = userService.rnbAgecount()/totalviews;
-        }
-        if(genreid == 5 && totalviews!=0){
-            genreAge = (float) useragegroup.getCountryMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
-            genreWT = userService.countryAgecount()/totalviews;
-        }
-        if(genreid == 6 && totalviews!=0){
-            genreAge = (float) useragegroup.getHouseMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getHouseMusic()/personalitytotalviews;
-            genreWT = userService.houseAgecount()/totalviews;
-        }
-        if(genreid == 7 && totalviews!=0){
-            genreAge = (float) useragegroup.getReggaeMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getReggaeMusic()/personalitytotalviews;
-            genreWT = userService.reggaeAgecount()/totalviews;
-        }
-        if(genreid == 8 && totalviews!=0){
-            genreAge = (float) useragegroup.getReligiousMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getReligiousMusic()/personalitytotalviews;
-            genreWT = userService.religiousAgecount()/totalviews;
-        }
-        if(genreid == 9 && totalviews!=0){
-            genreAge = (float) useragegroup.getHiphopMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getHiphopMusic()/personalitytotalviews;
-            genreWT = userService.hiphopAgecount()/totalviews;
-        }
-
         System.out.println("Genre ID: "+genreid);
         System.out.println("Total Views: "+totalviews);
         System.out.println("Personal Total Views"+personalitytotalviews);
@@ -350,9 +344,9 @@ public class UserController {
         System.out.println("genrePT: "+genrePT);
 
         System.out.println((temp/10)*.4);
-        System.out.println((genreAge)*.25);
-        System.out.println((genrePT)*.25);
-        System.out.println((genreWT)*.1);
+        System.out.println((genreAge/agetotalviews)*.25);
+        System.out.println((genrePT/personalitytotalviews)*.25);
+        System.out.println((genreWT/totalviews)*.1);
 
         genweight = (float) (((temp/10)*.4)+((genreAge)*.25)+((genrePT)*.25)+((genreWT)*.1));
 
@@ -434,10 +428,10 @@ public class UserController {
 
         findsimilarUsers(session.getAttribute("userid").toString(), session);
 
-        String[] users = (String[]) session.getAttribute("similarusers");
+        ArrayList<FindSimilarUsers> users = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
         System.out.println("SIMILAR USERS");
-        for (int i = 0; i < users.length; i++) {
-            System.out.println(users[i]+"======");
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).getUserId()+"======");
         }
 
         System.out.println(" S E S S I O N : " + session.getAttribute("sessionid"));
@@ -538,10 +532,10 @@ public class UserController {
 
         findsimilarUsers(session.getAttribute("userid").toString(), session);
 
-        String[] users = (String[]) session.getAttribute("similarusers");
+        ArrayList<FindSimilarUsers> users = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
         System.out.println("SIMILAR USERS");
-        for (int i = 0; i < users.length; i++) {
-            System.out.println(users[i]+"======");
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).getUserId()+"======");
         }
 
         System.out.println(" S E S S I O N : " + session.getAttribute("sessionid"));
@@ -660,137 +654,67 @@ public class UserController {
     }
 
     public void findsimilarUsers(String currentuserId, HttpSession session){
-        ArrayList<String> allusers = new ArrayList<>();
-//        ArrayList<User> users = userService.findOtherUser(currentuser);
-        ArrayList<Integer> users = userService.findDistinctUserfromUserPref(Integer.parseInt(currentuserId));
-        ArrayList<Integer> genreIds = userService.findDistinctGenre();
-        ArrayList<Float> genreweights = new ArrayList<>();
-        float gweight = 0;
-        int current = userService.findUserIdByUserId(Integer.parseInt(currentuserId));
-        String currentU = String.valueOf(current);
-        System.out.println(currentU);
-        allusers.add(currentU);
-
-        for (int i=0; i < users.size(); i++){
-            allusers.add(users.get(i).toString());
-        }
-
-        for (int i = 0; i < allusers.size(); i++) {
-            System.out.println(allusers.get(i));
-        }
-
-        for (int i = 0; i < genreIds.size(); i++) {
-            System.out.printf("%15s", genreIds.get(i));
-        }
-        System.out.println();
-        for (int i = 0; i < allusers.size(); i++) {
-            System.out.println(allusers.get(i));
-            for (int j = 0; j < genreIds.size(); j++) {
-                UserPreference genweight = userService.findUserPreferenceByUserIdAndGenreId(Integer.parseInt(allusers.get(i)), genreIds.get(j));
-                gweight = genweight.getGenreWeight();
-                System.out.println("-----"+allusers.get(i)+" xx "+genreIds.get(j)+" xx "+ gweight);
-//                if(gweight == null){
-//                    gweight = 0;
-//                }
-                genreweights.add(gweight);
-            }
-        }
-
-        float[] currentrow = new float[genreIds.size()];
-        float[] otherrow = new float[genreweights.size()];
-
-        int count = 0;
-
-        for (int i = 0; i < genreIds.size(); i++) {
-            System.out.printf("%15s", genreIds.get(i));
-        }
-        System.out.println();
-        for (int i = 0; i < allusers.size(); i++) {
-            System.out.printf("%s", allusers.get(i));
-            for (int j = 0; j < genreIds.size(); j++) {
-                System.out.printf("%15f", genreweights.get(count));
-                if( i == 0 ){
-                    currentrow[j] = genreweights.get(count);
+        ArrayList<Integer> users = userService.distinctUserIdPref();
+        float genweight;
+        System.out.println(currentuserId);
+        userService.deleteFindsimilarTable();
+        System.out.println("()()()()()");
+        for (int i = 0; i < users.size(); i++) {
+            FindSimilarUsers newSim = new FindSimilarUsers();
+            System.out.println(users.get(i));
+            for (int j = 1; j <= 9; j++) {
+                newSim.setUserId(users.get(i));
+                genweight = userService.getGenWeight(users.get(i), j);
+                switch (j){
+                    case 1: newSim.setPopMusic(genweight);
+                            break;
+                    case 2: newSim.setRockMusic(genweight);
+                            break;
+                    case 3: newSim.setAlternativeMusic(genweight);
+                            break;
+                    case 4: newSim.setRnbMusic(genweight);
+                            break;
+                    case 5: newSim.setCountryMusic(genweight);
+                            break;
+                    case 6: newSim.setHouseMusic(genweight);
+                            break;
+                    case 7: newSim.setReggaeMusic(genweight);
+                            break;
+                    case 8: newSim.setReligiousMusic(genweight);
+                            break;
+                    case 9: newSim.setHiphopMusic(genweight);
                 }
-                else{
-                    otherrow[count] = genreweights.get(count);
-                }
-                count++;
-            }
-            System.out.println();
-        }
-        float[] distancevalue = new float[allusers.size()];
-        float[] otheruserrow = new float[genreweights.size()];
-        count = genreIds.size();
-        for (int i = 1; i < allusers.size(); i++) {
-            for (int j = 0; j < genreIds.size(); j++) {
-                otheruserrow[j] = otherrow[count];
-                count++;
-            }
-            distancevalue[i] =finddistanceValue(currentrow, otheruserrow, currentuserId, allusers.get(i), genreIds);
-        }
-        String[] arrUser = new String[allusers.size()];
-        for (int i = 0; i < arrUser.length; i++) {
-            arrUser[i] = allusers.get(i);
-        }
-        float tempGenweight = 0;
-        String tempuser;
-        ArrayList<String> similarUsers = new ArrayList<>();
-        for (int i = 0; i < allusers.size(); i++) {
-            for (int j = i+1; j < arrUser.length; j++) {
-                if (distancevalue[i] > distancevalue[j])
-                {
-                    tempGenweight = distancevalue[i];
-                    tempuser = arrUser[i];
-                    distancevalue[i] = distancevalue[j];
-                    arrUser[i] = arrUser[j];
-                    distancevalue[j] = tempGenweight;
-                    arrUser[j] = tempuser;
-                }
+                userService.saveFindSimilarUsers(newSim);
             }
         }
-
-        String[] twosimusers = new String[2];
-        float[] twodistancevalue = new float[2];
-        int j=0;
-        for (int i = 0; i < 2; i++) {
-            twodistancevalue[j] = distancevalue[i+1];
-            twosimusers[j] = arrUser[i+1];
-            j++;
-        }
-
-        for (int i = 0; i < distancevalue.length; i++) {
-            System.out.println(arrUser[i]+"xxxx"+distancevalue[i]);
-        }
-        session.setAttribute("similarusers", twosimusers);
-        session.setAttribute("distancevalue", twodistancevalue);
+        finddistanceValue(Integer.parseInt(currentuserId), session);
     }
 
-    public float finddistanceValue(float[] currentuserGenweight, float[] otheruserGenweight, String currentuser, String otheruser, ArrayList<Integer> genIds){
-        float genWeight = 0;
-        float sum = 0, sub1, square;
-        for (int i = 0; i < genIds.size(); i++) {
-            System.out.printf("%15s", genIds.get(i));
+    public float finddistanceValue(int currentuserId, HttpSession session){
+        FindSimilarUsers current = userService.findCurrentUserByUserId(currentuserId);
+        ArrayList<FindSimilarUsers> other = userService.findotherusers(currentuserId);
+        System.out.println("CURRENT USER" +currentuserId);
+        float dist = 0;
+        float distance = 0;
+        float pop=0, rock=0, country=0, hiphop=0, rnb=0, alternative=0, reggae=0, religious=0, house=0;
+        for (int i = 0; i < other.size(); i++) {
+            pop = current.getPopMusic() - other.get(i).getPopMusic();
+            rock = current.getRockMusic() - other.get(i).getRockMusic();
+            country = current.getCountryMusic() - other.get(i).getCountryMusic();
+            hiphop = current.getHiphopMusic() - other.get(i).getHiphopMusic();
+            rnb = current.getRnbMusic() - other.get(i).getRnbMusic();
+            alternative = current.getAlternativeMusic() - other.get(i).getAlternativeMusic();
+            reggae = current.getReggaeMusic() - other.get(i).getReggaeMusic();
+            religious = current.getReligiousMusic() - other.get(i).getReligiousMusic();
+            house = current.getHouseMusic() - other.get(i).getHouseMusic();
+            dist = (pop*pop)+(rock*rock)+(country*country)+(hiphop*hiphop)+(rnb*rnb)+(alternative*alternative)+(reggae*reggae)+(religious*religious)+(house*house);
+            distance = (float) Math.sqrt(dist);
+            other.get(i).setDistance(distance);
+            userService.saveFindSimilarUsers(other.get(i));
         }
-        System.out.println();
-        System.out.printf("%s", currentuser);
-        for (int i = 0; i < currentuserGenweight.length; i++) {
-            System.out.printf("%15f", currentuserGenweight[i]);
-        }
-        System.out.println();
-        System.out.printf("%s", otheruser);
-        for (int i = 0; i < genIds.size(); i++) {
-            System.out.printf("%15f", otheruserGenweight[i]);
-        }
-        System.out.println();
-        for (int i = 0; i < genIds.size(); i++) {
-            sub1 = currentuserGenweight[i] - otheruserGenweight[i];
-            sum += sub1 * sub1;
-        }
-        System.out.println(Math.sqrt(sum));
-        float ret = (float) Math.sqrt(sum);
-
-        return ret;
+        ArrayList<FindSimilarUsers> similarusers = userService.similarusers(currentuserId);
+        session.setAttribute("similarusers", similarusers);
+        return 0;
     }
 
     public float computeInitialVideoWeight(VideoDetails video, User user){

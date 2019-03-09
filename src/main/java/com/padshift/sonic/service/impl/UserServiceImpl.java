@@ -4,6 +4,7 @@ import com.padshift.sonic.entities.*;
 import com.padshift.sonic.repository.*;
 import com.padshift.sonic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RecVidTableRepository recVidTableRepository;
+
+    @Autowired
+    FindSimilarUsersRepository findsimilarusersRepsitory;
 
     @Override
     public void saveUser(User user) {
@@ -262,5 +266,38 @@ public class UserServiceImpl implements UserService {
         return userPreferenceRepository.genweightbygenreanduserid(i,s);
     }
 
+    @Override
+    public ArrayList<Integer> distinctUserIdPref() {
+        return userPreferenceRepository.distinctUserIdPref();
+    }
 
+    @Override
+    public float getGenWeight(int userid, int genreid) {
+        return userPreferenceRepository.getGenWeight(userid, genreid);
+    }
+
+    @Override
+    public void saveFindSimilarUsers(FindSimilarUsers newSim) {
+        findsimilarusersRepsitory.save(newSim);
+    }
+
+    @Override
+    public void deleteFindsimilarTable() {
+        findsimilarusersRepsitory.deleteAll();
+    }
+
+    @Override
+    public ArrayList<FindSimilarUsers> findotherusers(int currentuserId) {
+        return findsimilarusersRepsitory.findotherusers(currentuserId);
+    }
+
+    @Override
+    public FindSimilarUsers findCurrentUserByUserId(int currentuserId) {
+        return findsimilarusersRepsitory.findByUserId(currentuserId);
+    }
+
+    @Override
+    public ArrayList<FindSimilarUsers> similarusers(int currentuser) {
+        return findsimilarusersRepsitory.similarusers(currentuser);
+    }
 }
