@@ -257,5 +257,10 @@ public class UserServiceImpl implements UserService {
         return agecriteriaRepository.AllViews();
     }
 
+    @Override
+    public double genweightbygenreanduserid(int i, String s) {
+        return userPreferenceRepository.genweightbygenreanduserid(i,s);
+    }
+
 
 }

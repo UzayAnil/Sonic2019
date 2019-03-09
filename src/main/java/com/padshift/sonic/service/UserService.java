@@ -108,4 +108,6 @@ public interface UserService {
     float hiphopAgecount();
 
     float AllViews();
+
+    double genweightbygenreanduserid(int i, String s);
 }

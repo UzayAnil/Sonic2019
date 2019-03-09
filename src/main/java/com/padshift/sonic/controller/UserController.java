@@ -296,48 +296,47 @@ public class UserController {
 
         System.out.println("AGE TOTAL VIEWS: "+ agetotalviews);
         System.out.println("PERSONALITY TOTAL VIEWS: "+ personalitytotalviews);
-        if(genreid == 1){
+        if(genreid == 1 && totalviews!=0){
             genreAge = (float) useragegroup.getPopMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getPopMusic()/personalitytotalviews;
             genreWT = userService.popAgecount()/totalviews;
         }
-        if(genreid == 2){
+        if(genreid == 2 && totalviews!=0){
             genreAge = (float) useragegroup.getRockMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getRockMusic()/personalitytotalviews;
             genreWT = userService.rockAgecount()/totalviews;
         }
-
-        if(genreid == 3){
+        if(genreid == 3 && totalviews!=0){
             genreAge = (float) useragegroup.getAlternativeMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getAlternativeMusic()/personalitytotalviews;
             genreWT = userService.alternativeAgecount()/totalviews;
         }
-        if(genreid == 4){
+        if(genreid == 4 && totalviews!=0){
             genreAge = (float) useragegroup.getRnbMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getRnbMusic()/personalitytotalviews;
             genreWT = userService.rnbAgecount()/totalviews;
         }
-        if(genreid == 5){
+        if(genreid == 5 && totalviews!=0){
             genreAge = (float) useragegroup.getCountryMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
             genreWT = userService.countryAgecount()/totalviews;
         }
-        if(genreid == 6){
+        if(genreid == 6 && totalviews!=0){
             genreAge = (float) useragegroup.getHouseMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getHouseMusic()/personalitytotalviews;
             genreWT = userService.houseAgecount()/totalviews;
         }
-        if(genreid == 7){
+        if(genreid == 7 && totalviews!=0){
             genreAge = (float) useragegroup.getReggaeMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getReggaeMusic()/personalitytotalviews;
             genreWT = userService.reggaeAgecount()/totalviews;
         }
-        if(genreid == 8){
+        if(genreid == 8 && totalviews!=0){
             genreAge = (float) useragegroup.getReligiousMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getReligiousMusic()/personalitytotalviews;
             genreWT = userService.religiousAgecount()/totalviews;
         }
-        if(genreid == 9){
+        if(genreid == 9 && totalviews!=0){
             genreAge = (float) useragegroup.getHiphopMusic()/agetotalviews;
             genrePT = (float) personalitygroup.getHiphopMusic()/personalitytotalviews;
             genreWT = userService.hiphopAgecount()/totalviews;
@@ -350,7 +349,7 @@ public class UserController {
         System.out.println("genreAge: "+genreAge);
         System.out.println("genrePT: "+genrePT);
 
-        System.out.println((float) (temp/10)*.4);
+        System.out.println((temp/10)*.4);
         System.out.println((genreAge)*.25);
         System.out.println((genrePT)*.25);
         System.out.println((genreWT)*.1);
@@ -1405,6 +1404,7 @@ public class UserController {
                 }
             }
         }
+        System.out.println("cosine values: ");
         for (int i = 0; i < arrUser.length; i++) {
             System.out.println(arrUser[i]+": "+cosineValue[i]);
         }
@@ -1427,18 +1427,25 @@ public class UserController {
         System.out.println();
         System.out.print(currentuser);
         for (int i = 0; i < currentuserRatings.length; i++) {
-            System.out.printf("%13s", currentuserRatings[i]);
+            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
+            double currentgenweight = userService.genweightbygenreanduserid(Integer.parseInt(currentuser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
+            System.out.printf("%13f WEW %s", (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25)), currentuser);
         }
         System.out.println();
         System.out.print(otheruser);
         for (int i = 0; i < otheruserRatings.length; i++) {
-            System.out.printf("%13s", otheruserRatings[i]);
+            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
+            double othergenweight = userService.genweightbygenreanduserid(Integer.parseInt(otheruser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
+            System.out.printf("%13f WEW %s", (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25)), otheruser);
         }
 
         for (int i = 0; i < allvideo.size(); i++) {
-            nume += Double.parseDouble(currentuserRatings[i])*Double.parseDouble(otheruserRatings[i]);
-            multiplier1 += Double.parseDouble(currentuserRatings[i]) * Double.parseDouble(currentuserRatings[i]);
-            multiplier2 += Double.parseDouble(otheruserRatings[i]) * Double.parseDouble(otheruserRatings[i]);
+            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
+            double currentgenweight = userService.genweightbygenreanduserid(Integer.parseInt(currentuser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
+            double othergenweight = userService.genweightbygenreanduserid(Integer.parseInt(otheruser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
+            nume += (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25))*(((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*25));
+            multiplier1 += (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25)) * (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25));
+            multiplier2 += (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25)) * (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25));
         }
 
         System.out.println("");
@@ -1831,6 +1838,151 @@ public class UserController {
         return "VideoPlayerWithPlaylist";
     }
 
+//    @RequestMapping("/revisedPLG")
+//    public String genPL(){
+//
+////        String currentTime = getTime();
+//        String currentTime = "2:20:12";
+//        ArrayList<UserHistory> uh = userService.findByViewingTimeStartingWith(currentTime.substring(0, currentTime.length() - 6));
+//        ArrayList<String>  distinctID = userService.findAllDistinctSequenceID(currentTime.substring(0, currentTime.length() - 6));
+//        System.out.println(distinctID.size());
+//
+//
+//        ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[distinctID.size()];
+//
+//        for(int i=0; i<distinctID.size();i++){
+//            seqRules[i] = userService.findUserHistoryBySeqid(distinctID.get(i).toString());
+//            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+//        }
+//
+//
+//        for(int i=0; i<distinctID.size();i++){
+//            System.out.print("[" + distinctID.get(i).toString() + "]     ");
+//            for(int j=0; j<seqRules[i].size(); j++){
+//                System.out.print(seqRules[i].get(j).getVideoid() + ", ");
+//            }
+//            System.out.println();
+//        }
+//
+//
+//
+//        ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,distinctID);
+//
+//        ArrayList<String> databaseRules = buildDBRules(seqRules,distinctID);
+//
+//
+//        ArrayList<ClassSequentialRules>[] seqrules = (ArrayList<ClassSequentialRules>[])new ArrayList[10];
+//        seqrules[0] = new ArrayList<>();
+//        for(String id: uniqueVideoIDs){
+//            ClassSequentialRules seq = new ClassSequentialRules(id.toString(),calculateSupport(databaseRules,id.toString()),0);
+//            seqrules[0].add(seq);
+//        }
+//
+//        seqrules[0] = removeUnqualifiedForThreshold(seqrules[0]);
+//        displaySeqrulesMeasures(seqrules[0]);
+//
+//        boolean flag= true;
+//        int srIndex=1;
+//        do{
+//            seqrules[srIndex] = new ArrayList<>();
+//            seqrules[srIndex] = buildRuleCombination(seqrules[srIndex-1],uniqueVideoIDs,databaseRules);
+//            seqrules[srIndex] = removeUnqualifiedForThreshold(seqrules[srIndex]);
+//            displaySeqrulesMeasures(seqrules[srIndex]);
+//            if(seqrules[srIndex].get(0).getSupport()==0){
+//                flag=false;
+//
+//            }else{
+//                srIndex++;
+//            }
+//
+//        }while (flag==true);
+//        String[] parts = null;
+//        for(int i=0; i<seqrules[srIndex-1].size(); i++){
+////            System.out.println("The sequence that made it : " + seqrules[srIndex-1].get(i).getVideoIds() );
+//            parts = seqrules[srIndex-1].get(0).getVideoIds().toString().split(", ");
+//        }
+//
+//
+//        for (String p : parts){
+//            System.out.println("[pl]" + p.toString());
+//        }
+//
+//
+//        ArrayList<String> finalList = new ArrayList<String>(Arrays.asList(parts));
+//
+//        for(int i=0; i<seqRules.length; i++){
+//            for(int j=0; j<seqRules[i].size(); j++){
+//                if(!finalList.contains(seqRules[i].get(j).getVideoid().toString())){
+//                    finalList.add(seqRules[i].get(j).getVideoid());
+//                }
+//            }
+//        }
+//        ArrayList<String> finalListest = new ArrayList<>();
+//
+//        finalListest = removeDuplicates(finalList);
+////        for(int i=0; i<20; i++){
+////            if(!finalListest.contains(finalList.get(i).toString())){
+////                finalListest.add(finalList.get(i).toString());
+////            }
+////        }
+//
+//        ArrayList<Video> vids = new ArrayList<>();
+//        for(int i=0; i<20; i++){
+//            System.out.println("[ f ] - " + finalListest.get(i).toString() );
+//            Video v = videoService.findVideoByVideoid(finalListest.get(i).toString());
+//            Video nv = new Video(v.getVideoid(), v.getMvtitle(), v.getThumbnail());
+//            vids.add(nv);
+//            System.out.println(v.getMvtitle());
+//
+//        }
+//
+//
+//
+//
+//
+//////        for(UserHistory h: uh){
+//////            System.out.println(h.getSeqid() + "  " + h.getVideoid() + "  " + h.getViewingTime());
+//////        }
+////
+////        ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[uh.size()];
+////
+////        for(int i=0; i<uh.size();i++){
+////            seqRules[i] = userService.findUserHistoryBySeqid(sequenceids.get(i).toString());
+////            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+////        }
+////
+////        ArrayList<String> uniqueVideoIDs = getUniqueVideoIDs(seqRules,sequenceids);
+////
+////        ArrayList<String> databaseRules = buildDBRules(seqRules,sequenceids);
+//
+//
+//
+//
+//        return "testing";
+//    }
+
+
+
+    public ArrayList<String> removeDuplicates(ArrayList<String> list) {
+
+        // Store unique items in result.
+        ArrayList<String> result = new ArrayList<>();
+
+        // Record encountered Strings in HashSet.
+        HashSet<String> set = new HashSet<>();
+
+        // Loop over argument list.
+        for (String item : list) {
+
+            // If String is not in set, add it to the list and the set.
+            if (!set.contains(item)) {
+                result.add(item);
+                set.add(item);
+            }
+        }
+        return result;
+    }
+
 
     @RequestMapping("/gotoplaylistF")
     public String gotoPlaylistF(HttpSession session, Model model){
@@ -2111,6 +2263,9 @@ public class UserController {
         return fsupport;
 
     }
+
+
+
 
 
 

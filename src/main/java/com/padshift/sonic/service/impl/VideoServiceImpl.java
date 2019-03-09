@@ -210,6 +210,4 @@ public class VideoServiceImpl implements VideoService {
     public ArrayList<Video> findAllVideo() {
         return (ArrayList<Video>) videoRepository.findAll();
     }
-
-
 }

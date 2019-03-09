@@ -73,9 +73,4 @@ public interface VideoService {
     ArrayList<RecVidTable> findRecVidTableByUserId(String userid);
 
     ArrayList<Video> findAllVideo();
-
-
-//    void updateVidDuration(String videoid, long seconds);
-
-
 }
