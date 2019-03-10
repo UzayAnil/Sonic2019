@@ -73,4 +73,6 @@ public interface VideoService {
     ArrayList<RecVidTable> findRecVidTableByUserId(String userid);
 
     ArrayList<Video> findAllVideo();
+
+    int getGenre(String videoid);
 }

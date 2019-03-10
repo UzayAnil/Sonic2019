@@ -210,4 +210,9 @@ public class VideoServiceImpl implements VideoService {
     public ArrayList<Video> findAllVideo() {
         return (ArrayList<Video>) videoRepository.findAll();
     }
+
+    @Override
+    public int getGenre(String videoid) {
+        return genreRepository.getGenre(videoid);
+    }
 }

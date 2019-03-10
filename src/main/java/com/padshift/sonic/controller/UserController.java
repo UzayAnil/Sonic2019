@@ -348,7 +348,7 @@ public class UserController {
         System.out.println((genrePT/personalitytotalviews)*.25);
         System.out.println((genreWT/totalviews)*.1);
 
-        genweight = (float) (((temp/10)*.4)+((genreAge)*.25)+((genrePT)*.25)+((genreWT)*.1));
+        genweight = (float) (((temp/10)*.4)+((genreAge/agetotalviews)*.25)+((genrePT/personalitytotalviews)*.25)+((genreWT/totalviews)*.1));
 
         UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(userid, genreid);
         userpref.setGenreWeight(genweight);
@@ -872,7 +872,7 @@ public class UserController {
     public String gotoPlayer(HttpServletRequest request, Model model, HttpSession session){
         String vididtoplay = request.getParameter("clicked");
         String videoWatched = request.getParameter("videoWatched");
-        String[] simusers = (String[]) session.getAttribute("similarusers");
+        ArrayList<FindSimilarUsers> simusers = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
 
         if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
             UserHistory userhist = new UserHistory();
@@ -964,7 +964,7 @@ public class UserController {
     public String submitRating(HttpServletRequest request, Model model, HttpSession session){
         int useragegroup = (Integer) session.getAttribute("useragegroup");
         int personalitygroup = (Integer) session.getAttribute("userpersonalitygroup");
-        String[] simusers = (String[]) session.getAttribute("similarusers");
+        ArrayList<FindSimilarUsers> simusers = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
         String vididtoplay = request.getParameter("current");
         String vididnexttoplay = request.getParameter("clicked");
         String vidrating = request.getParameter("rating");
@@ -991,8 +991,9 @@ public class UserController {
         System.out.println("video id : " + vididnexttoplay);
         try{
             Genre findgenre = videoService.findByGenreName(video.getGenre());
-            incrementagegroup(useragegroup, video.getGenre());
-            incrementpersonalitygroup(personalitygroup, video.getGenre());
+            int genre = videoService.getGenre(video.getVideoid());
+            incrementagegroup(useragegroup, genre);
+            incrementpersonalitygroup(personalitygroup, genre);
 
         }catch (Exception e){
 
@@ -1085,106 +1086,57 @@ public class UserController {
         return "VideoPlayerV2";
     }
 
-    private void incrementpersonalitygroup(int personalitygroup, String genre) {
+    private void incrementpersonalitygroup(int personalitygroup, int genre) {
         PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
-        if(genre.equals("Pop Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
+        switch(genre){
+            case 1: personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
+                break;
+            case 2: personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
+                break;
+            case 3: personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
+                break;
+            case 4: personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
+                break;
+            case 5: personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
+                break;
+            case 6: personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
+                break;
+            case 7: personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
+                break;
+            case 8: personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
+                break;
+            case 9: personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
+                break;
         }
-        if(genre.equals("House Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Alternative Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Reggae Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("R&B/Soul Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Religious Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Country Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.contains("Rock")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.contains("Hip-Hop/Rap")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
+        userService.savePersonalityCriteria(personalitycriteria);
     }
 
-    public void incrementagegroup(int agegroup, String genre){
+    public void incrementagegroup(int agegroup, int genre){
         AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
-
-        if(genre.equals("Pop Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
+        switch(genre){
+            case 1: agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
+                    break;
+            case 2: agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
+                    break;
+            case 3: agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
+                    break;
+            case 4: agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
+                    break;
+            case 5: agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
+                    break;
+            case 6: agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
+                    break;
+            case 7: agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
+                    break;
+            case 8: agecriteria.setReligiousMusic(agecriteria.getReligiousMusic()+1);
+                    break;
+            case 9: agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
+                    break;
         }
-        if(genre.equals("House Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Alternative Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Reggae Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("R&B/Soul Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Religious Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setReggaeMusic(agecriteria.getReligiousMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Country Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Rock Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Hip-Hop/Rap Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
+        userService.saveAgeCriteria(agecriteria);
     }
 
-    public String[] cosineMatrix(String currentuserId, String[] simusers){
+    public String[] cosineMatrix(String currentuserId, ArrayList<FindSimilarUsers> simusers){
         ArrayList<String> allusers = new ArrayList<>();
 //        ArrayList<User> users = userService.findOtherUser(currentuser);
         ArrayList<String> users = videoService.findDistinctUser(currentuserId);
@@ -1199,8 +1151,8 @@ public class UserController {
 
         int count = 0;
 
-        for (int i=0; i < simusers.length; i++){
-            allusers.add(simusers[i]);
+        for (int i=0; i < simusers.size(); i++){
+            allusers.add(String.valueOf(simusers.get(i).getUserId()));
         }
 
         for (int i = 0; i < allusers.size(); i++) {
