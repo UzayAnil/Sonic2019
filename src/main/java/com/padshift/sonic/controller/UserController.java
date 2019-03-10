@@ -12,6 +12,9 @@ import com.padshift.sonic.entities.*;
 import com.padshift.sonic.service.GenreService;
 import com.padshift.sonic.service.UserService;
 import com.padshift.sonic.service.VideoService;
+
+import java.io.*;
+import java.sql.Time;
 import java.util.Random;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.hibernate.Session;
@@ -34,9 +37,6 @@ import radams.gracenote.webapi.GracenoteWebAPI;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -281,130 +281,81 @@ public class UserController {
         int personality = user.getPersonalitycriteriaId();
         AgeCriteria useragegroup = userService.findByAgeCriteriaId(agegroup);
         PersonalityCriteria personalitygroup = userService.findByPersonalityCriteriaId(personality);
-        float agetotalviews = useragegroup.getAlternativeMusic() + useragegroup.getCountryMusic() + useragegroup.getHiphopMusic() + useragegroup.getHouseMusic() + useragegroup.getPopMusic() + useragegroup.getReggaeMusic() + useragegroup.getReligiousMusic() + useragegroup.getRnbMusic() + useragegroup.getRockMusic();
-        float personalitytotalviews = personalitygroup.getAlternativeMusic() + personalitygroup.getCountryMusic() + personalitygroup.getHiphopMusic() + personalitygroup.getHouseMusic() + personalitygroup.getPopMusic() + personalitygroup.getReggaeMusic() + personalitygroup.getReligiousMusic() + personalitygroup.getRnbMusic() + personalitygroup.getRockMusic();
-        float totalpersonality1 = personalities.get(0).getAlternativeMusic() + personalities.get(0).getCountryMusic() + personalities.get(0).getHiphopMusic() + personalities.get(0).getHouseMusic() + personalities.get(0).getPopMusic() + personalities.get(0).getReggaeMusic() +personalities.get(0).getReligiousMusic() + personalities.get(0).getRnbMusic() + personalities.get(0).getRockMusic();
-        float totalpersonality2 = personalities.get(1).getAlternativeMusic() + personalities.get(1).getCountryMusic() + personalities.get(1).getHiphopMusic() + personalities.get(1).getHouseMusic() + personalities.get(1).getPopMusic() + personalities.get(1).getReggaeMusic() +personalities.get(1).getReligiousMusic() + personalities.get(1).getRnbMusic() + personalities.get(1).getRockMusic();
-        float totalviews = totalpersonality1 + totalpersonality2;
-        float userInput = temp;
-        float genreAgePop,genreAgeRock, genreAgeAlt, genreAgeRBS, genreAgeCntry, genreAgeHouse, genreAgeReg, genreAgeRel, genreAgeHH;
+        float agetotalviews = userService.sumOfgenrebyAgegroup(agegroup);
+        float personalitytotalviews = userService.sumOfgenrebypersonality(personality);
+        float totalviews = userService.AllViews();
         float genweight;
-
-        float genrePTPop,genrePTRock, genrePTAlt, genrePTRBS, genrePTCntry, genrePTHouse, genrePTReg, genrePTRel, genrePTHH;
-
         float genreAge = 0;
         float genrePT =0;
         float genreWT = 0;
 
-        if(genreid == 1 && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),1).getPrefWeight();
-            genreAge = (float) useragegroup.getPopMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getPopMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
+        System.out.println("AGE TOTAL VIEWS: "+ agetotalviews);
+        System.out.println("PERSONALITY TOTAL VIEWS: "+ personalitytotalviews);
+        if(totalviews != 0){
+            switch(genreid){
+                case 1: genreAge = useragegroup.getPopMusic();
+                    genrePT = personalitygroup.getPopMusic();
+                    genreWT = userService.popAgecount();
+                    break;
+                case 2: genreAge = useragegroup.getRockMusic();
+                    genrePT = personalitygroup.getRockMusic();
+                    genreWT = userService.rockAgecount();
+                    break;
+                case 3: genreAge = useragegroup.getAlternativeMusic();
+                    genrePT = personalitygroup.getAlternativeMusic();
+                    genreWT = userService.alternativeAgecount();
+                    break;
+                case 4: genreAge = useragegroup.getRnbMusic();
+                    genrePT = personalitygroup.getRnbMusic();
+                    genreWT = userService.rnbAgecount();
+                    break;
+                case 5: genreAge = useragegroup.getCountryMusic();
+                    genrePT = personalitygroup.getCountryMusic();
+                    genreWT = userService.countryAgecount();
+                    break;
+                case 6: genreAge = useragegroup.getHouseMusic();
+                    genrePT = personalitygroup.getHouseMusic();
+                    genreWT = userService.houseAgecount();
+                    break;
+                case 7: genreAge = useragegroup.getReggaeMusic();
+                    genrePT = personalitygroup.getReggaeMusic();
+                    genreWT = userService.reggaeAgecount();
+                    break;
+                case 8: genreAge = useragegroup.getReligiousMusic();
+                    genrePT = personalitygroup.getReligiousMusic();
+                    genreWT = userService.religiousAgecount();
+                    break;
+                case 9: genreAge = useragegroup.getHiphopMusic();
+                    genrePT = personalitygroup.getHiphopMusic();
+                    genreWT = userService.hiphopAgecount();
+            }
         }
-        if(genreid == 2 && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),2).getPrefWeight();
-            genreAge = (float) useragegroup.getRockMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getRockMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-
-        if(genreid == 3  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),3).getPrefWeight();
-            genreAge = (float) useragegroup.getAlternativeMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getAlternativeMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-        if(genreid == 4  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),4).getPrefWeight();
-            genreAge = (float) useragegroup.getRnbMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getRnbMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-        if(genreid == 5  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),5).getPrefWeight();
-            genreAge = (float) useragegroup.getCountryMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-        if(genreid == 6  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),6).getPrefWeight();
-            genreAge = (float) useragegroup.getCountryMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-        if(genreid == 7  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),7).getPrefWeight();
-            genreAge = (float) useragegroup.getReggaeMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getReggaeMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-        if(genreid == 8  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),8).getPrefWeight();
-            genreAge = (float) useragegroup.getReligiousMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getReligiousMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-        if(genreid == 9  && agetotalviews > 9){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),9).getPrefWeight();
-            genreAge = (float) useragegroup.getHiphopMusic()/agetotalviews;
-            genrePT = (float) personalitygroup.getHiphopMusic()/personalitytotalviews;
-            genreWT = (float) (personalities.get(0).getPopMusic()+personalities.get(1).getPopMusic())/totalviews;
-        }
-
-        if(agetotalviews == 9){
-            genreAge = 1;
-        }
-        if(personalitytotalviews == 9){
-            genrePT = 1;
-        }
-        if(totalviews == 18){
-            genreWT = 1;
-        }
-
-        float uipercent, agepercent,pertypepercent;
-        Criteria ui = userService.findCriteriaByCriteriaName("userinput");
-        System.out.println("++++++ LOOL - "+ ui.toString());
-        if(ui.toString()!=null){
-            uipercent=ui.getCriteriaPercentage();
-        }else{
-            uipercent=0;
-        }
-
-        Criteria age = userService.findCriteriaByCriteriaName("age");
-        if(age!=null){
-            agepercent = age.getCriteriaPercentage();
-        }else{
-            agepercent=0;
-        }
-
-        Criteria pertype = userService.findCriteriaByCriteriaName("personality");
-        if(pertype!=null){
-            pertypepercent = pertype.getCriteriaPercentage();
-        }else{
-            pertypepercent=0;
-        }
-
-        int likes = 0;
         System.out.println("Genre ID: "+genreid);
-        System.out.println("Total Views: "+agetotalviews);
+        System.out.println("Total Views: "+totalviews);
         System.out.println("Personal Total Views"+personalitytotalviews);
         System.out.println("UserInput: "+temp);
         System.out.println("genreAge: "+genreAge);
         System.out.println("genrePT: "+genrePT);
 
         System.out.println((temp/10)*.4);
-        System.out.println((genreAge)*.25);
-        System.out.println((genrePT)*.25);
-        System.out.println((genreWT)*.1);
-
-        genweight = (float) (((temp/10)*.4)+((genreAge)*.25)+((genrePT)*.25)+((genreWT)*.1));
+        System.out.println((genreAge/agetotalviews)*.25);
+        System.out.println((genrePT/personalitytotalviews)*.25);
+        System.out.println((genreWT/totalviews)*.1);
+        if(agetotalviews == 0){
+            agetotalviews = 1;
+        }
+        if(personalitytotalviews == 0){
+            personalitytotalviews = 1;
+        }
+        if(totalviews == 0){
+            totalviews = 1;
+        }
+        genweight = (float) (((temp/10)*.4)+((genreAge/agetotalviews)*.25)+((genrePT/personalitytotalviews)*.25)+((genreWT/totalviews)*.1));
 
         UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(userid, genreid);
         userpref.setGenreWeight(genweight);
         userService.saveUserPreference(userpref);
     }
-
     String topgenre=null;
 
     public String showHomepageAfterReg(Model model, HttpSession session){
@@ -973,7 +924,8 @@ public class UserController {
     public String gotoPlayer(HttpServletRequest request, Model model, HttpSession session){
         String vididtoplay = request.getParameter("clicked");
         String videoWatched = request.getParameter("videoWatched");
-        String[] simusers = (String[]) session.getAttribute("similarusers");
+//        String[] simusers = (String[]) session.getAttribute("similarusers");
+        ArrayList<FindSimilarUsers> simusers = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
 
         if(videoWatched!=null && Float.parseFloat(request.getParameter("timeSpent").toString())>0){
             UserHistory userhist = new UserHistory();
@@ -1063,7 +1015,7 @@ public class UserController {
     public String submitRating(HttpServletRequest request, Model model, HttpSession session){
         int useragegroup = (Integer) session.getAttribute("useragegroup");
         int personalitygroup = (Integer) session.getAttribute("userpersonalitygroup");
-        String[] simusers = (String[]) session.getAttribute("similarusers");
+        ArrayList<FindSimilarUsers> simusers = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
         String vididtoplay = request.getParameter("current");
         String vididnexttoplay = request.getParameter("clicked");
         String vidrating = request.getParameter("rating");
@@ -1090,10 +1042,9 @@ public class UserController {
         System.out.println("video id : " + vididnexttoplay);
         try{
             Genre findgenre = videoService.findByGenreName(video.getGenre());
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), findgenre.getGenreId());
-            incrementagegroup(useragegroup, video.getGenre());
-            incrementpersonalitygroup(personalitygroup, video.getGenre());
-            updategenreWeight(findgenre.getGenreId(), (Integer) session.getAttribute("userid"), userpref.getPrefWeight());
+            int genre = videoService.getGenre(video.getVideoid());
+            incrementagegroup(useragegroup, genre);
+            incrementpersonalitygroup(personalitygroup, genre);
 
         }catch (Exception e){
 
@@ -1374,71 +1325,57 @@ public class UserController {
 //
 //    }
 
-    private void incrementpersonalitygroup(int personalitygroup, String genre) {
+    private void incrementpersonalitygroup(int personalitygroup, int genre) {
         PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
-        if(genre.contains("Pop")){
-            personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
-        }
-        if(genre.contains("House")){
-            personalitycriteria.setPopMusic(personalitycriteria.getHouseMusic()+1);
-        }
-        if(genre.contains("Alternative")){
-            personalitycriteria.setPopMusic(personalitycriteria.getAlternativeMusic()+1);
-        }
-        if(genre.contains("Reggae")){
-            personalitycriteria.setPopMusic(personalitycriteria.getReggaeMusic()+1);
-        }
-        if(genre.contains("R&B/Soul")){
-            personalitycriteria.setPopMusic(personalitycriteria.getRnbMusic()+1);
-        }
-        if(genre.contains("Religious")){
-            personalitycriteria.setPopMusic(personalitycriteria.getReligiousMusic()+1);
-        }
-        if(genre.contains("Country")){
-            personalitycriteria.setPopMusic(personalitycriteria.getCountryMusic()+1);
-        }
-        if(genre.contains("Rock")){
-            personalitycriteria.setPopMusic(personalitycriteria.getRockMusic()+1);
-        }
-        if(genre.contains("Hip-Hop/Rap")){
-            personalitycriteria.setPopMusic(personalitycriteria.getHiphopMusic()+1);
+        switch(genre){
+            case 1: personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
+                break;
+            case 2: personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
+                break;
+            case 3: personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
+                break;
+            case 4: personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
+                break;
+            case 5: personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
+                break;
+            case 6: personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
+                break;
+            case 7: personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
+                break;
+            case 8: personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
+                break;
+            case 9: personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
+                break;
         }
         userService.savePersonalityCriteria(personalitycriteria);
     }
 
-    public void incrementagegroup(int agegroup, String genre){
+    public void incrementagegroup(int agegroup, int genre){
         AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
-        if(genre.contains("Pop")){
-            agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
-        }
-        if(genre.contains("House")){
-            agecriteria.setPopMusic(agecriteria.getHouseMusic()+1);
-        }
-        if(genre.contains("Alternative")){
-            agecriteria.setPopMusic(agecriteria.getAlternativeMusic()+1);
-        }
-        if(genre.contains("Reggae")){
-            agecriteria.setPopMusic(agecriteria.getReggaeMusic()+1);
-        }
-        if(genre.contains("R&B/Soul")){
-            agecriteria.setPopMusic(agecriteria.getRnbMusic()+1);
-        }
-        if(genre.contains("Religious")){
-            agecriteria.setPopMusic(agecriteria.getReligiousMusic()+1);
-        }
-        if(genre.contains("Country")){
-            agecriteria.setPopMusic(agecriteria.getCountryMusic()+1);
-        }
-        if(genre.contains("Rock")){
-            agecriteria.setPopMusic(agecriteria.getRockMusic()+1);
-        }
-        if(genre.contains("Hip-Hop/Rap")){
-            agecriteria.setPopMusic(agecriteria.getHiphopMusic()+1);
+        switch(genre){
+            case 1: agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
+                break;
+            case 2: agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
+                break;
+            case 3: agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
+                break;
+            case 4: agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
+                break;
+            case 5: agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
+                break;
+            case 6: agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
+                break;
+            case 7: agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
+                break;
+            case 8: agecriteria.setReligiousMusic(agecriteria.getReligiousMusic()+1);
+                break;
+            case 9: agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
+                break;
         }
         userService.saveAgeCriteria(agecriteria);
     }
 
-    public String[] cosineMatrix(String currentuserId, String[] simusers){
+    public String[] cosineMatrix(String currentuserId, ArrayList<FindSimilarUsers> simusers){
         ArrayList<String> allusers = new ArrayList<>();
 //        ArrayList<User> users = userService.findOtherUser(currentuser);
         ArrayList<String> users = videoService.findDistinctUser(currentuserId);
@@ -1453,8 +1390,8 @@ public class UserController {
 
         int count = 0;
 
-        for (int i=0; i < simusers.length; i++){
-            allusers.add(simusers[i]);
+        for (int i=0; i < simusers.size(); i++){
+            allusers.add(String.valueOf(simusers.get(i).getUserId()));
         }
 
         for (int i = 0; i < allusers.size(); i++) {
@@ -1551,7 +1488,18 @@ public class UserController {
             arrUser[i] = allusers.get(i);
         }
 
-
+//        for (int i = 0; i < cosineValue.length; i++)
+//        {
+//            for (int j = i + 1; j < cosineValue.length; j++)
+//            {
+//                if (cosineValue[i] < cosineValue[j])
+//                {
+//                    temp = cosineValue[i];
+//                    cosineValue[i] = cosineValue[j];
+//                    cosineValue[j] = temp;
+//                }
+//            }
+//        }
 
         for (int i = 0; i < arrUser.length; i++) {
             System.out.println(arrUser[i]);
@@ -1571,6 +1519,7 @@ public class UserController {
                 }
             }
         }
+        System.out.println("cosine values: ");
         for (int i = 0; i < arrUser.length; i++) {
             System.out.println(arrUser[i]+": "+cosineValue[i]);
         }
@@ -2028,11 +1977,10 @@ public class UserController {
     public String genPL(){
 
 //        String currentTime = getTime();
-        String currentTime = "2:20:12";
-        ArrayList<UserHistory> uh = userService.findByViewingTimeStartingWith(currentTime.substring(0, currentTime.length() - 6));
+        String currentTime = "02:20:12";
+//        ArrayList<UserHistory> uh = userService.findByViewingTimeStartingWith(currentTime.substring(0, currentTime.length() - 6));
         ArrayList<String>  distinctID = userService.findAllDistinctSequenceID(currentTime.substring(0, currentTime.length() - 6));
         System.out.println(distinctID.size());
-
 
         ArrayList<UserHistory>[] seqRules = (ArrayList<UserHistory>[])new ArrayList[distinctID.size()];
 
@@ -2040,6 +1988,17 @@ public class UserController {
             seqRules[i] = userService.findUserHistoryBySeqid(distinctID.get(i).toString());
             Collections.sort(seqRules[i], UserHistory.TimeComparator);
         }
+
+        //revised for shorter and faster
+
+
+//        ArrayList<UserHistory>[] seqRules = userService.findUserHistoryByTimeAndSeqid(currentTime.substring(0, currentTime.length() - 6));
+//
+//
+//        for(int i=0; i<distinctID.size();i++){
+//
+//            Collections.sort(seqRules[i], UserHistory.TimeComparator);
+//        }
 
 
         for(int i=0; i<distinctID.size();i++){
@@ -2144,6 +2103,332 @@ public class UserController {
 
         return "testing";
     }
+
+//    @RequestMapping("/write")
+//    public void usingFileWriter() throws IOException
+//    {
+//        File fout = new File("C:/Users/ruzieljonm/Desktop/out.txt");
+//        FileOutputStream fos = new FileOutputStream(fout);
+//
+//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+//
+//        for (int i = 0; i < 10; i++) {
+//            bw.write("something");
+//            bw.newLine();
+//        }
+//
+//        bw.close();
+//
+//    }
+//
+//    @RequestMapping("/displayrawid")
+//    public void displayrawid() throws IOException{
+//        //file writing
+//        File fout = new File("C:/Users/ruzieljonm/Desktop/rawid_distinct.txt");
+//        FileOutputStream fos = new FileOutputStream(fout);
+//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+//
+//        //read tsv
+//        StringTokenizer st ;
+//        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Desktop/raw.tsv"));
+//        String dataRow = TSVFile.readLine(); // Read first line.
+//        ArrayList<Video> videos = videoService.findAllVideo();
+//
+//        ArrayList<User> users = userService.findAllUsers();
+//
+//        ArrayList<String> rawid = new ArrayList<>();
+//        while (dataRow != null){
+//            st = new StringTokenizer(dataRow,"\t");
+//            List<String> dataArray = new ArrayList<String>() ;
+//            while(st.hasMoreElements()){
+//                dataArray.add(st.nextElement().toString());
+//            }
+//
+//            dataArray.remove(0);
+//
+//            for (String item:dataArray) {
+////                System.out.print(item + "  ");
+//                if(!rawid.contains(item)) {
+//                    rawid.add(item);
+//                    System.out.println("writing : " + item);
+//                }
+//
+//            }
+//            System.out.println(); // Print the data line.
+//            dataRow = TSVFile.readLine(); // Read next line of data.
+//        }
+//
+//        System.out.println("raw id size : " + rawid.size());
+//
+//
+//        // Close the file once all data has been read.
+//        TSVFile.close();
+//
+//        for (int i = 0; i < rawid.size(); i++) {
+//            bw.write(rawid.get(i));
+//            bw.newLine();
+//        }
+//
+//        bw.close();
+//
+//        // End the printout with a blank line.
+//        System.out.println();
+//
+//    }
+
+    @RequestMapping("/combine")
+    public void combineRawID() throws IOException {
+
+        ArrayList<String> videoids = videoService.findAllVideoId();
+
+
+        File fout = new File("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/combination.csv");
+        FileOutputStream fos = new FileOutputStream(fout);
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+        try (BufferedReader br = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Desktop/rawid_distinct.txt"))) {
+            String line;
+
+            int i=0;
+            while ((line = br.readLine()) != null) {
+                if(i==videoids.size()-1){
+                    i=0;
+                }else{
+                    System.out.println(i);
+                    bw.write(line.toString() + "," + videoids.get(i));
+                    bw.newLine();
+                    i++;
+                }
+
+            }
+        }
+        bw.close();
+
+
+
+    }
+
+//    @RequestMapping("/readComCSV")
+//    public void readCombinations() throws IOException {
+//        String csvFile = "C:/Users/ruzieljonm/Desktop/combination.csv";
+//        BufferedReader br = null;
+//        String line = "";
+//        String cvsSplitBy = ",";
+//
+//        ArrayList<Equivalent> equival = new ArrayList<>();
+//
+//        try {
+//
+//            br = new BufferedReader(new FileReader(csvFile));
+//            while ((line = br.readLine()) != null) {
+//
+//                // use comma as separator
+//                String[] country = line.split(cvsSplitBy);
+//
+////                System.out.println("Video ID [raw= " + country[0] + " , videoid_sonic=" + country[1] + "]");
+//                Equivalent e = new Equivalent(country[0],country[1]);
+//                equival.add(e);
+//            }
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (br != null) {
+//                try {
+//                    br.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        //scan tsv
+//        StringTokenizer st ;
+//        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Downloads/agegroup_4A.tsv"));
+//        String dataRow = TSVFile.readLine(); // Read first line.
+//        ArrayList<Video> videos = videoService.findAllVideo();
+//
+//        ArrayList<User> users = userService.findAllUsers();
+//        while (dataRow != null){
+//            st = new StringTokenizer(dataRow,"\t");
+//            List<String> dataArray = new ArrayList<String>() ;
+//            while(st.hasMoreElements()){
+//                dataArray.add(st.nextElement().toString());
+//            }
+//
+//
+//
+//
+//
+//
+////            dataArray.remove(1);
+//            Random rand = new Random();
+////            videos.get(rand.nextInt(videos.size()));
+//
+//            dataArray.add("72223");
+//            dataArray.add(videos.get(rand.nextInt(videos.size())).getVideoid());
+//
+//            Random r = new Random();
+//            float random = 200 + r.nextFloat() * (250 - 200);
+//            dataArray.add(String.valueOf(random));
+//            dataArray.add(getLocalDate().toString());
+//
+//
+//            final Random randomt = new Random();
+//            final int millisInDay = 24*60*60*1000;
+//            Time time = new Time((long)randomt.nextInt(millisInDay));
+//
+//            dataArray.add(time.toString());
+//
+//
+//            UserHistory u = new UserHistory(dataArray.get(0), dataArray.get(1), dataArray.get(2), dataArray.get(3), dataArray.get(4), "1", dataArray.get(5));
+////            u.setSeqid(dataArray.get(0));
+////            u.setUserId(dataArray.get(1));
+////            u.setVideoid(dataArray.get(2));
+////            u.se
+//
+//            VideoDetails video = videoService.findVideoDetailsByVideoid(dataArray.get(2));
+//            userService.saveUserHistory(u);
+//            incrementagegroup(4, video.getGenre());
+//            incrementpersonalitygroup(1, video.getGenre());
+//
+////            VidRatings vr = new VidRatings("3596", "wavemayols", dataArray.get(2), Integer.toString(ThreadLocalRandom.current().nextInt(1, 5)));
+////            videoService.saveVidrating(vr);
+//
+//
+//
+//
+//
+//            for (String item:dataArray) {
+//                System.out.print(item + "  ");
+//            }
+//            System.out.println(); // Print the data line.
+//            dataRow = TSVFile.readLine(); // Read next line of data.
+//        }
+//        // Close the file once all data has been read.
+//        TSVFile.close();
+//
+//        // End the printout with a blank line.
+//        System.out.println();
+//
+//
+////
+////        try {
+////            try (BufferedReader txtbr = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Desktop/rawid_distinct.txt"))) {
+////                String txtline;
+////                while ((txtline = br.readLine()) != null) {
+////                    Equivalent a = equival.stream()
+////                            .filter(eq -> txtline.equals(eq.getJam_id()))
+////                            .findAny()
+////                            .orElse(null);
+////
+////
+////
+////
+////                    UserHistory u = new UserHistory()//===============
+////                }
+////            }
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+////
+////        //read tsv
+////        StringTokenizer st ;
+////        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Downloads/agegroup_4A.tsv"));
+////        String dataRow = TSVFile.readLine(); // Read first line.
+//////        ArrayList<Video> videos = videoService.findAllVideo();
+////
+////        ArrayList<User> users = userService.findAllUsers();
+////        while (dataRow != null){
+////            st = new StringTokenizer(dataRow,"\t");
+////            List<String> dataArray = new ArrayList<String>() ;
+////            while(st.hasMoreElements()){
+////                dataArray.add(st.nextElement().toString());
+////            }
+////
+////            dataArray.remove(1);
+////            Random rand = new Random();
+//////            videos.get(rand.nextInt(videos.size()));
+////
+////            dataArray.add("72223");
+////
+////            dataArray.add(videos.get(rand.nextInt(videos.size())).getVideoid());
+////
+////            Random r = new Random();
+////            float random = 200 + r.nextFloat() * (250 - 200);
+////            dataArray.add(String.valueOf(random));
+////            dataArray.add(getLocalDate().toString());
+////
+////
+////            final Random randomt = new Random();
+////            final int millisInDay = 24*60*60*1000;
+////            Time time = new Time((long)randomt.nextInt(millisInDay));
+////
+////            dataArray.add(time.toString());
+////
+////
+////            UserHistory u = new UserHistory(dataArray.get(0), dataArray.get(1), dataArray.get(2), dataArray.get(3), dataArray.get(4), "1", dataArray.get(5));
+//////            u.setSeqid(dataArray.get(0));
+//////            u.setUserId(dataArray.get(1));
+//////            u.setVideoid(dataArray.get(2));
+//////            u.se
+////
+////            VideoDetails video = videoService.findVideoDetailsByVideoid(dataArray.get(2));
+////            userService.saveUserHistory(u);
+////            incrementagegroup(4, video.getGenre());
+////            incrementpersonalitygroup(1, video.getGenre());
+////
+//////            VidRatings vr = new VidRatings("3596", "wavemayols", dataArray.get(2), Integer.toString(ThreadLocalRandom.current().nextInt(1, 5)));
+//////            videoService.saveVidrating(vr);
+////
+////
+////
+////
+////
+////            for (String item:dataArray) {
+////                System.out.print(item + "  ");
+////            }
+////            System.out.println(); // Print the data line.
+////            dataRow = TSVFile.readLine(); // Read next line of data.
+////        }
+////        // Close the file once all data has been read.
+////        TSVFile.close();
+//
+//        // End the printout with a blank line.
+//        System.out.println();
+//
+//
+//
+//
+//
+////        String findme = "TRZHIYD128F92DE932";
+////        int pos = equival.indexOf(findme);
+////        System.out.println("pos : " + pos);
+////
+////        System.out.println(equival.get(pos).getJam_id() + " --- " + equival.get(pos).getSonic_id());
+//
+////        Equivalent james = equival.stream()
+////                .filter(eq -> findme.equals(eq.getJam_id()))
+////                .findAny()
+////                .orElse(null);
+////
+////        System.out.println("result : " + james.getJam_id() + "--" + james.getSonic_id());
+//
+//
+//
+//
+//
+//
+//
+//
+//    }
+
+
+
+
 
 
 

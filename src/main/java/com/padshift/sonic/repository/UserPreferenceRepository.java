@@ -34,4 +34,13 @@ public interface UserPreferenceRepository extends JpaRepository<UserPreference,L
     ArrayList<Integer> findDistinctUserfromUserPref(@Param("currentuserid") int currentuserId);
 
     UserPreference findByGenreNameAndUserId(String genre, int s);
+
+    @Query("SELECT genreWeight FROM UserPreference WHERE user_id = :currentuserid AND genreName = :genre")
+    double genweightbygenreanduserid(@Param("currentuserid") int currentuserid, @Param("genre") String genre);
+
+    @Query("select distinct userId from UserPreference")
+    ArrayList<Integer> distinctUserIdPref();
+
+    @Query("SELECT genreWeight FROM UserPreference WHERE userId = :userid AND genreId = :genre")
+    float getGenWeight(@Param("userid") int userid, @Param("genre") int genre);
 }

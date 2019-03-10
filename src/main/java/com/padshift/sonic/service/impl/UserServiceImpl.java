@@ -36,6 +36,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RecVidTableRepository recVidTableRepository;
 
+    @Autowired
+    FindSimilarUsersRepository findsimilarusersRepsitory;
+
+
+
+
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
@@ -210,5 +216,115 @@ public class UserServiceImpl implements UserService {
     @Override
     public ArrayList<String> findAllDistinctSequenceID(String ctime) {
         return userHistoryRepository.findAllDistinctSequenceID(ctime);
+    }
+
+    @Override
+    public ArrayList<UserHistory> findAllUserHistory() {
+        return (ArrayList<UserHistory>) userHistoryRepository.findAll();
+    }
+
+    @Override
+    public float sumOfgenrebyAgegroup(int agegroup) {
+        return agecriteriaRepository.sumOfgenrebyAgegroup(agegroup);
+    }
+
+    @Override
+    public float sumOfgenrebypersonality(int personality) {
+        return personalitycriteriaRepository.sumOfgenrebypersonality(personality);
+    }
+
+    @Override
+    public float popAgecount() {
+        return agecriteriaRepository.popAgecount();
+    }
+
+    @Override
+    public float rockAgecount() {
+        return agecriteriaRepository.rockAgecount();
+    }
+
+    @Override
+    public float alternativeAgecount() {
+        return agecriteriaRepository.alternativeAgecount();
+    }
+
+    @Override
+    public float rnbAgecount() {
+        return agecriteriaRepository.rnbAgecount();
+    }
+
+    @Override
+    public float countryAgecount() {
+        return agecriteriaRepository.countryAgecount();
+    }
+
+    @Override
+    public float houseAgecount() {
+        return agecriteriaRepository.houseAgecount();
+    }
+
+    @Override
+    public float reggaeAgecount() {
+        return agecriteriaRepository.reggaeAgecount();
+    }
+
+    @Override
+    public float religiousAgecount() {
+        return agecriteriaRepository.religiousAgecount();
+    }
+
+    @Override
+    public float hiphopAgecount() {
+        return agecriteriaRepository.hiphopAgecount();
+    }
+
+    @Override
+    public float AllViews() {
+        return agecriteriaRepository.AllViews();
+    }
+
+    @Override
+    public double genweightbygenreanduserid(int i, String s) {
+        return userPreferenceRepository.genweightbygenreanduserid(i,s);
+    }
+
+    @Override
+    public ArrayList<Integer> distinctUserIdPref() {
+        return userPreferenceRepository.distinctUserIdPref();
+    }
+
+    @Override
+    public float getGenWeight(int userid, int genreid) {
+        return userPreferenceRepository.getGenWeight(userid, genreid);
+    }
+
+    @Override
+    public void saveFindSimilarUsers(FindSimilarUsers newSim) {
+        findsimilarusersRepsitory.save(newSim);
+    }
+
+    @Override
+    public void deleteFindsimilarTable() {
+        findsimilarusersRepsitory.deleteAll();
+    }
+
+    @Override
+    public ArrayList<FindSimilarUsers> findotherusers(int currentuserId) {
+        return findsimilarusersRepsitory.findotherusers(currentuserId);
+    }
+
+    @Override
+    public FindSimilarUsers findCurrentUserByUserId(int currentuserId) {
+        return findsimilarusersRepsitory.findByUserId(currentuserId);
+    }
+
+    @Override
+    public ArrayList<FindSimilarUsers> similarusers(int currentuser) {
+        return findsimilarusersRepsitory.similarusers(currentuser);
+    }
+
+    @Override
+    public ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring) {
+        return userHistoryRepository.findUserHistoryByTimeAndSeqid(substring);
     }
 }

@@ -20,6 +20,8 @@ public interface VideoRepository extends JpaRepository<Video,Long> {
 
     Video findByVideoid(String s);
 
-//    @Query("SELECT videoid FROM video")
 //    ArrayList<String> findAllVideoId();
+
+    @Query("SELECT videoid FROM Video")
+    ArrayList<String> findAllVideoId();
 }

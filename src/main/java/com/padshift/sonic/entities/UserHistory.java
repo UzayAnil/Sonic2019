@@ -44,14 +44,19 @@ public class UserHistory implements Serializable, Comparable<UserHistory>{
     public UserHistory() {
     }
 
-    public UserHistory(String seqid, String userId, String videoid, String timeSpent, String viewingDate, String viewingStatus, String viewingTime) {
+    public UserHistory(String seqid, String videoid, String userId, String timeSpent, String viewingStatus, String viewingDate, String viewingTime) {
         this.seqid = seqid;
-        this.userId = userId;
         this.videoid = videoid;
+        this.userId = userId;
         this.timeSpent = timeSpent;
-        this.viewingDate = viewingDate;
         this.viewingStatus = viewingStatus;
+        this.viewingDate = viewingDate;
         this.viewingTime = viewingTime;
+    }
+
+
+    public int getWhid() {
+        return whid;
     }
 
     public String getSeqid() {

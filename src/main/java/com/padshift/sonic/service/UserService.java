@@ -89,4 +89,50 @@ public interface UserService {
     ArrayList<UserHistory> findByViewingTimeStartingWith(String substring);
 
     ArrayList<String> findAllDistinctSequenceID(String ctime);
+
+    ArrayList<UserHistory> findAllUserHistory();
+
+
+    float sumOfgenrebyAgegroup(int agegroup);
+
+    float sumOfgenrebypersonality(int personality);
+
+    float popAgecount();
+
+    float rockAgecount();
+
+    float alternativeAgecount();
+
+    float rnbAgecount();
+
+    float countryAgecount();
+
+
+    float houseAgecount();
+
+    float reggaeAgecount();
+
+    float religiousAgecount();
+
+    float hiphopAgecount();
+
+    float AllViews();
+
+    double genweightbygenreanduserid(int i, String s);
+
+    ArrayList<Integer> distinctUserIdPref();
+
+    float getGenWeight(int userid, int genreid);
+
+    void saveFindSimilarUsers(FindSimilarUsers newSim);
+
+    void deleteFindsimilarTable();
+
+    ArrayList<FindSimilarUsers> findotherusers(int currentuserId);
+
+    FindSimilarUsers findCurrentUserByUserId(int currentuserId);
+
+    ArrayList<FindSimilarUsers> similarusers(int currentuser);
+
+    ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring);
 }

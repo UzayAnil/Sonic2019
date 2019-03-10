@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,6 +35,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by ruzieljonm on 26/09/2018.
@@ -1628,73 +1632,170 @@ public class AdminController {
         return seqtemp;
     }
 
+    @RequestMapping("/testrun")
+    public String equivalentSonicID(){
+        String csvFile = "C:/Users/ruzieljonm/Desktop/combination.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
 
-//    public void testLoad(String row) throws IOException, JobNotFoundException, InterruptedException {
-//        CSVReader reader = new CSVReader(new FileReader("/Users/bone/Desktop/foo_data.tab"), '\t');
-//        String[] record;
-//        while ((record = reader.readNext()) != null) {
-//            for (String value : record) {
-//                System.out.println(value); // Debug only
-//            }
-//        }
-//    }
+        ArrayList<Equivalent> equival = new ArrayList<>();
+
+        try {
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] country = line.split(cvsSplitBy);
+
+                System.out.println("Video ID [raw= " + country[0] + " , videoid_sonic=" + country[1] + "]");
+                Equivalent e = new Equivalent(country[0],country[1]);
+                equival.add(e);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        String findme = "TROIMGU128E0782ABA";
+
+        Equivalent james = equival.stream()
+                .filter(eq -> findme.equals(eq.getJam_id()))
+                .findAny()
+                .orElse(null);
+
+        System.out.println("result : " + james.getJam_id() + "--" + james.getSonic_id());
+
+        return james.getSonic_id();
+
+    }
 
     @RequestMapping("/displaytsv")
     public void displatTSV() throws IOException {
+        //read combinations
+        String csvFile = "C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/combination.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+
+        ArrayList<Equivalent> equival = new ArrayList<>();
+
+        try {
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] country = line.split(cvsSplitBy);
+
+//                System.out.println("Video ID [raw= " + country[0] + " , videoid_sonic=" + country[1] + "]");
+                Equivalent e = new Equivalent(country[0],country[1]);
+                equival.add(e);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //end read combinations
+
         StringTokenizer st ;
-        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Downloads/agegroup_4A.tsv"));
+        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/agegroup_5_extro.tsv"));
         String dataRow = TSVFile.readLine(); // Read first line.
         ArrayList<Video> videos = videoService.findAllVideo();
+        ArrayList<String> timeRand = new ArrayList<>();
+        try (BufferedReader brtime = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/time.txt"))) {
+            String linetime;
+            while ((linetime = brtime.readLine()) != null) {
+                // process the line.
+                timeRand.add(linetime);
+            }
+        }
 
         ArrayList<User> users = userService.findAllUsers();
+
+        int timeRandIndex =0;
         while (dataRow != null){
+
             st = new StringTokenizer(dataRow,"\t");
             List<String> dataArray = new ArrayList<String>() ;
             while(st.hasMoreElements()){
                 dataArray.add(st.nextElement().toString());
             }
 
-            dataArray.remove(1);
-            Random rand = new Random();
-//            videos.get(rand.nextInt(videos.size()));
 
-            dataArray.add("72223");
-            dataArray.add(videos.get(rand.nextInt(videos.size())).getVideoid());
+            dataArray.add("290610"); //user id [2]
 
             Random r = new Random();
             float random = 200 + r.nextFloat() * (250 - 200);
-            dataArray.add(String.valueOf(random));
-            dataArray.add(getLocalDate().toString());
+            dataArray.add(String.valueOf(random)); // time spent [3]
+            dataArray.add(getLocalDate().toString());  // viewing date [4]
 
+//
+//            final Random randomt = new Random();
+//            final int millisInDay = 24*60*60*1000;
+//            Time time = new Time((long)randomt.nextInt(millisInDay));
+//
+//            dataArray.add(time.toString()); // viewing time [5]
 
-            final Random randomt = new Random();
-            final int millisInDay = 24*60*60*1000;
-            Time time = new Time((long)randomt.nextInt(millisInDay));
+        // start find equi
+            String findme = dataArray.get(1);
 
-            dataArray.add(time.toString());
+            Equivalent resEq = equival.stream()
+                    .filter(eq -> findme.equals(eq.getJam_id()))
+                    .findAny()
+                    .orElse(null);
 
+            // end find equi
 
-            UserHistory u = new UserHistory(dataArray.get(0), dataArray.get(1), dataArray.get(2), dataArray.get(3), dataArray.get(4), "1", dataArray.get(5));
-//            u.setSeqid(dataArray.get(0));
-//            u.setUserId(dataArray.get(1));
-//            u.setVideoid(dataArray.get(2));
-//            u.se
-
-            VideoDetails video = videoService.findVideoDetailsByVideoid(dataArray.get(2));
-            userService.saveUserHistory(u);
-            incrementagegroup(4, video.getGenre());
-            incrementpersonalitygroup(1, video.getGenre());
-
-//            VidRatings vr = new VidRatings("3596", "wavemayols", dataArray.get(2), Integer.toString(ThreadLocalRandom.current().nextInt(1, 5)));
-//            videoService.saveVidrating(vr);
-
-
-
-
-
-            for (String item:dataArray) {
-                System.out.print(item + "  ");
+            if(timeRandIndex==timeRand.size()-1){
+                timeRandIndex=0;
             }
+
+//            System.out.println(dataArray.get(0));
+//            System.out.println(resEq.getSonic_id());
+//            System.out.println(dataArray.get(2));
+//            System.out.println(dataArray.get(3));
+//            System.out.println(dataArray.get(4));
+//            System.out.println(dataArray.get(5));
+
+            UserHistory u = new UserHistory(dataArray.get(0), resEq.getSonic_id(), dataArray.get(2), dataArray.get(3), "1", dataArray.get(4),  timeRand.get(timeRandIndex));
+            userService.saveUserHistory(u);
+
+            int genre = videoService.getGenre(resEq.getSonic_id());
+            incrementagegroup(5, genre);
+            incrementpersonalitygroup(2, genre);
+            timeRandIndex++;
+
+
+
+
+
+
+
+//            for (String item:dataArray) {
+//                System.out.print(item + "  ");
+//            }
             System.out.println(); // Print the data line.
             dataRow = TSVFile.readLine(); // Read next line of data.
         }
@@ -1706,103 +1807,72 @@ public class AdminController {
 
     }
 
-    public void incrementagegroup(int agegroup, String genre){
-        AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
+    public static String getTime(){
+        final long CURRENT_TIME_MILLIS = System.currentTimeMillis();
+        Date instant = new Date(CURRENT_TIME_MILLIS);
+        SimpleDateFormat sdf = new SimpleDateFormat( "HH:mm:ss" );
+        String time = sdf.format( instant );
+        System.out.println( "Time: " + time );
+        return time.toString();
+    }
 
-        if(genre.equals("Pop Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("House Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Alternative Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Reggae Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("R&B/Soul Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Religious Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setReggaeMusic(agecriteria.getReligiousMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Country Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Rock Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
-        }
-        if(genre.equals("Hip-Hop/Rap Music")){
-//            System.out.println("BOBO-"+genre);
-            agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
-            userService.saveAgeCriteria(agecriteria);
+
+    @RequestMapping("/updatetime")
+    public void udpateTime(){
+//        ArrayList<UserHistory> uh = userService.findAllUserHistory();
+        for(int i=0; i<10; i++){
+            System.out.println(getTime());
         }
     }
 
-    private void incrementpersonalitygroup(int personalitygroup, String genre) {
+    private void incrementpersonalitygroup(int personalitygroup, int genre) {
         PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
-        if(genre.equals("Pop Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
+        switch(genre){
+            case 1: personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
+                break;
+            case 2: personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
+                break;
+            case 3: personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
+                break;
+            case 4: personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
+                break;
+            case 5: personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
+                break;
+            case 6: personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
+                break;
+            case 7: personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
+                break;
+            case 8: personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
+                break;
+            case 9: personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
+                break;
         }
-        if(genre.equals("House Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
+        userService.savePersonalityCriteria(personalitycriteria);
+    }
+
+    public void incrementagegroup(int agegroup, int genre){
+        AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
+        switch(genre){
+            case 1: agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
+                break;
+            case 2: agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
+                break;
+            case 3: agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
+                break;
+            case 4: agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
+                break;
+            case 5: agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
+                break;
+            case 6: agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
+                break;
+            case 7: agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
+                break;
+            case 8: agecriteria.setReligiousMusic(agecriteria.getReligiousMusic()+1);
+                break;
+            case 9: agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
+                break;
         }
-        if(genre.equals("Alternative Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Reggae Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("R&B/Soul Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Religious Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.equals("Country Music")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.contains("Rock")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
-        if(genre.contains("Hip-Hop/Rap")){
-            System.out.println("lolo-"+genre);
-            personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
-            userService.savePersonalityCriteria(personalitycriteria);
-        }
+        userService.saveAgeCriteria(agecriteria);
     }
 
     public static LocalDate getLocalDate() {
@@ -1897,6 +1967,34 @@ public class AdminController {
 
         public void setVideoIds(String videoIds) {
             this.videoIds = videoIds;
+        }
+    }
+
+    public class Equivalent {
+
+        String jam_id;
+        String sonic_id;
+
+
+        public Equivalent(String jam_id, String sonic_id) {
+            this.jam_id = jam_id;
+            this.sonic_id = sonic_id;
+        }
+
+        public String getJam_id() {
+            return jam_id;
+        }
+
+        public void setJam_id(String jam_id) {
+            this.jam_id = jam_id;
+        }
+
+        public String getSonic_id() {
+            return sonic_id;
+        }
+
+        public void setSonic_id(String sonic_id) {
+            this.sonic_id = sonic_id;
         }
     }
 
