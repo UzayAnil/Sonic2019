@@ -300,40 +300,41 @@ public class UserController {
         if(totalviews != 0){
             switch(genreid){
                 case 1: genreAge = useragegroup.getPopMusic();
-                    genrePT = personalitygroup.getPopMusic();
-                    genreWT = userService.popAgecount();
-                    break;
+                        genrePT = personalitygroup.getPopMusic();
+                        genreWT = userService.popAgecount();
+                        break;
                 case 2: genreAge = useragegroup.getRockMusic();
-                    genrePT = personalitygroup.getRockMusic();
-                    genreWT = userService.rockAgecount();
-                    break;
+                        genrePT = personalitygroup.getRockMusic();
+                        genreWT = userService.rockAgecount();
+                        break;
                 case 3: genreAge = useragegroup.getAlternativeMusic();
-                    genrePT = personalitygroup.getAlternativeMusic();
-                    genreWT = userService.alternativeAgecount();
-                    break;
+                        genrePT = personalitygroup.getAlternativeMusic();
+                        genreWT = userService.alternativeAgecount();
+                        break;
                 case 4: genreAge = useragegroup.getRnbMusic();
-                    genrePT = personalitygroup.getRnbMusic();
-                    genreWT = userService.rnbAgecount();
-                    break;
+                        genrePT = personalitygroup.getRnbMusic();
+                        genreWT = userService.rnbAgecount();
+                        break;
                 case 5: genreAge = useragegroup.getCountryMusic();
-                    genrePT = personalitygroup.getCountryMusic();
-                    genreWT = userService.countryAgecount();
-                    break;
+                        genrePT = personalitygroup.getCountryMusic();
+                        genreWT = userService.countryAgecount();
+                        break;
                 case 6: genreAge = useragegroup.getHouseMusic();
-                    genrePT = personalitygroup.getHouseMusic();
-                    genreWT = userService.houseAgecount();
-                    break;
+                        genrePT = personalitygroup.getHouseMusic();
+                        genreWT = userService.houseAgecount();
+                        break;
                 case 7: genreAge = useragegroup.getReggaeMusic();
-                    genrePT = personalitygroup.getReggaeMusic();
-                    genreWT = userService.reggaeAgecount();
-                    break;
+                        genrePT = personalitygroup.getReggaeMusic();
+                        genreWT = userService.reggaeAgecount();
+                        break;
                 case 8: genreAge = useragegroup.getReligiousMusic();
-                    genrePT = personalitygroup.getReligiousMusic();
-                    genreWT = userService.religiousAgecount();
-                    break;
+                        genrePT = personalitygroup.getReligiousMusic();
+                        genreWT = userService.religiousAgecount();
+                        break;
                 case 9: genreAge = useragegroup.getHiphopMusic();
-                    genrePT = personalitygroup.getHiphopMusic();
-                    genreWT = userService.hiphopAgecount();
+                        genrePT = personalitygroup.getHiphopMusic();
+                        genreWT = userService.hiphopAgecount();
+                        break;
             }
         }
         System.out.println("Genre ID: "+genreid);
@@ -347,6 +348,16 @@ public class UserController {
         System.out.println((genreAge/agetotalviews)*.25);
         System.out.println((genrePT/personalitytotalviews)*.25);
         System.out.println((genreWT/totalviews)*.1);
+
+        if(agetotalviews == 0){
+            agetotalviews = 1;
+        }
+        if(personalitytotalviews == 0){
+            personalitytotalviews = 1;
+        }
+        if(totalviews == 0){
+            totalviews = 1;
+        }
 
         genweight = (float) (((temp/10)*.4)+((genreAge/agetotalviews)*.25)+((genrePT/personalitytotalviews)*.25)+((genreWT/totalviews)*.1));
 
@@ -530,6 +541,7 @@ public class UserController {
 
         }
 
+
         findsimilarUsers(session.getAttribute("userid").toString(), session);
 
         ArrayList<FindSimilarUsers> users = (ArrayList<FindSimilarUsers>) session.getAttribute("similarusers");
@@ -549,6 +561,15 @@ public class UserController {
 
 
 
+    }
+
+    public void refreshcriterias(HttpSession session){
+
+        ArrayList<Genre> genres = genreService.findAll();
+        for (int i = 0; i < genres.size(); i++) {
+            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId((Integer) session.getAttribute("userid"), genres.get(i).getGenreId());
+            updategenreWeight(genres.get(i).getGenreId(), (Integer) session.getAttribute("userid"), userpref.getPrefWeight());
+        }
     }
 
     public void updatepersonalitycriteria(){
@@ -667,21 +688,21 @@ public class UserController {
                 genweight = userService.getGenWeight(users.get(i), j);
                 switch (j){
                     case 1: newSim.setPopMusic(genweight);
-                            break;
+                        break;
                     case 2: newSim.setRockMusic(genweight);
-                            break;
+                        break;
                     case 3: newSim.setAlternativeMusic(genweight);
-                            break;
+                        break;
                     case 4: newSim.setRnbMusic(genweight);
-                            break;
+                        break;
                     case 5: newSim.setCountryMusic(genweight);
-                            break;
+                        break;
                     case 6: newSim.setHouseMusic(genweight);
-                            break;
+                        break;
                     case 7: newSim.setReggaeMusic(genweight);
-                            break;
+                        break;
                     case 8: newSim.setReligiousMusic(genweight);
-                            break;
+                        break;
                     case 9: newSim.setHiphopMusic(genweight);
                 }
                 userService.saveFindSimilarUsers(newSim);
@@ -720,103 +741,77 @@ public class UserController {
     public float computeInitialVideoWeight(VideoDetails video, User user){
         System.out.println(video.getTitle()+"==========="+video.getLikes());
         int agegroup = user.getAgecriteriaId();
-        AgeCriteria useragegroup = userService.findByAgeCriteriaId(agegroup);
         int personality = user.getPersonalitycriteriaId();
+        AgeCriteria useragegroup = userService.findByAgeCriteriaId(agegroup);
         PersonalityCriteria personalitygroup = userService.findByPersonalityCriteriaId(personality);
-        float totalviews = useragegroup.getAlternativeMusic() + useragegroup.getCountryMusic() + useragegroup.getHiphopMusic() + useragegroup.getHouseMusic() + useragegroup.getPopMusic() + useragegroup.getReggaeMusic() + useragegroup.getReligiousMusic() + useragegroup.getRnbMusic() + useragegroup.getRockMusic();
-        float personalitytotalviews = personalitygroup.getAlternativeMusic() + personalitygroup.getCountryMusic() + personalitygroup.getHiphopMusic() + personalitygroup.getHouseMusic() + personalitygroup.getPopMusic() + personalitygroup.getReggaeMusic() + personalitygroup.getReligiousMusic() + personalitygroup.getRnbMusic() + personalitygroup.getRockMusic();
-        float vidWeight;
-        float userInput = 0;
-
-        float genreAgePop,genreAgeRock, genreAgeAlt, genreAgeRBS, genreAgeCntry, genreAgeHouse, genreAgeReg, genreAgeRel, genreAgeHH;
-
-        float genrePTPop,genrePTRock, genrePTAlt, genrePTRBS, genrePTCntry, genrePTHouse, genrePTReg, genrePTRel, genrePTHH;
-
-        ArrayList<UserPreference> userPref = userService.findAllGenrePreferenceByUserId(user.getUserId());
-
+        float agetotalviews = userService.sumOfgenrebyAgegroup(agegroup);
+        float personalitytotalviews = userService.sumOfgenrebypersonality(personality);
+        float totalviews = userService.AllViews();
+        float genweight;
         float genreAge = 0;
-        float genrePT =0, genweight=0;
-        int genreid = 0;
-//
-//        userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),1);
-//        System.out.println("prefweight:" + userInput.getPrefWeight());
-//
-//        float upPop, upRock, upAlt, upRB, upCntry, upHouse, upReg, upRel, upHH;
-//        upPop = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),1).getPrefWeight();
-//
+        float genrePT =0;
+        float genreWT = 0;
+        float userInput = 0;
+        float vidWeight;
+        int genre = videoService.getGenre(video.getVideoid());
+        if(totalviews != 0){
+            switch(genre){
+                case 1: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),1).getPrefWeight();
+                        genreAge = useragegroup.getPopMusic();
+                        genrePT = personalitygroup.getPopMusic();
+                        genreWT = userService.popAgecount();
+                        break;
+                case 2: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),2).getPrefWeight();
+                        genreAge = useragegroup.getRockMusic();
+                        genrePT = personalitygroup.getRockMusic();
+                        genreWT = userService.rockAgecount();
+                        break;
+                case 3: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),3).getPrefWeight();
+                        genreAge = useragegroup.getAlternativeMusic();
+                        genrePT = personalitygroup.getAlternativeMusic();
+                        genreWT = userService.alternativeAgecount();
+                        break;
+                case 4: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),4).getPrefWeight();
+                        genreAge = useragegroup.getRnbMusic();
+                        genrePT = personalitygroup.getRnbMusic();
+                        genreWT = userService.rnbAgecount();
+                        break;
+                case 5: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),5).getPrefWeight();
+                        genreAge = useragegroup.getCountryMusic();
+                        genrePT = personalitygroup.getCountryMusic();
+                        genreWT = userService.countryAgecount();
+                        break;
+                case 6: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),6).getPrefWeight();
+                        genreAge = useragegroup.getHouseMusic();
+                        genrePT = personalitygroup.getHouseMusic();
+                        genreWT = userService.houseAgecount();
+                        break;
+                case 7: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),7).getPrefWeight();
+                        genreAge = useragegroup.getReggaeMusic();
+                        genrePT = personalitygroup.getReggaeMusic();
+                        genreWT = userService.reggaeAgecount();
+                        break;
+                case 8: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),8).getPrefWeight();
+                        genreAge = useragegroup.getReligiousMusic();
+                        genrePT = personalitygroup.getReligiousMusic();
+                        genreWT = userService.religiousAgecount();
+                        break;
+                case 9: userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),9).getPrefWeight();
+                        genreAge = useragegroup.getHiphopMusic();
+                        genrePT = personalitygroup.getHiphopMusic();
+                        genreWT = userService.hiphopAgecount();
+                        break;
+            }
+        }
 
-        if(video.getGenre().equals("Pop Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),1).getPrefWeight();
-            genreid = 1;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getPopMusic()/totalviews;
-            genrePT = (float) personalitygroup.getPopMusic()/personalitytotalviews;
+        if(agetotalviews == 0){
+            agetotalviews = 1;
         }
-        if(video.getGenre().equals("Rock Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),2).getPrefWeight();
-            genreid = 2;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getRockMusic()/totalviews;
-            genrePT = (float) personalitygroup.getRockMusic()/personalitytotalviews;
+        if(personalitytotalviews == 0){
+            personalitytotalviews = 1;
         }
-
-        if(video.getGenre().equals("Alternative Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),3).getPrefWeight();
-            genreid = 3;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getAlternativeMusic()/totalviews;
-            genrePT = (float) personalitygroup.getAlternativeMusic()/personalitytotalviews;
-        }
-        if(video.getGenre().equals("R&B/Soul Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),4).getPrefWeight();
-            genreid = 4;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getRnbMusic()/totalviews;
-            genrePT = (float) personalitygroup.getRnbMusic()/personalitytotalviews;
-        }
-        if(video.getGenre().equals("Country Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),5).getPrefWeight();
-            genreid = 5;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getCountryMusic()/totalviews;
-            genrePT = (float) personalitygroup.getCountryMusic()/personalitytotalviews;
-        }
-        if(video.getGenre().equals("House Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),6).getPrefWeight();
-            genreid = 6;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getCountryMusic()/totalviews;
-            genrePT = (float) personalitygroup.getHouseMusic()/personalitytotalviews;
-        }
-        if(video.getGenre().equals("Reggae Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),7).getPrefWeight();
-            genreid = 7;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getReggaeMusic()/totalviews;
-            genrePT = (float) personalitygroup.getReggaeMusic()/personalitytotalviews;
-        }
-        if(video.getGenre().equals("Religious Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),8).getPrefWeight();
-            genreid = 8;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getReligiousMusic()/totalviews;
-            genrePT = (float) personalitygroup.getReligiousMusic()/personalitytotalviews;
-        }
-        if(video.getGenre().equals("Hip-Hop/Rap Music")){
-            userInput = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(),9).getPrefWeight();
-            genreid = 9;
-            UserPreference userpref = userService.findUserPreferenceByUserIdAndGenreId(user.getUserId(), genreid);
-            genweight = userpref.getGenreWeight();
-            genreAge = (float) useragegroup.getHiphopMusic()/totalviews;
-            genrePT = (float) personalitygroup.getHiphopMusic()/personalitytotalviews;
+        if(totalviews == 0){
+            totalviews = 1;
         }
 
         float uipercent, agepercent,pertypepercent;
@@ -844,14 +839,12 @@ public class UserController {
         float likes;
         float views = Float.parseFloat(video.getViewCount().toString());
         if(video.getLikes().equals("0")){
-             likes =1;
+            likes =1;
         }else{
-             likes = Float.parseFloat(video.getLikes().toString());
+            likes = Float.parseFloat(video.getLikes().toString());
         }
 
-        if(genweight == 0){
-            genweight = (float) (((userInput/10)*.5)+((genreAge)*.25)+((genrePT)*.25));
-        }
+        genweight = (float) (((userInput/10)*.4)+((genreAge/agetotalviews)*.25)+((genrePT/personalitytotalviews)*.25)+((genreWT/totalviews)*.1));
         System.out.println("Total: "+totalviews);
         System.out.println(userInput);
         System.out.println(genreAge);
@@ -860,7 +853,7 @@ public class UserController {
         System.out.println(genreAge*.5);
 
         System.out.println(genweight);
-        vidWeight= (float) (genweight * likes);
+        vidWeight= (genweight * likes);
         System.out.println("VID WEIGHT : " + vidWeight);
 
         return vidWeight;
@@ -989,15 +982,10 @@ public class UserController {
             userService.saveUserHistory(userhist);
         }
         System.out.println("video id : " + vididnexttoplay);
-        try{
-            Genre findgenre = videoService.findByGenreName(video.getGenre());
-            int genre = videoService.getGenre(video.getVideoid());
-            incrementagegroup(useragegroup, genre);
-            incrementpersonalitygroup(personalitygroup, genre);
 
-        }catch (Exception e){
-
-        }
+        int genre = videoService.getGenre(video.getVideoid());
+        incrementagegroup(useragegroup, genre);
+        incrementpersonalitygroup(personalitygroup, genre);
 
         ArrayList<Genre> genres = genreService.findAll();
         for (int i = 0; i < genres.size(); i++) {
@@ -1115,23 +1103,23 @@ public class UserController {
         AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
         switch(genre){
             case 1: agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
-                    break;
+                break;
             case 2: agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
-                    break;
+                break;
             case 3: agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
-                    break;
+                break;
             case 4: agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
-                    break;
+                break;
             case 5: agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
-                    break;
+                break;
             case 6: agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
-                    break;
+                break;
             case 7: agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
-                    break;
+                break;
             case 8: agecriteria.setReligiousMusic(agecriteria.getReligiousMusic()+1);
-                    break;
+                break;
             case 9: agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
-                    break;
+                break;
         }
         userService.saveAgeCriteria(agecriteria);
     }
@@ -1204,7 +1192,7 @@ public class UserController {
         for (int i=0; i < allusers.size(); i++){
             System.out.print(allusers.get(i));
             for (int j = 0; j < videohist.size(); j++) {
-                System.out.printf("%15s", videorating.get(count));
+                System.out.printf("// %15s", videorating.get(count));
                 if(i == 0){
                     currentuserRow[j] = videorating.get(count);
                 }
@@ -1220,9 +1208,9 @@ public class UserController {
 
         count = 0;
 
-        double[] cosineValue = new double[allusers.size()];
+        float[] cosineValue = new float[allusers.size()];
         double similarUser = 0;
-        double temp;
+        float temp;
         String[] arrUser = new String[allusers.size()];
         String simUser = "", tempotheruser;
         for (int i = 0; i < currentuserRow.length; i++) {
@@ -1290,11 +1278,11 @@ public class UserController {
         return recommVids;
     }
 
-    public double cosineSimilarity(String[] currentuserRatings, String[] otheruserRatings, String currentuser, String otheruser, ArrayList<String> allvideo){
-        double nume = 0;
-        double denum = 0;
-        double cosineresult = 0;
-        double multiplier1 = 0, multiplier2 = 0;
+    public float cosineSimilarity(String[] currentuserRatings, String[] otheruserRatings, String currentuser, String otheruser, ArrayList<String> allvideo){
+        float nume = 0;
+        float denum = 0;
+        float cosineresult = 0;
+        float multiplier1 = 0, multiplier2 = 0;
         System.out.println(allvideo.size()+" "+currentuserRatings.length+" "+otheruserRatings.length);
         System.out.println("=====================================================");
         for (int i=0; i < allvideo.size(); i++){
@@ -1302,26 +1290,23 @@ public class UserController {
         }
         System.out.println();
         System.out.print(currentuser);
-        for (int i = 0; i < currentuserRatings.length; i++) {
-            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
-            double currentgenweight = userService.genweightbygenreanduserid(Integer.parseInt(currentuser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
-            System.out.printf("%13f WEW %s", (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25)), currentuser);
-        }
+//        for (int i = 0; i < currentuserRatings.length; i++) {
+//            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
+//            double currentgenweight = userService.genweightbygenreanduserid(Integer.parseInt(currentuser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
+//            System.out.printf("%13f WEW %s", (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25)), currentuser);
+//        }
         System.out.println();
         System.out.print(otheruser);
-        for (int i = 0; i < otheruserRatings.length; i++) {
-            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
-            double othergenweight = userService.genweightbygenreanduserid(Integer.parseInt(otheruser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
-            System.out.printf("%13f WEW %s", (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25)), otheruser);
-        }
+//        for (int i = 0; i < otheruserRatings.length; i++) {
+//            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
+//            double othergenweight = userService.genweightbygenreanduserid(Integer.parseInt(otheruser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
+//            System.out.printf("%13f WEW %s", (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25)), otheruser);
+//        }
 
         for (int i = 0; i < allvideo.size(); i++) {
-            double likeOverviews = Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getLikes())/Double.parseDouble(videoService.findByVideoid(allvideo.get(i)).getViewCount());
-            double currentgenweight = userService.genweightbygenreanduserid(Integer.parseInt(currentuser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
-            double othergenweight = userService.genweightbygenreanduserid(Integer.parseInt(otheruser), videoService.findByVideoid(allvideo.get(i)).getGenre().toString());
-            nume += (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25))*(((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*25));
-            multiplier1 += (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25)) * (((Double.parseDouble(currentuserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(currentgenweight*0.25));
-            multiplier2 += (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25)) * (((Double.parseDouble(otheruserRatings[i])/5)*0.5)+(likeOverviews*0.25)+(othergenweight*0.25));
+            nume += Float.parseFloat(currentuserRatings[i])*Float.parseFloat(otheruserRatings[i]);
+            multiplier1 += Float.parseFloat(currentuserRatings[i]) * Float.parseFloat(currentuserRatings[i]);
+            multiplier2 += Float.parseFloat(otheruserRatings[i]) * Float.parseFloat(otheruserRatings[i]);
         }
 
         System.out.println("");
@@ -1330,7 +1315,7 @@ public class UserController {
         System.out.println("MULTIPLIER2: "+ multiplier2);
         System.out.println("SQUARE1: "+ Math.sqrt(multiplier1));
         System.out.println("SQUARE2: "+ Math.sqrt(multiplier2));
-        denum = Math.sqrt(multiplier1) * Math.sqrt(multiplier2);
+        denum = (float) (Math.sqrt(multiplier1) * Math.sqrt(multiplier2));
         System.out.println("DENUMERATOR: "+ denum);
         cosineresult = nume/denum;
         System.out.println("RESULT: "+ cosineresult);
@@ -1341,11 +1326,11 @@ public class UserController {
         return cosineresult;
     }
 
-    public String[] ratingPrediction(String[] currentuserRatings, String currentuser, String[] otheruser, double[] cosineValue, ArrayList<String> allvideo){
+    public String[] ratingPrediction(String[] currentuserRatings, String currentuser, String[] otheruser, float[] cosineValue, ArrayList<String> allvideo){
         String uhist;
-        double nume = 0;
-        double denum = 0;
-        double[] predictedRate = new double[allvideo.size()];
+        float nume = 0;
+        float denum = 0;
+        float[] predictedRate = new float[allvideo.size()];
         String[] predictedVidId = new String[allvideo.size()];
         String[][] otherUserRating = new String[otheruser.length-1][allvideo.size()];
         ArrayList<String> videorating = new ArrayList<>();
@@ -1374,13 +1359,13 @@ public class UserController {
         System.out.println();
         System.out.print(currentuser);
         for (int i = 0; i < currentuserRatings.length; i++) {
-            System.out.printf("%13s", currentuserRatings[i]);
+            System.out.printf("//%13s", currentuserRatings[i]);
         }
         System.out.println();
         for (int i = 0; i < otheruser.length-1; i++) {
             System.out.print(otheruser[i]);
             for (int j = 0; j < allvideo.size(); j++) {
-                System.out.printf("%13s", otherUserRating[i][j]);
+                System.out.printf("//%13s", otherUserRating[i][j]);
             }
             System.out.println(" ");
         }
@@ -1397,7 +1382,7 @@ public class UserController {
             nume = 0;
             denum = 0;
         }
-        double temp = 0;
+        float temp = 0;
         String tempvidId = "";
         for (int i = 0; i < predictedVidId.length; i++) {
 //            System.out.println(predictedVidId[i]+": "+predictedRate[i]);
@@ -1881,18 +1866,18 @@ public class UserController {
 
         for(int i=0; i<sequenceids.size();i++){
             boolean found=false;
-                for (int j = 0; j < seqRules[i].size(); j++) {
-                    if (seqRules[i].get(j).getViewingTime().equals(currentTime.substring(0, currentTime.length() - 6))) {
-                        found = true;
-                        break;
-                    } else {
-                        found = false;
-                    }
+            for (int j = 0; j < seqRules[i].size(); j++) {
+                if (seqRules[i].get(j).getViewingTime().equals(currentTime.substring(0, currentTime.length() - 6))) {
+                    found = true;
+                    break;
+                } else {
+                    found = false;
                 }
+            }
 
 
             if(found==false){
-               sequenceids.remove(i);
+                sequenceids.remove(i);
             }
         }
 
