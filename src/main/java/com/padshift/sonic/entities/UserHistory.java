@@ -41,6 +41,10 @@ public class UserHistory implements Serializable, Comparable<UserHistory>{
     @Column(name="viewingTime")
     private String viewingTime;
 
+
+    @Column(name="trackid")
+    private String trackid;
+
     public UserHistory() {
     }
 
@@ -54,6 +58,14 @@ public class UserHistory implements Serializable, Comparable<UserHistory>{
         this.viewingTime = viewingTime;
     }
 
+
+    public String getTrackid() {
+        return trackid;
+    }
+
+    public void setTrackid(String trackid) {
+        this.trackid = trackid;
+    }
 
     public int getWhid() {
         return whid;

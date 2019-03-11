@@ -1720,7 +1720,7 @@ public class AdminController {
         //end read combinations
 
         StringTokenizer st ;
-        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/agegroup_5_extro.tsv"));
+        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/agegroup_3_extro2nd.tsv")); //need pa ni ir un
         String dataRow = TSVFile.readLine(); // Read first line.
         ArrayList<Video> videos = videoService.findAllVideo();
         ArrayList<String> timeRand = new ArrayList<>();
@@ -1744,7 +1744,7 @@ public class AdminController {
             }
 
 
-            dataArray.add("290610"); //user id [2]
+            dataArray.add("4336"); //user id [2]
 
             Random r = new Random();
             float random = 200 + r.nextFloat() * (250 - 200);
@@ -1783,7 +1783,7 @@ public class AdminController {
             userService.saveUserHistory(u);
 
             int genre = videoService.getGenre(resEq.getSonic_id());
-            incrementagegroup(5, genre);
+            incrementagegroup(3, genre);
             incrementpersonalitygroup(2, genre);
             timeRandIndex++;
 

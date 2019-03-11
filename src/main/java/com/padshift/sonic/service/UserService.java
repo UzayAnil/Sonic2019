@@ -134,5 +134,5 @@ public interface UserService {
 
     ArrayList<FindSimilarUsers> similarusers(int currentuser);
 
-    ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring);
+//    ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring);
 }

@@ -323,8 +323,8 @@ public class UserServiceImpl implements UserService {
         return findsimilarusersRepsitory.similarusers(currentuser);
     }
 
-    @Override
-    public ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring) {
-        return userHistoryRepository.findUserHistoryByTimeAndSeqid(substring);
-    }
+//    @Override
+//    public ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring) {
+//        return userHistoryRepository.findUserHistoryByTimeAndSeqid(substring);
+//    }
 }
