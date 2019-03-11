@@ -1,3 +1,4 @@
+
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300);
 html, body {
     margin: 0;
@@ -216,6 +217,9 @@ html, body {
     bottom: 60px;
 }
 
+
+
+
 .material-icons.info {
     color: #999;
     position: absolute;
@@ -380,7 +384,7 @@ span {
 
 body {
     font-family: "Lato", sans-serif;
-    background: white url("../images/bar3.gif") no-repeat center center  fixed;
+    /*background: white url("../images/bar3.gif") no-repeat center center  fixed;*/
     background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;

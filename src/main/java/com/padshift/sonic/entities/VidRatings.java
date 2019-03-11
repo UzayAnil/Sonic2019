@@ -25,6 +25,17 @@ public class VidRatings {
     @Column(name="rating")
     private  String rating;
 
+
+    public VidRatings() {
+    }
+
+    public VidRatings(String userId, String userName, String videoid, String rating) {
+        this.userId = userId;
+        this.userName = userName;
+        this.videoid = videoid;
+        this.rating = rating;
+    }
+
     public String getUserName() {
         return userName;
     }

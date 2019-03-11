@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
@@ -33,6 +31,85 @@ public class YoutubeAPIController {
 
     @Autowired
     VideoService videoService;
+
+    @RequestMapping("/addmv")
+    public String addMV() throws IOException {
+
+        ArrayList<String> existing = videoService.findAllVideoId();
+
+        String idfile = "C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/additionalVidID.txt";
+        ArrayList<String> vidids = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(idfile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // process the line.
+                vidids.add(line);
+            }
+        }
+
+//        String videoid = request.getParameter("videoid");
+        for(String v : vidids ) {
+            if (!existing.contains(v.toString())) {
+                String requesturl = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + v.toString() + "&key=AIzaSyAxsoedlgT5NfsEI_inmsXKflR_DdYs5kU";
+                try {
+
+                    URL obj = new URL(requesturl);
+                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                    int responseCode = con.getResponseCode();
+
+                    System.out.println("\nSending'Get' request to URL : " + requesturl);
+                    System.out.println("Response Code : " + responseCode);
+
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(con.getInputStream())
+                    );
+
+
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    in.close();
+                    System.out.println(response.toString());
+
+                    JSONObject myresponse = null;
+                    try {
+                        myresponse = new JSONObject(response.toString());
+                        System.out.println(myresponse);
+
+
+                        JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
+                        for (int i = 0; i < videos.length(); i++) {
+                            JSONObject vid = videos.getJSONObject(i);
+
+                            String vidId = vid.getString("id");
+                            JSONObject snippet = vid.getJSONObject("snippet");
+                            JSONObject thumbnail = snippet.getJSONObject("thumbnails").getJSONObject("medium");
+
+
+                            System.out.println(vidId + " -  " + snippet.getString("title") + "  " + thumbnail.getString("url"));
+                            userController.saveMV(vidId, snippet.getString("title"), thumbnail.getString("url"));
+
+
+                        }
+
+                        videos = null;
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }
+        return "testing";
+    }
 
 
     @RequestMapping(value = "/fetchSingleVideo")
@@ -70,23 +147,23 @@ public class YoutubeAPIController {
                 System.out.println(myresponse);
 
 
-                    JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
-                    for (int i = 0; i < videos.length(); i++) {
-                        JSONObject vid = videos.getJSONObject(i);
+                JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
+                for (int i = 0; i < videos.length(); i++) {
+                    JSONObject vid = videos.getJSONObject(i);
 
-                        String vidId = vid.getString("id");
-                        JSONObject snippet = vid.getJSONObject("snippet");
-                        JSONObject thumbnail = snippet.getJSONObject("thumbnails").getJSONObject("medium");
+                    String vidId = vid.getString("id");
+                    JSONObject snippet = vid.getJSONObject("snippet");
+                    JSONObject thumbnail = snippet.getJSONObject("thumbnails").getJSONObject("medium");
 
 
 
-                            System.out.println(vidId + " -  " +snippet.getString("title") + "  " + thumbnail.getString("url"));
+                    System.out.println(vidId + " -  " +snippet.getString("title") + "  " + thumbnail.getString("url"));
 //                            userController.saveMV(vidId, snippet.getString("title"), thumbnail.getString("url"));
 
 
-                    }
+                }
 
-                    videos = null;
+                videos = null;
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -450,64 +527,64 @@ public class YoutubeAPIController {
         String nextpagetoken=null;
         try {
 
-                URL obj = new URL(url1);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-                int responseCode = con.getResponseCode();
+            URL obj = new URL(url1);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            int responseCode = con.getResponseCode();
 
-                System.out.println("\nSending'Get' request to URL : " + url1);
-                System.out.println("Response Code : " + responseCode);
+            System.out.println("\nSending'Get' request to URL : " + url1);
+            System.out.println("Response Code : " + responseCode);
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream())
-                );
-
-
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-
-                in.close();
-                System.out.println(response.toString());
-
-                JSONObject myresponse = null;
-                try {
-                    myresponse = new JSONObject(response.toString());
-                    System.out.println(myresponse);
-
-                    if (myresponse.has("nextPageToken")) {
-
-                            nextpagetoken = myresponse.getString("nextPageToken");
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream())
+            );
 
 
-                        String thumbnail = null;
-                        JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
-                        for (int i = 0; i < videos.length(); i++) {
-                            JSONObject vid = videos.getJSONObject(i);
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
 
-                            JSONObject vidsnip = vid.getJSONObject("snippet");
-                            String vidTitle = vidsnip.getString("title");
-                            if((vidsnip.getJSONObject("thumbnails"))!=null) {
-                                thumbnail = (vidsnip.getJSONObject("thumbnails")).getJSONObject("medium").getString("url");
-                            }
-                            String videoid = vidsnip.getJSONObject("resourceId").getString("videoId");
+            in.close();
+            System.out.println(response.toString());
 
-                            System.out.println(videoid + " -  " + vidTitle + "  " + thumbnail);
-                            userController.saveMV(videoid, vidTitle, thumbnail);
+            JSONObject myresponse = null;
+            try {
+                myresponse = new JSONObject(response.toString());
+                System.out.println(myresponse);
 
+                if (myresponse.has("nextPageToken")) {
+
+                    nextpagetoken = myresponse.getString("nextPageToken");
+
+
+                    String thumbnail = null;
+                    JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
+                    for (int i = 0; i < videos.length(); i++) {
+                        JSONObject vid = videos.getJSONObject(i);
+
+                        JSONObject vidsnip = vid.getJSONObject("snippet");
+                        String vidTitle = vidsnip.getString("title");
+                        if((vidsnip.getJSONObject("thumbnails"))!=null) {
+                            thumbnail = (vidsnip.getJSONObject("thumbnails")).getJSONObject("medium").getString("url");
                         }
+                        String videoid = vidsnip.getJSONObject("resourceId").getString("videoId");
 
-                        videos = null;
-                    } else{
-                        return;
+                        System.out.println(videoid + " -  " + vidTitle + "  " + thumbnail);
+                        userController.saveMV(videoid, vidTitle, thumbnail);
+
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                    videos = null;
+                } else{
+                    return;
                 }
-            } catch (IOException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         nextPageRequest(nextpagetoken, playlistid);
@@ -554,23 +631,23 @@ public class YoutubeAPIController {
 
 
                 String thumbnail = null;
-                    JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
-                    for (int i = 0; i < videos.length(); i++) {
-                        JSONObject vid = videos.getJSONObject(i);
+                JSONArray videos = new JSONArray(myresponse.getJSONArray("items").toString());
+                for (int i = 0; i < videos.length(); i++) {
+                    JSONObject vid = videos.getJSONObject(i);
 
-                        JSONObject vidsnip = vid.getJSONObject("snippet");
-                        String vidTitle = vidsnip.getString("title");
-                        if(!vidsnip.isNull("thumbnails")) {
-                            thumbnail = (vidsnip.getJSONObject("thumbnails")).getJSONObject("medium").getString("url");
-                        }
-                        String videoid = vidsnip.getJSONObject("resourceId").getString("videoId");
-
-                        System.out.println(videoid + " -  " + vidTitle + "  " + thumbnail);
-                        userController.saveMV(videoid, vidTitle, thumbnail);
-
+                    JSONObject vidsnip = vid.getJSONObject("snippet");
+                    String vidTitle = vidsnip.getString("title");
+                    if(!vidsnip.isNull("thumbnails")) {
+                        thumbnail = (vidsnip.getJSONObject("thumbnails")).getJSONObject("medium").getString("url");
                     }
+                    String videoid = vidsnip.getJSONObject("resourceId").getString("videoId");
 
-                    videos = null;
+                    System.out.println(videoid + " -  " + vidTitle + "  " + thumbnail);
+                    userController.saveMV(videoid, vidTitle, thumbnail);
+
+                }
+
+                videos = null;
 
             } catch (JSONException e) {
                 e.printStackTrace();

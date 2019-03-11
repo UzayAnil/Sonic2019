@@ -25,6 +25,12 @@ public interface VideoDetailsRepository extends JpaRepository<VideoDetails,Long>
 
     @Query("select distinct genre from VideoDetails")
     ArrayList<String> findDistinctGenre();
+//
+//    @Query("SELECT  FROM VideoDetails WHERE title LIKE q = :query")
+//    ArrayList<VideoDetails> findVideoWhereTitleContains(@Param("query") String vidQuery);
+
+    @Query("SELECT v FROM VideoDetails v WHERE v.title LIKE CONCAT('%',:query,'%')")
+    ArrayList<VideoDetails> findVideoWhereTitleContains(@Param("query") String videoQuery);
 
 
     ArrayList<VideoDetails> findByGenre(String genreName);

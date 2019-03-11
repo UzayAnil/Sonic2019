@@ -1,0 +1,430 @@
+html {
+    margin-bottom: 60px;
+    background-color: black;
+    font-family: -apple-system, BlinkMacSystemFont,  "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",  "Fira Sans", "Droid Sans", "Helvetica Neue",  sans-serif;
+}
+html * {
+    box-sizing: border-box;
+}
+
+p {
+    margin: 5px 0;
+    font-weight: 300;
+}
+
+.strip-background {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    width: 100%;
+    height: 215px;
+    background-color: black;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+.card {
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+}
+@media screen and (min-width: 768px) {
+    .card {
+        padding: 30px;
+    }
+}
+
+.search__container {
+    padding: 0 20px;
+    width: 100%;
+    margin: 20px auto 0;
+    position: relative;
+    z-index: 1;
+}
+@media screen and (min-width: 768px) {
+    .search__container {
+        padding: 0;
+        width: 75%;
+        margin-top: 40px;
+    }
+}
+
+.search-item {
+    border-bottom: 1px solid #D3DCE6;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.search-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+@media screen and (min-width: 768px) {
+    .search-item {
+        flex-wrap: no-wrap;
+    }
+}
+
+.search-item__content {
+    padding-top: 2px;
+    order: 5;
+    width: 100%;
+}
+@media screen and (min-width: 600px) {
+    .search-item__content {
+        width: auto;
+    }
+}
+
+.search-item__image {
+    order: 1;
+    width: 164px;
+    height: 102px;
+    background-color: red;
+    border-radius: 8px;
+    margin-right: 15px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+}
+@media screen and (min-width: 600px) {
+    .search-item__image {
+        width: 164px;
+        height: 102px;
+        margin-bottom: 0;
+    }
+}
+
+.search-item__options {
+    order: 2;
+    margin-left: auto;
+}
+@media screen and (min-width: 600px) {
+    .search-item__options {
+        order: 10;
+    }
+}
+
+.label {
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 10px;
+    padding: 5px;
+    vertical-align: middle;
+}
+
+.label--red {
+    background-color: #FF4747;
+    color: #FFFFFF;
+}
+
+.button {
+    display: inline-block;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 8px;
+    background-color: red;
+    font-size: 14px;
+    padding: 22px;
+}
+
+.button--small {
+    font-size: 10px;
+    padding: 10px;
+}
+
+.button--block {
+    display: block;
+    width: 100%;
+}
+
+.button--primary {
+    background-color: #72CB36;
+    color: #FFFFFF;
+}
+
+.button--outline {
+    border: 1px solid #D3DCE6;
+    color: #A1A1A1;
+    background-color: transparent;
+}
+
+.text--upcase {
+    text-transform: uppercase;
+}
+
+.text--small {
+    font-size: 14px;
+}
+
+.text--muted {
+    color: #8F8F8F;
+}
+
+.text--medium {
+    font-weight: 400;
+}
+
+.text--center {
+    text-align: center;
+}
+
+.form {
+    width: 100%;
+}
+
+input[type="text"],
+input[type="date"] {
+    border: 0;
+    border-bottom: 1px solid #D3DCE6;
+    display: block;
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    font-size: 17px;
+    padding: 10px 0 0 0;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+input[type="text"]:focus,
+input[type="date"]:focus {
+    outline: 0;
+    border-color: #72A3FF;
+}
+
+.input__w-placeholder {
+    position: relative;
+}
+
+label {
+    position: absolute;
+    transition: all 0.1s ease;
+    z-index: 1;
+    left: 0;
+    top: 20px;
+    color: #A1A1A1;
+}
+.focus label, .static-label label {
+    top: 0;
+    font-size: 12px;
+}
+
+
+#cont:target > menu-fixed {
+    width: 120px;
+    background: #111;
+    transition: all 0.3s;
+}
+#cont:target > menu-fixed > a .material-icons.back {
+    display: none;
+}
+#cont:target > menu-fixed > .menu li {
+    text-align: center;
+    width: 40%;
+}
+#cont:target > menu-fixed > .menu li > p {
+    display: none;
+}
+
+#menu-fixed {
+    width: 120px;
+    z-index: 2;
+    height: 100%;
+    background: #0F0F0F;
+    position: absolute;
+    top: 0%;
+    lefy: 0%;
+    transition: all 0.3s;
+    box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.19), 8px 0px 10px rgba(0, 0, 0, 0.23);
+    text-align: center;
+    /*overflow: auto;*/
+}
+#menu-fixed .material-icons.back {
+    display: none;
+    color: white;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 36px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+#menu-fixed .material-icons.back:hover {
+    color: #009688;
+    transition: color 0.3s;
+}
+#menu-fixed:target {
+    width: 280px;
+    background: #000;
+    transition: all 0.3s ease-out;
+}
+#menu-fixed:target > .notes {
+    transition: all 0.2s;
+    z-index: 0;
+    opacity: 0;
+}
+#menu-fixed:target > a .material-icons.back {
+    display: block;
+}
+#menu-fixed:target > a > .logo {
+    width: 60%;
+    height: 47px;
+    margin: auto;
+}
+#menu-fixed:target > a > .logo > span {
+    display: none;
+}
+#menu-fixed:target > a > .logo > p {
+    display: block;
+}
+#menu-fixed:target > .menu li {
+    text-align: left;
+    width: 100%;
+}
+#menu-fixed:target > .menu li:hover::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: rgba(38, 166, 154, 0.1);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+    transition-delay: 0.5s;
+}
+#menu-fixed:target > .menu li:hover > p {
+    color: white;
+}
+#menu-fixed:target > .menu li > p {
+    display: inline-block;
+}
+#menu-fixed .logo {
+    width: 100%;
+    height: 70px;
+    position: relative;
+    cursor: pointer;
+}
+#menu-fixed .logo p {
+    display: none;
+    color: #999;
+    font-size: 23px;
+    padding-bottom: 0;
+    font-weight: 300;
+}
+#menu-fixed .logo span {
+    width: 10px;
+    height: 10px;
+    backrground: #0A0A0A;
+    position: absolute;
+    margin: auto;
+    left: 75%;
+    right: 0;
+    top: 500%;
+    transform: rotateZ(45deg);
+    -webkit-transform: rotateZ(45deg);
+    border: 8px solid white;
+    transition: all 0.2s;
+}
+#menu-fixed .logo:hover ~ p {
+    color: white;
+    transition: all 0.3s;
+}
+#menu-fixed .logo:hover > span {
+    width: 0;
+    height: 0;
+    border-left: 15px solid white;
+    border-right: 15px solid rgba(0, 0, 0, 0);
+    border-top: 15px solid rgba(0, 0, 0, 0);
+    border-bottom: 15px solid rgba(0, 0, 0, 0);
+    transition: all 0.2s;
+    transform: rotateZ(0deg) translateX(10px);
+    -webkit-transform: rotateZ(0deg) translateX(10px);
+}
+#menu-fixed .logo:hover > span::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 8px solid #111;
+    border-right: 8px solid rgba(0, 0, 0, 0);
+    border-top: 8px solid rgba(0, 0, 0, 0);
+    border-bottom: 8px solid rgba(0, 0, 0, 0);
+    left: -15px;
+    position: absolute;
+    top: -8px;
+}
+#menu-fixed .pmenu {
+    margin: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    font-weight: 300;
+}
+#menu-fixed hr {
+    position: relative;
+    top: 10px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+#menu-fixed .menu {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    top: 10px;
+}
+#menu-fixed .menu li {
+    padding: 15px;
+    margin: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom-style: dotted;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s;
+}
+#menu-fixed .menu li:last-child {
+    border: none;
+}
+#menu-fixed .menu li:hover {
+    background: #000;
+    transition: all 0.3s;
+    transition-delay: 0.5s;
+}
+#menu-fixed .menu li:hover > .material-icons {
+    color: white;
+}
+#menu-fixed .menu li .material-icons {
+    color: #999;
+}
+#menu-fixed .menu li p {
+    display: none;
+    margin: auto;
+    color: #888;
+    font-size: 14px;
+    font-weight: 300;
+    position: absolute;
+    padding-left: 30px;
+    line-height: 30px;
+}
+
+#menu-fixed :hover .sideb {
+    display: inline-block;
+    color: white;
+    bottom: 0px;
+}
+
+.sideb {
+    display: none;
+    position: relative;
+    bottom: 60px;
+}

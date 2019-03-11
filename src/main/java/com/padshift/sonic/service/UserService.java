@@ -84,6 +84,14 @@ public interface UserService {
 
     void saveRecVidTable(RecVidTable v);
 
+    ArrayList<User> findAllUsers();
+
+    ArrayList<UserHistory> findByViewingTimeStartingWith(String substring);
+
+    ArrayList<String> findAllDistinctSequenceID(String ctime);
+
+    ArrayList<UserHistory> findAllUserHistory();
+
     float sumOfgenrebyAgegroup(int agegroup);
 
     float sumOfgenrebypersonality(int personality);
@@ -124,4 +132,6 @@ public interface UserService {
     FindSimilarUsers findCurrentUserByUserId(int currentuserId);
 
     ArrayList<FindSimilarUsers> similarusers(int currentuser);
+
+//    ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring);
 }

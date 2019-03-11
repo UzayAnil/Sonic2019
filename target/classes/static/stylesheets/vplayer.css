@@ -116,7 +116,7 @@ a {
 }
 .video-column {
     float: left;
-    max-width: 854px;
+    /*max-width: 854px;*/
 }
 
 .video-player {
@@ -521,7 +521,8 @@ progress::-webkit-progress-value {
 
 .items {
     top: 50%;
-    left: 54%;
+    position: relative;
+    left: -4%;
     text-align: center;
     width: 105%;
     -webkit-transform: translateY(-50%) translateX(-50%);

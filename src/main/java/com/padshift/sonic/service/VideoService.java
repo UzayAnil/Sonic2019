@@ -74,5 +74,12 @@ public interface VideoService {
 
     ArrayList<Video> findAllVideo();
 
+    ArrayList<VideoDetails> findVideoWhereTitleContains(String queryString);
+
+    ArrayList<String> findAllVideoId();
+
     int getGenre(String videoid);
+
+//    ArrayList<String> findAllVideoId();
+//    void updateVidDuration(String videoid, long seconds);
 }

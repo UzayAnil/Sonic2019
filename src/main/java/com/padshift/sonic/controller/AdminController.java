@@ -19,12 +19,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by ruzieljonm on 26/09/2018.
@@ -1619,6 +1632,253 @@ public class AdminController {
         return seqtemp;
     }
 
+    @RequestMapping("/testrun")
+    public String equivalentSonicID(){
+        String csvFile = "C:/Users/ruzieljonm/Desktop/combination.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+
+        ArrayList<Equivalent> equival = new ArrayList<>();
+
+        try {
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] country = line.split(cvsSplitBy);
+
+                System.out.println("Video ID [raw= " + country[0] + " , videoid_sonic=" + country[1] + "]");
+                Equivalent e = new Equivalent(country[0],country[1]);
+                equival.add(e);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        String findme = "TROIMGU128E0782ABA";
+
+        Equivalent james = equival.stream()
+                .filter(eq -> findme.equals(eq.getJam_id()))
+                .findAny()
+                .orElse(null);
+
+        System.out.println("result : " + james.getJam_id() + "--" + james.getSonic_id());
+
+        return james.getSonic_id();
+
+    }
+
+    @RequestMapping("/displaytsv")
+    public void displatTSV() throws IOException {
+        //read combinations
+        String csvFile = "C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/combination.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+
+        ArrayList<Equivalent> equival = new ArrayList<>();
+
+        try {
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] country = line.split(cvsSplitBy);
+
+//                System.out.println("Video ID [raw= " + country[0] + " , videoid_sonic=" + country[1] + "]");
+                Equivalent e = new Equivalent(country[0],country[1]);
+                equival.add(e);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //end read combinations
+
+        StringTokenizer st ;
+        BufferedReader TSVFile = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/agegroup_3_extro2nd.tsv")); //need pa ni ir un
+        String dataRow = TSVFile.readLine(); // Read first line.
+        ArrayList<Video> videos = videoService.findAllVideo();
+        ArrayList<String> timeRand = new ArrayList<>();
+        try (BufferedReader brtime = new BufferedReader(new FileReader("C:/Users/ruzieljonm/Documents/Fouth Year/2019/Sonic2019/src/main/resources/time.txt"))) {
+            String linetime;
+            while ((linetime = brtime.readLine()) != null) {
+                // process the line.
+                timeRand.add(linetime);
+            }
+        }
+
+        ArrayList<User> users = userService.findAllUsers();
+
+        int timeRandIndex =0;
+        while (dataRow != null){
+
+            st = new StringTokenizer(dataRow,"\t");
+            List<String> dataArray = new ArrayList<String>() ;
+            while(st.hasMoreElements()){
+                dataArray.add(st.nextElement().toString());
+            }
+
+
+            dataArray.add("4336"); //user id [2]
+
+            Random r = new Random();
+            float random = 200 + r.nextFloat() * (250 - 200);
+            dataArray.add(String.valueOf(random)); // time spent [3]
+            dataArray.add(getLocalDate().toString());  // viewing date [4]
+
+//
+//            final Random randomt = new Random();
+//            final int millisInDay = 24*60*60*1000;
+//            Time time = new Time((long)randomt.nextInt(millisInDay));
+//
+//            dataArray.add(time.toString()); // viewing time [5]
+
+        // start find equi
+            String findme = dataArray.get(1);
+
+            Equivalent resEq = equival.stream()
+                    .filter(eq -> findme.equals(eq.getJam_id()))
+                    .findAny()
+                    .orElse(null);
+
+            // end find equi
+
+            if(timeRandIndex==timeRand.size()-1){
+                timeRandIndex=0;
+            }
+
+//            System.out.println(dataArray.get(0));
+//            System.out.println(resEq.getSonic_id());
+//            System.out.println(dataArray.get(2));
+//            System.out.println(dataArray.get(3));
+//            System.out.println(dataArray.get(4));
+//            System.out.println(dataArray.get(5));
+
+            UserHistory u = new UserHistory(dataArray.get(0), resEq.getSonic_id(), dataArray.get(2), dataArray.get(3), "1", dataArray.get(4),  timeRand.get(timeRandIndex));
+            userService.saveUserHistory(u);
+
+            int genre = videoService.getGenre(resEq.getSonic_id());
+            incrementagegroup(3, genre);
+            incrementpersonalitygroup(2, genre);
+            timeRandIndex++;
+
+
+
+
+
+
+
+//            for (String item:dataArray) {
+//                System.out.print(item + "  ");
+//            }
+            System.out.println(); // Print the data line.
+            dataRow = TSVFile.readLine(); // Read next line of data.
+        }
+        // Close the file once all data has been read.
+        TSVFile.close();
+
+        // End the printout with a blank line.
+        System.out.println();
+
+    }
+
+    public static String getTime(){
+        final long CURRENT_TIME_MILLIS = System.currentTimeMillis();
+        Date instant = new Date(CURRENT_TIME_MILLIS);
+        SimpleDateFormat sdf = new SimpleDateFormat( "HH:mm:ss" );
+        String time = sdf.format( instant );
+        System.out.println( "Time: " + time );
+        return time.toString();
+    }
+
+
+    @RequestMapping("/updatetime")
+    public void udpateTime(){
+//        ArrayList<UserHistory> uh = userService.findAllUserHistory();
+        for(int i=0; i<10; i++){
+            System.out.println(getTime());
+        }
+    }
+
+    private void incrementpersonalitygroup(int personalitygroup, int genre) {
+        PersonalityCriteria personalitycriteria = userService.findByPersonalityCriteriaId(personalitygroup);
+        switch(genre){
+            case 1: personalitycriteria.setPopMusic(personalitycriteria.getPopMusic()+1);
+                break;
+            case 2: personalitycriteria.setRockMusic(personalitycriteria.getRockMusic()+1);
+                break;
+            case 3: personalitycriteria.setAlternativeMusic(personalitycriteria.getAlternativeMusic()+1);
+                break;
+            case 4: personalitycriteria.setRnbMusic(personalitycriteria.getRnbMusic()+1);
+                break;
+            case 5: personalitycriteria.setCountryMusic(personalitycriteria.getCountryMusic()+1);
+                break;
+            case 6: personalitycriteria.setHouseMusic(personalitycriteria.getHouseMusic()+1);
+                break;
+            case 7: personalitycriteria.setReggaeMusic(personalitycriteria.getReggaeMusic()+1);
+                break;
+            case 8: personalitycriteria.setReligiousMusic(personalitycriteria.getReligiousMusic()+1);
+                break;
+            case 9: personalitycriteria.setHiphopMusic(personalitycriteria.getHiphopMusic()+1);
+                break;
+        }
+        userService.savePersonalityCriteria(personalitycriteria);
+    }
+
+    public void incrementagegroup(int agegroup, int genre){
+        AgeCriteria agecriteria = userService.findByAgeCriteriaId(agegroup);
+        switch(genre){
+            case 1: agecriteria.setPopMusic(agecriteria.getPopMusic()+1);
+                break;
+            case 2: agecriteria.setRockMusic(agecriteria.getRockMusic()+1);
+                break;
+            case 3: agecriteria.setAlternativeMusic(agecriteria.getAlternativeMusic()+1);
+                break;
+            case 4: agecriteria.setRnbMusic(agecriteria.getRnbMusic()+1);
+                break;
+            case 5: agecriteria.setCountryMusic(agecriteria.getCountryMusic()+1);
+                break;
+            case 6: agecriteria.setHouseMusic(agecriteria.getHouseMusic()+1);
+                break;
+            case 7: agecriteria.setReggaeMusic(agecriteria.getReggaeMusic()+1);
+                break;
+            case 8: agecriteria.setReligiousMusic(agecriteria.getReligiousMusic()+1);
+                break;
+            case 9: agecriteria.setHiphopMusic(agecriteria.getHiphopMusic()+1);
+                break;
+        }
+        userService.saveAgeCriteria(agecriteria);
+    }
+
+    public static LocalDate getLocalDate() {
+        return LocalDate.now();
+    }
+
     public class singleElement{
         String videoId;
         float support;
@@ -1707,6 +1967,34 @@ public class AdminController {
 
         public void setVideoIds(String videoIds) {
             this.videoIds = videoIds;
+        }
+    }
+
+    public class Equivalent {
+
+        String jam_id;
+        String sonic_id;
+
+
+        public Equivalent(String jam_id, String sonic_id) {
+            this.jam_id = jam_id;
+            this.sonic_id = sonic_id;
+        }
+
+        public String getJam_id() {
+            return jam_id;
+        }
+
+        public void setJam_id(String jam_id) {
+            this.jam_id = jam_id;
+        }
+
+        public String getSonic_id() {
+            return sonic_id;
+        }
+
+        public void setSonic_id(String sonic_id) {
+            this.sonic_id = sonic_id;
         }
     }
 

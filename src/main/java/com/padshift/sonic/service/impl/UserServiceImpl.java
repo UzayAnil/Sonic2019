@@ -202,6 +202,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ArrayList<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public ArrayList<UserHistory> findByViewingTimeStartingWith(String substring) {
+        return userHistoryRepository.findByViewingTimeStartingWith(substring);
+    }
+
+    @Override
+    public ArrayList<String> findAllDistinctSequenceID(String ctime) {
+        return userHistoryRepository.findAllDistinctSequenceID(ctime);
+    }
+
+    @Override
+    public ArrayList<UserHistory> findAllUserHistory() {
+        return (ArrayList<UserHistory>) userHistoryRepository.findAll();
+    }
+
+    @Override
     public float sumOfgenrebyAgegroup(int agegroup) {
         return agecriteriaRepository.sumOfgenrebyAgegroup(agegroup);
     }
@@ -300,4 +320,9 @@ public class UserServiceImpl implements UserService {
     public ArrayList<FindSimilarUsers> similarusers(int currentuser) {
         return findsimilarusersRepsitory.similarusers(currentuser);
     }
+
+//    @Override
+//    public ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(String substring) {
+//        return userHistoryRepository.findUserHistoryByTimeAndSeqid(substring);
+//    }
 }

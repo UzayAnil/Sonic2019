@@ -212,7 +212,18 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    public ArrayList<VideoDetails> findVideoWhereTitleContains(String queryString) {
+        return videoDetailsRepository.findVideoWhereTitleContains(queryString);
+    }
+
+    @Override
+    public ArrayList<String> findAllVideoId() {
+        return videoRepository.findAllVideoId();
+    }
+
+    @Override
     public int getGenre(String videoid) {
         return genreRepository.getGenre(videoid);
     }
 }
+

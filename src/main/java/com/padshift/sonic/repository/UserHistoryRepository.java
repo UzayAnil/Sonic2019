@@ -32,4 +32,13 @@ public interface UserHistoryRepository extends JpaRepository<UserHistory,Long> {
     ArrayList<String> findDistinctSequenceId();
 
     ArrayList<UserHistory> findBySeqid(String s);
+
+//    @Query("SELECT FROM userhistory WHERE viewing_time LIKE  CONCAT(:time,'%')")
+    ArrayList<UserHistory> findByViewingTimeStartingWith(String time);
+
+    @Query("select distinct seqid from UserHistory where viewingTime like concat(:ctime,'%') and viewingStatus = '1'")
+    ArrayList<String> findAllDistinctSequenceID(@Param("ctime") String time);
+
+//    @Query("SELECT FROM UserHistory WHERE seqid IN (SELECT DISTINCT seqid FROM UserHistory WHERE viewingTime concat(:ctime,'%'))")
+//    ArrayList<UserHistory>[] findUserHistoryByTimeAndSeqid(@Param("ctime") String substring);
 }
